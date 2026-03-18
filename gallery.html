@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Галерея работ — К Студия | Астана</title>
+  <meta name="description" content="Галерея работ К Студии — стрижки, окрашивание, маникюр, брови и ресницы. Смотрите результаты мастеров салона красоты в Астане." />
+  <link rel="canonical" href="https://kstudio.kz/gallery" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/components.css" />
+  <link rel="stylesheet" href="../styles/layout.css" />
+  <style>
+    /* Gallery Page Specific */
+    .gallery-page-grid {
+      columns: 2;
+      column-gap: var(--space-sm);
+      margin-top: var(--space-xl);
+    }
+    @media (min-width: 640px) {
+      .gallery-page-grid { columns: 3; }
+    }
+    @media (min-width: 1024px) {
+      .gallery-page-grid { columns: 4; }
+    }
+
+    .gallery-page-item {
+      break-inside: avoid;
+      margin-bottom: var(--space-sm);
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      cursor: pointer;
+      position: relative;
+      background: var(--color-beige);
+    }
+
+    .gallery-page-item img {
+      width: 100%;
+      display: block;
+      transition: transform 0.4s ease;
+      border-radius: var(--border-radius);
+    }
+
+    .gallery-page-item:hover img {
+      transform: scale(1.04);
+    }
+
+    .gallery-page-item__overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(44,31,20,0.7) 0%, transparent 60%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      display: flex;
+      align-items: flex-end;
+      padding: var(--space-sm);
+      border-radius: var(--border-radius);
+    }
+
+    .gallery-page-item:hover .gallery-page-item__overlay {
+      opacity: 1;
+    }
+
+    .gallery-page-item__caption {
+      color: white;
+      font-size: 0.8rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* Placeholder tiles */
+    .gallery-placeholder {
+      background: var(--color-beige);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 0.5rem;
+      color: var(--color-text-muted);
+      font-size: 0.8rem;
+      font-family: var(--font-body);
+      border-radius: var(--border-radius);
+    }
+
+    .gallery-placeholder-icon {
+      font-size: 2.5rem;
+      opacity: 0.4;
+    }
+
+    /* Filter bar */
+    .gallery-filter-bar {
+      display: flex;
+      gap: var(--space-xs);
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: var(--space-lg);
+    }
+
+    /* Before/After section */
+    .before-after-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+      margin-top: var(--space-xl);
+    }
+    @media (min-width: 768px) {
+      .before-after-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .before-after-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .before-after-card {
+      border-radius: var(--border-radius-lg);
+      overflow: hidden;
+      background: var(--color-cream);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .before-after-card__images {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .before-after-card__half {
+      position: relative;
+    }
+
+    .before-after-card__half img,
+    .before-after-card__half .ba-placeholder {
+      width: 100%;
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      display: block;
+    }
+
+    .ba-placeholder {
+      background: var(--color-beige);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      opacity: 0.5;
+    }
+
+    .before-after-card__label {
+      position: absolute;
+      top: 0.5rem;
+      left: 0.5rem;
+      background: rgba(44,31,20,0.75);
+      color: white;
+      font-size: 0.65rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.5rem;
+      border-radius: 100px;
+    }
+
+    .before-after-card__info {
+      padding: var(--space-md);
+    }
+
+    .before-after-card__service {
+      font-family: var(--font-heading);
+      font-size: 1.1rem;
+      color: var(--color-dark);
+      margin-bottom: 0.25rem;
+    }
+
+    .before-after-card__master {
+      font-size: 0.8rem;
+      color: var(--color-text-muted);
+    }
+
+    /* Instagram CTA */
+    .instagram-cta {
+      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-xl);
+      text-align: center;
+      color: white;
+    }
+
+    .instagram-cta__icon { font-size: 3rem; margin-bottom: var(--space-sm); }
+    .instagram-cta__title {
+      font-family: var(--font-heading);
+      font-size: clamp(1.5rem, 3vw, 2.2rem);
+      font-weight: 400;
+      margin-bottom: var(--space-xs);
+    }
+    .instagram-cta__sub {
+      opacity: 0.9;
+      font-size: 0.9rem;
+      margin-bottom: var(--space-md);
+    }
+    .instagram-cta__btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: white;
+      color: #833ab4;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 0.875rem 2rem;
+      border-radius: 100px;
+      text-decoration: none;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .instagram-cta__btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header header--scrolled">
+  <div class="container">
+    <div class="header__inner">
+      <a href="/" class="header__logo">
+        <span class="header__logo-letter">К</span>
+        <span class="header__logo-sub">Studio of Beauty</span>
+      </a>
+      <nav class="header__nav">
+        <a href="/pages/services.html" class="header__nav-link">Услуги</a>
+        <a href="/pages/gallery.html"  class="header__nav-link is-active">Галерея</a>
+        <a href="/pages/masters.html"  class="header__nav-link">Мастера</a>
+        <a href="/pages/about.html"    class="header__nav-link">О нас</a>
+        <a href="/pages/contacts.html" class="header__nav-link">Контакты</a>
+      </nav>
+      <div class="header__actions">
+        <a href="/pages/booking.html" class="btn btn--primary" style="display:inline-flex;">Записаться</a>
+        <button class="burger" aria-label="Открыть меню" aria-expanded="false">
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav__overlay"></div>
+<nav class="mobile-nav">
+  <button class="mobile-nav__close">✕</button>
+  <ul class="mobile-nav__links">
+    <li><a href="/pages/services.html" class="mobile-nav__link">Услуги</a></li>
+    <li><a href="/pages/gallery.html"  class="mobile-nav__link">Галерея</a></li>
+    <li><a href="/pages/masters.html"  class="mobile-nav__link">Мастера</a></li>
+    <li><a href="/pages/about.html"    class="mobile-nav__link">О нас</a></li>
+    <li><a href="/pages/contacts.html" class="mobile-nav__link">Контакты</a></li>
+  </ul>
+  <div class="mobile-nav__footer">
+    <a href="/pages/booking.html" class="btn btn--primary btn--full">Записаться онлайн</a>
+  </div>
+</nav>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container">
+    <span class="page-hero__eyebrow">Наши работы</span>
+    <h1 class="page-hero__title">Галерея</h1>
+    <p style="color:var(--color-text-muted); font-size:1rem; margin-top:var(--space-sm); max-width:480px; margin-inline:auto;">
+      Сотни довольных клиентов — листайте работы наших мастеров
+    </p>
+  </div>
+</section>
+
+<!-- Gallery Section -->
+<section class="section">
+  <div class="container">
+
+    <!-- Filter Bar -->
+    <div class="gallery-filter-bar">
+      <button class="gallery-filter-btn is-active" data-filter="all">Все работы</button>
+      <button class="gallery-filter-btn" data-filter="hair">Волосы</button>
+      <button class="gallery-filter-btn" data-filter="nails">Маникюр</button>
+      <button class="gallery-filter-btn" data-filter="brows">Брови и ресницы</button>
+      <button class="gallery-filter-btn" data-filter="makeup">Макияж</button>
+      <button class="gallery-filter-btn" data-filter="massage">Уход</button>
+    </div>
+
+    <!-- Masonry Grid -->
+    <div class="gallery-page-grid" id="galleryGrid">
+
+      <!-- Hair items — real reference photos -->
+      <div class="gallery-page-item reveal" data-category="hair"
+           data-lightbox="../images/hair-hero.jpg" data-caption="Уход за волосами — Кератиновая маска">
+        <img src="../images/hair-hero.jpg" alt="Уход за волосами" loading="lazy" />
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Уход за волосами</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal reveal--delay-1" data-category="nails"
+           data-lightbox="../images/nails-hero.jpg" data-caption="Маникюр — Дизайн ногтей">
+        <img src="../images/nails-hero.jpg" alt="Маникюр" loading="lazy" />
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Маникюр</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal reveal--delay-2" data-category="brows"
+           data-lightbox="../images/lashes-hero.jpg" data-caption="Наращивание ресниц — Wet Set">
+        <img src="../images/lashes-hero.jpg" alt="Ресницы — Wet Set" loading="lazy" />
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Наращивание ресниц</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal" data-category="hair"
+           data-lightbox="../images/gallery/hair-2.jpg" data-caption="Стрижка и укладка">
+        <div class="gallery-placeholder" style="height:320px;">
+          <div class="gallery-placeholder-icon">✂️</div>
+          <span>Стрижка и укладка</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Стрижка и укладка</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal reveal--delay-1" data-category="makeup"
+           data-lightbox="../images/gallery/makeup-1.jpg" data-caption="Вечерний макияж">
+        <div class="gallery-placeholder" style="height:260px;">
+          <div class="gallery-placeholder-icon">💄</div>
+          <span>Вечерний макияж</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Вечерний макияж</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal reveal--delay-2" data-category="nails"
+           data-lightbox="../images/gallery/nails-2.jpg" data-caption="Педикюр — Покрытие">
+        <div class="gallery-placeholder" style="height:200px;">
+          <div class="gallery-placeholder-icon">🦶</div>
+          <span>Педикюр</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Педикюр</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal" data-category="hair"
+           data-lightbox="../images/gallery/hair-3.jpg" data-caption="Кератиновое выпрямление">
+        <div class="gallery-placeholder" style="height:290px;">
+          <div class="gallery-placeholder-icon">💇‍♀️</div>
+          <span>Кератин</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Кератиновое выпрямление</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal reveal--delay-1" data-category="brows"
+           data-lightbox="../images/gallery/brows-2.jpg" data-caption="Коррекция и окрашивание бровей">
+        <div class="gallery-placeholder" style="height:230px;">
+          <div class="gallery-placeholder-icon">✨</div>
+          <span>Брови</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Брови — Коррекция и окрашивание</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal reveal--delay-2" data-category="massage"
+           data-lightbox="../images/massage-hero.jpg" data-caption="Расслабляющий массаж">
+        <img src="../images/massage-hero.jpg" alt="Массаж и СПА" loading="lazy" />
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Массаж и СПА</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal" data-category="nails"
+           data-lightbox="../images/gallery/nails-3.jpg" data-caption="Дизайн ногтей — Наращивание">
+        <div class="gallery-placeholder" style="height:270px;">
+          <div class="gallery-placeholder-icon">💅</div>
+          <span>Наращивание</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Наращивание ногтей</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal reveal--delay-1" data-category="hair"
+           data-lightbox="../images/gallery/hair-4.jpg" data-caption="Колорирование — Омбре">
+        <div class="gallery-placeholder" style="height:310px;">
+          <div class="gallery-placeholder-icon">🎨</div>
+          <span>Омбре</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Омбре</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal reveal--delay-2" data-category="makeup"
+           data-lightbox="../images/gallery/makeup-2.jpg" data-caption="Свадебный макияж">
+        <div class="gallery-placeholder" style="height:260px;">
+          <div class="gallery-placeholder-icon">👰</div>
+          <span>Свадебный</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Свадебный макияж</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal" data-category="brows"
+           data-lightbox="../images/gallery/lashes-1.jpg" data-caption="Наращивание ресниц">
+        <div class="gallery-placeholder" style="height:220px;">
+          <div class="gallery-placeholder-icon">👁️</div>
+          <span>Наращивание ресниц</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Наращивание ресниц</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal reveal--delay-1" data-category="hair"
+           data-lightbox="../images/gallery/hair-5.jpg" data-caption="Укладка — Голливудские волны">
+        <div class="gallery-placeholder" style="height:250px;">
+          <div class="gallery-placeholder-icon">🌊</div>
+          <span>Голливудские волны</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Голливудские волны</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal reveal--delay-2" data-category="massage"
+           data-lightbox="../images/massage-hero.jpg" data-caption="Расслабляющий массаж">
+        <div class="gallery-placeholder" style="height:280px;">
+          <div class="gallery-placeholder-icon">💆‍♀️</div>
+          <span>Массаж</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Расслабляющий массаж</span>
+        </div>
+      </div>
+
+      <div class="gallery-page-item reveal" data-category="nails"
+           data-lightbox="../images/gallery/nails-4.jpg" data-caption="Маникюр — Французский">
+        <div class="gallery-placeholder" style="height:210px;">
+          <div class="gallery-placeholder-icon">🤍</div>
+          <span>Французский</span>
+        </div>
+        <div class="gallery-page-item__overlay">
+          <span class="gallery-page-item__caption">Французский маникюр</span>
+        </div>
+      </div>
+
+    </div><!-- /gallery-page-grid -->
+
+  </div>
+</section>
+
+<!-- Lightbox Overlay -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр фото">
+  <button class="lightbox__close" aria-label="Закрыть">✕</button>
+  <img class="lightbox__image" src="" alt="" />
+  <p class="lightbox__caption"></p>
+</div>
+
+<!-- Before/After Section -->
+<section class="section section--beige">
+  <div class="container">
+    <header class="section-header reveal">
+      <span class="section-eyebrow">Трансформации</span>
+      <h2 class="section-title">До и после</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">Реальные результаты наших мастеров — без фильтров</p>
+    </header>
+
+    <div class="before-after-grid">
+
+      <div class="before-after-card reveal">
+        <div class="before-after-card__images">
+          <div class="before-after-card__half">
+            <div class="ba-placeholder">📷</div>
+            <span class="before-after-card__label">До</span>
+          </div>
+          <div class="before-after-card__half">
+            <div class="ba-placeholder">✨</div>
+            <span class="before-after-card__label">После</span>
+          </div>
+        </div>
+        <div class="before-after-card__info">
+          <p class="before-after-card__service">Балаяж + Тонирование</p>
+          <p class="before-after-card__master">Мастер: Аида</p>
+        </div>
+      </div>
+
+      <div class="before-after-card reveal reveal--delay-1">
+        <div class="before-after-card__images">
+          <div class="before-after-card__half">
+            <div class="ba-placeholder">📷</div>
+            <span class="before-after-card__label">До</span>
+          </div>
+          <div class="before-after-card__half">
+            <div class="ba-placeholder">✨</div>
+            <span class="before-after-card__label">После</span>
+          </div>
+        </div>
+        <div class="before-after-card__info">
+          <p class="before-after-card__service">Коррекция и оформление бровей</p>
+          <p class="before-after-card__master">Мастер: Диана</p>
+        </div>
+      </div>
+
+      <div class="before-after-card reveal reveal--delay-2">
+        <div class="before-after-card__images">
+          <div class="before-after-card__half">
+            <div class="ba-placeholder">📷</div>
+            <span class="before-after-card__label">До</span>
+          </div>
+          <div class="before-after-card__half">
+            <div class="ba-placeholder">✨</div>
+            <span class="before-after-card__label">После</span>
+          </div>
+        </div>
+        <div class="before-after-card__info">
+          <p class="before-after-card__service">Маникюр с дизайном</p>
+          <p class="before-after-card__master">Мастер: Мадина</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- Instagram CTA -->
+<section class="section">
+  <div class="container">
+    <div class="instagram-cta reveal">
+      <div class="instagram-cta__icon">📸</div>
+      <h2 class="instagram-cta__title">Больше работ в Instagram</h2>
+      <p class="instagram-cta__sub">Ежедневные публикации · Акции · Отзывы клиентов</p>
+      <a href="https://www.instagram.com/k_studio_01/" target="_blank" rel="noopener"
+         class="instagram-cta__btn">
+        Подписаться @k_studio_01
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Booking CTA -->
+<section class="booking-cta">
+  <div class="booking-cta__bg-letter" aria-hidden="true">К</div>
+  <div class="container" style="position:relative; z-index:1;">
+    <div style="max-width:600px; margin-inline:auto; text-align:center;">
+      <span class="section-eyebrow" style="color:var(--color-gold); opacity:0.8;">Понравилась работа?</span>
+      <h2 style="font-family:var(--font-heading); font-size:clamp(2rem,4vw,3rem); font-weight:300; color:white; margin:var(--space-sm) 0;">
+        Запишитесь к нашему мастеру
+      </h2>
+      <div class="divider" style="background:var(--color-gold); margin-inline:auto;"></div>
+      <p style="color:rgba(248,245,241,0.7); margin-bottom:var(--space-lg);">
+        Выберите услугу, мастера и удобное время
+      </p>
+      <div style="display:flex; gap:var(--space-sm); justify-content:center; flex-wrap:wrap;">
+        <a href="/pages/booking.html" class="btn btn--primary">Записаться онлайн</a>
+        <a href="https://wa.me/77051170000" target="_blank" rel="noopener"
+           class="btn btn--light">💬 WhatsApp</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__bottom" style="border-top:none; padding-top:var(--space-lg);">
+      <span>© 2026 К Студия. Астана, Кабанбай батыр пр., 58Б</span>
+      <a href="/pages/privacy.html" class="footer__bottom-link">Политика конфиденциальности</a>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/77051170000" target="_blank" rel="noopener" class="whatsapp-btn" aria-label="WhatsApp">💬</a>
+<div class="mobile-booking-cta">
+  <div class="mobile-booking-cta__text"><strong>К Студия</strong> 10:00–21:00</div>
+  <a href="/pages/booking.html" class="btn btn--primary btn--sm">Записаться</a>
+</div>
+
+<script src="../js/main.js" defer></script>
+</body>
+</html>

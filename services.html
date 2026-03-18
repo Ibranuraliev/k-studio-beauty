@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Услуги и цены — К Студия | Астана</title>
+  <meta name="description" content="Все услуги К Студии в Астане: стрижки от 3000₸, маникюр от 4000₸, педикюр, брови, ресницы, макияж. Прозрачные цены. Запись онлайн 24/7." />
+  <link rel="canonical" href="https://kstudio.kz/uslugi" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/components.css" />
+  <link rel="stylesheet" href="../styles/layout.css" />
+  <style>
+    .price-table { width: 100%; border-collapse: collapse; }
+    .price-table tr { border-bottom: 1px solid var(--color-border); }
+    .price-table tr:last-child { border-bottom: none; }
+    .price-table td { padding: 0.85rem 0; font-size: 0.925rem; vertical-align: middle; }
+    .price-table td:last-child { text-align: right; font-weight: 600; color: var(--color-dark); white-space: nowrap; }
+    .price-table td:first-child { color: var(--color-text); }
+    .price-table tr:hover td { color: var(--color-gold); }
+    .price-table tr:hover td:first-child { color: var(--color-dark); }
+    .service-section { margin-bottom: var(--space-2xl); scroll-margin-top: 100px; }
+    .service-section-header {
+      display: flex; align-items: center; gap: var(--space-md);
+      padding-bottom: var(--space-md); border-bottom: 2px solid var(--color-beige);
+      margin-bottom: var(--space-lg);
+    }
+    .service-section-icon { font-size: 2.5rem; flex-shrink: 0; }
+    .category-nav {
+      display: flex; flex-wrap: wrap; gap: 0.5rem;
+      justify-content: center; margin-bottom: var(--space-xl);
+      position: sticky; top: 70px; z-index: 10;
+      background: var(--color-cream); padding: 0.75rem 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+    .category-nav a {
+      padding: 0.5rem 1.1rem; border-radius: 100px;
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+      text-transform: uppercase; border: 1.5px solid var(--color-border);
+      color: var(--color-text-muted); transition: all var(--transition-base);
+      min-height: 38px; display: inline-flex; align-items: center;
+    }
+    .category-nav a:hover { background: var(--color-dark); border-color: var(--color-dark); color: var(--color-cream); }
+    .price-note { font-size: 0.8rem; color: var(--color-text-muted); font-style: italic; margin-top: 0.5rem; }
+  </style>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "serviceType": "Beauty Salon Services",
+    "provider": {
+      "@type": "BeautySalon",
+      "name": "К Студия",
+      "address": { "@type": "PostalAddress", "streetAddress": "Кабанбай батыр проспект, 58Б", "addressLocality": "Астана", "addressCountry": "KZ" }
+    }
+  }
+  </script>
+</head>
+<body>
+
+<header class="header header--scrolled">
+  <div class="container">
+    <div class="header__inner">
+      <a href="/" class="header__logo">
+        <span class="header__logo-letter">К</span>
+        <span class="header__logo-sub">Studio of Beauty</span>
+      </a>
+      <nav class="header__nav">
+        <a href="/pages/services.html" class="header__nav-link is-active">Услуги</a>
+        <a href="/pages/gallery.html"  class="header__nav-link">Галерея</a>
+        <a href="/pages/masters.html"  class="header__nav-link">Мастера</a>
+        <a href="/pages/about.html"    class="header__nav-link">О нас</a>
+        <a href="/pages/contacts.html" class="header__nav-link">Контакты</a>
+      </nav>
+      <div class="header__actions">
+        <a href="/pages/booking.html" class="btn btn--primary" style="display:inline-flex;">Записаться</a>
+        <button class="burger" aria-label="Открыть меню" aria-expanded="false">
+          <span class="burger__line"></span><span class="burger__line"></span><span class="burger__line"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav__overlay"></div>
+<nav class="mobile-nav">
+  <button class="mobile-nav__close">✕</button>
+  <ul class="mobile-nav__links">
+    <li><a href="/pages/services.html" class="mobile-nav__link">Услуги</a></li>
+    <li><a href="/pages/gallery.html"  class="mobile-nav__link">Галерея</a></li>
+    <li><a href="/pages/masters.html"  class="mobile-nav__link">Мастера</a></li>
+    <li><a href="/pages/about.html"    class="mobile-nav__link">О нас</a></li>
+    <li><a href="/pages/contacts.html" class="mobile-nav__link">Контакты</a></li>
+  </ul>
+  <div class="mobile-nav__footer">
+    <a href="/pages/booking.html" class="btn btn--primary btn--full">Записаться онлайн</a>
+  </div>
+</nav>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container">
+    <span class="page-hero__eyebrow">Прайс-лист</span>
+    <h1 class="page-hero__title">Услуги и цены</h1>
+  </div>
+</section>
+
+<!-- Category sticky nav -->
+<div class="category-nav container">
+  <a href="#volosy">💇 Волосы</a>
+  <a href="#manikyur">💅 Маникюр</a>
+  <a href="#pedikyur">🦶 Педикюр</a>
+  <a href="#brovi">👁️ Брови и ресницы</a>
+  <a href="#makiyazh">💄 Макияж</a>
+  <a href="#express">⚡ Express</a>
+</div>
+
+<section class="section">
+  <div class="container" style="max-width:860px;">
+
+    <!-- ─── ВОЛОСЫ ─── -->
+    <div class="service-section reveal" id="volosy">
+      <div class="service-section-header">
+        <span class="service-section-icon">💇‍♀️</span>
+        <div>
+          <h2 style="font-size:clamp(1.6rem,3vw,2.25rem); margin-bottom:0.25rem;">Волосы</h2>
+          <p style="color:var(--color-text-muted); font-size:0.875rem; margin:0;">Стрижки, окрашивание, уходовые процедуры</p>
+        </div>
+      </div>
+
+      <div style="display:grid; gap:var(--space-lg); grid-template-columns:1fr;">
+
+        <div>
+          <h3 style="font-size:1rem; font-family:var(--font-body); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-gold); margin-bottom:var(--space-sm);">Стрижки</h3>
+          <table class="price-table">
+            <tr><td>Женская стрижка</td><td>от 3 000 ₸</td></tr>
+            <tr><td>Мужская стрижка</td><td>от 2 500 ₸</td></tr>
+            <tr><td>Детская стрижка (до 12 лет)</td><td>от 1 800 ₸</td></tr>
+            <tr><td>Стрижка + укладка</td><td>от 5 000 ₸</td></tr>
+            <tr><td>Восстанавливающая стрижка (горячими ножницами)</td><td>от 4 000 ₸</td></tr>
+          </table>
+        </div>
+
+        <div>
+          <h3 style="font-size:1rem; font-family:var(--font-body); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-gold); margin-bottom:var(--space-sm);">Окрашивание</h3>
+          <table class="price-table">
+            <tr><td>Окрашивание корней</td><td>от 6 000 ₸</td></tr>
+            <tr><td>Однотонное окрашивание</td><td>от 8 000 ₸</td></tr>
+            <tr><td>Мелирование (классическое)</td><td>от 10 000 ₸</td></tr>
+            <tr><td>Балаяж / Airtouch</td><td>от 18 000 ₸</td></tr>
+            <tr><td>Омбре / Шатуш</td><td>от 15 000 ₸</td></tr>
+            <tr><td>Тонирование</td><td>от 5 000 ₸</td></tr>
+          </table>
+          <p class="price-note">* Цена зависит от длины и густоты волос. Точную стоимость уточняйте при записи.</p>
+        </div>
+
+        <div>
+          <h3 style="font-size:1rem; font-family:var(--font-body); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-gold); margin-bottom:var(--space-sm);">Уход и укладки</h3>
+          <table class="price-table">
+            <tr><td>Ламинирование волос</td><td>от 12 000 ₸</td></tr>
+            <tr><td>Кератиновое выпрямление</td><td>от 20 000 ₸</td></tr>
+            <tr><td>Ботокс для волос</td><td>от 14 000 ₸</td></tr>
+            <tr><td>Укладка феном</td><td>от 3 500 ₸</td></tr>
+            <tr><td>Прикорневой объём</td><td>от 2 500 ₸</td></tr>
+            <tr><td>Вечерняя причёска</td><td>от 6 000 ₸</td></tr>
+          </table>
+        </div>
+
+      </div>
+      <div style="margin-top:var(--space-lg);">
+        <a href="/pages/booking.html" class="btn btn--primary">Записаться на волосы</a>
+      </div>
+    </div>
+
+    <!-- ─── МАНИКЮР ─── -->
+    <div class="service-section reveal" id="manikyur">
+      <div class="service-section-header">
+        <span class="service-section-icon">💅</span>
+        <div>
+          <h2 style="font-size:clamp(1.6rem,3vw,2.25rem); margin-bottom:0.25rem;">Маникюр</h2>
+          <p style="color:var(--color-text-muted); font-size:0.875rem; margin:0;">Аппаратный, классический, дизайн ногтей</p>
+        </div>
+      </div>
+      <table class="price-table">
+        <tr><td>Аппаратный маникюр</td><td>от 3 500 ₸</td></tr>
+        <tr><td>Классический маникюр</td><td>от 3 000 ₸</td></tr>
+        <tr><td>Маникюр + гель-лак</td><td>от 5 500 ₸</td></tr>
+        <tr><td>Наращивание ногтей (гель)</td><td>от 8 000 ₸</td></tr>
+        <tr><td>Коррекция наращённых</td><td>от 5 000 ₸</td></tr>
+        <tr><td>Снятие покрытия</td><td>от 1 500 ₸</td></tr>
+        <tr><td>Дизайн (1 ноготь)</td><td>от 300 ₸</td></tr>
+        <tr><td>Дизайн (все ногти)</td><td>от 2 000 ₸</td></tr>
+        <tr><td>SPA-маникюр</td><td>от 6 000 ₸</td></tr>
+      </table>
+      <div style="margin-top:var(--space-lg);">
+        <a href="/pages/booking.html" class="btn btn--primary">Записаться на маникюр</a>
+      </div>
+    </div>
+
+    <!-- ─── ПЕДИКЮР ─── -->
+    <div class="service-section reveal" id="pedikyur">
+      <div class="service-section-header">
+        <span class="service-section-icon">🦶</span>
+        <div>
+          <h2 style="font-size:clamp(1.6rem,3vw,2.25rem); margin-bottom:0.25rem;">Педикюр</h2>
+          <p style="color:var(--color-text-muted); font-size:0.875rem; margin:0;">Аппаратный, SPA-уход, покрытие</p>
+        </div>
+      </div>
+      <table class="price-table">
+        <tr><td>Аппаратный педикюр</td><td>от 5 000 ₸</td></tr>
+        <tr><td>Классический педикюр</td><td>от 4 500 ₸</td></tr>
+        <tr><td>Педикюр + гель-лак</td><td>от 7 000 ₸</td></tr>
+        <tr><td>SPA-педикюр</td><td>от 8 500 ₸</td></tr>
+        <tr><td>Мужской педикюр</td><td>от 5 500 ₸</td></tr>
+        <tr><td>Комбо: маникюр + педикюр</td><td>от 10 000 ₸</td></tr>
+      </table>
+      <div style="margin-top:var(--space-lg);">
+        <a href="/pages/booking.html" class="btn btn--primary">Записаться на педикюр</a>
+      </div>
+    </div>
+
+    <!-- ─── БРОВИ И РЕСНИЦЫ ─── -->
+    <div class="service-section reveal" id="brovi">
+      <div class="service-section-header">
+        <span class="service-section-icon">👁️</span>
+        <div>
+          <h2 style="font-size:clamp(1.6rem,3vw,2.25rem); margin-bottom:0.25rem;">Брови и ресницы</h2>
+          <p style="color:var(--color-text-muted); font-size:0.875rem; margin:0;">Коррекция, окрашивание, наращивание</p>
+        </div>
+      </div>
+
+      <div style="display:grid; gap:var(--space-lg); grid-template-columns:1fr;">
+        <div>
+          <h3 style="font-size:1rem; font-family:var(--font-body); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-gold); margin-bottom:var(--space-sm);">Брови</h3>
+          <table class="price-table">
+            <tr><td>Коррекция бровей (воск)</td><td>от 2 000 ₸</td></tr>
+            <tr><td>Коррекция бровей (нить)</td><td>от 1 500 ₸</td></tr>
+            <tr><td>Окрашивание бровей</td><td>от 1 800 ₸</td></tr>
+            <tr><td>Ламинирование бровей</td><td>от 4 500 ₸</td></tr>
+            <tr><td>Долговременная укладка</td><td>от 4 000 ₸</td></tr>
+          </table>
+        </div>
+        <div>
+          <h3 style="font-size:1rem; font-family:var(--font-body); font-weight:600; letter-spacing:0.1em; text-transform:uppercase; color:var(--color-gold); margin-bottom:var(--space-sm);">Ресницы</h3>
+          <table class="price-table">
+            <tr><td>Ламинирование ресниц</td><td>от 5 000 ₸</td></tr>
+            <tr><td>Наращивание (классика)</td><td>от 6 000 ₸</td></tr>
+            <tr><td>Наращивание (2D/3D объём)</td><td>от 8 000 ₸</td></tr>
+            <tr><td>Наращивание (Mega Volume)</td><td>от 12 000 ₸</td></tr>
+            <tr><td>Коррекция ресниц</td><td>от 4 000 ₸</td></tr>
+            <tr><td>Снятие ресниц</td><td>от 1 500 ₸</td></tr>
+          </table>
+        </div>
+      </div>
+      <div style="margin-top:var(--space-lg);">
+        <a href="/pages/booking.html" class="btn btn--primary">Записаться</a>
+      </div>
+    </div>
+
+    <!-- ─── МАКИЯЖ ─── -->
+    <div class="service-section reveal" id="makiyazh">
+      <div class="service-section-header">
+        <span class="service-section-icon">💄</span>
+        <div>
+          <h2 style="font-size:clamp(1.6rem,3vw,2.25rem); margin-bottom:0.25rem;">Макияж</h2>
+          <p style="color:var(--color-text-muted); font-size:0.875rem; margin:0;">Дневной, вечерний, свадебный</p>
+        </div>
+      </div>
+      <table class="price-table">
+        <tr><td>Дневной макияж</td><td>от 8 000 ₸</td></tr>
+        <tr><td>Вечерний макияж</td><td>от 10 000 ₸</td></tr>
+        <tr><td>Свадебный макияж</td><td>от 15 000 ₸</td></tr>
+        <tr><td>Макияж для фотосессии</td><td>от 12 000 ₸</td></tr>
+        <tr><td>Пробный макияж</td><td>от 10 000 ₸</td></tr>
+        <tr><td>Урок макияжа (индивидуальный)</td><td>от 12 000 ₸</td></tr>
+      </table>
+      <div style="margin-top:var(--space-lg);">
+        <a href="/pages/booking.html" class="btn btn--primary">Записаться на макияж</a>
+      </div>
+    </div>
+
+    <!-- ─── EXPRESS ─── -->
+    <div class="service-section reveal" id="express" style="background:var(--color-dark); border-radius:var(--border-radius-lg); padding:var(--space-xl);">
+      <div class="service-section-header" style="border-bottom-color:rgba(255,255,255,0.1);">
+        <span class="service-section-icon">⚡</span>
+        <div>
+          <h2 style="font-size:clamp(1.6rem,3vw,2.25rem); margin-bottom:0.25rem; color:var(--color-cream);">Express-услуги</h2>
+          <p style="color:rgba(248,245,241,0.55); font-size:0.875rem; margin:0;">В 4, 6 и 8 рук — несколько мастеров одновременно</p>
+        </div>
+      </div>
+      <p style="color:rgba(248,245,241,0.7); line-height:1.9; margin-bottom:var(--space-md);">
+        Уникальный формат студии К — несколько мастеров работают с вами одновременно.
+        Сэкономьте время: маникюр + педикюр + укладка за 1 визит.
+      </p>
+      <div style="display:grid; gap:var(--space-md); grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); margin-bottom:var(--space-lg);">
+        <div style="background:rgba(201,169,110,0.1); border:1px solid rgba(201,169,110,0.25); border-radius:var(--border-radius); padding:var(--space-md); text-align:center;">
+          <div style="font-size:2rem; margin-bottom:0.5rem;">🙌</div>
+          <div style="font-family:var(--font-heading); font-size:1.4rem; color:var(--color-gold); margin-bottom:0.25rem;">4 руки</div>
+          <div style="font-size:0.8rem; color:rgba(248,245,241,0.6);">2 мастера</div>
+        </div>
+        <div style="background:rgba(201,169,110,0.1); border:1px solid rgba(201,169,110,0.25); border-radius:var(--border-radius); padding:var(--space-md); text-align:center;">
+          <div style="font-size:2rem; margin-bottom:0.5rem;">🤝</div>
+          <div style="font-family:var(--font-heading); font-size:1.4rem; color:var(--color-gold); margin-bottom:0.25rem;">6 рук</div>
+          <div style="font-size:0.8rem; color:rgba(248,245,241,0.6);">3 мастера</div>
+        </div>
+        <div style="background:rgba(201,169,110,0.15); border:1px solid rgba(201,169,110,0.4); border-radius:var(--border-radius); padding:var(--space-md); text-align:center;">
+          <div style="font-size:2rem; margin-bottom:0.5rem;">✨</div>
+          <div style="font-family:var(--font-heading); font-size:1.4rem; color:var(--color-gold); margin-bottom:0.25rem;">8 рук</div>
+          <div style="font-size:0.8rem; color:rgba(248,245,241,0.6);">4 мастера</div>
+        </div>
+      </div>
+      <a href="/pages/booking.html" class="btn btn--primary">Уточнить стоимость и записаться</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Booking CTA -->
+<section class="booking-cta">
+  <div class="container" style="position:relative;z-index:1;">
+    <span class="booking-cta__eyebrow">Готовы?</span>
+    <h2 class="booking-cta__title">Запишитесь онлайн прямо сейчас</h2>
+    <p class="booking-cta__subtitle">Выбирайте удобное время, мастера и услугу. Без звонков.</p>
+    <a href="/pages/booking.html" class="btn btn--primary" style="padding:1rem 2.5rem;">Выбрать время →</a>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="container">
+    <div class="footer__bottom" style="border-top:none; padding-top:var(--space-lg);">
+      <span>© 2026 К Студия · Астана, Кабанбай батыр пр., 58Б · Ежедневно 10:00–21:00</span>
+      <a href="/" class="footer__bottom-link">На главную</a>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/77051170000" target="_blank" rel="noopener" class="whatsapp-btn" aria-label="WhatsApp">💬</a>
+<div class="mobile-booking-cta">
+  <div class="mobile-booking-cta__text"><strong>К Студия</strong> 10:00–21:00</div>
+  <a href="/pages/booking.html" class="btn btn--primary btn--sm">Записаться</a>
+</div>
+
+<script src="../js/main.js" defer></script>
+</body>
+</html>
