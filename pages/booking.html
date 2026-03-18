@@ -24,7 +24,6 @@
       .booking-layout { grid-template-columns: 3fr 2fr; }
     }
 
-    /* Booking Form */
     .booking-form-card {
       background: white;
       border-radius: var(--border-radius-lg);
@@ -45,207 +44,6 @@
       font-size: 0.875rem;
       margin-bottom: var(--space-lg);
     }
-
-    /* Step indicator */
-    .booking-steps {
-      display: flex;
-      gap: 0;
-      margin-bottom: var(--space-xl);
-      border-bottom: 2px solid var(--color-border);
-    }
-
-    .booking-step {
-      flex: 1;
-      text-align: center;
-      padding: var(--space-sm) var(--space-xs);
-      position: relative;
-      cursor: pointer;
-      transition: color 0.2s;
-    }
-
-    .booking-step.is-active::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: var(--color-gold);
-    }
-
-    .booking-step__num {
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      background: var(--color-beige);
-      color: var(--color-text-muted);
-      font-size: 0.8rem;
-      font-weight: 700;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 0.3rem;
-      transition: background 0.2s, color 0.2s;
-    }
-
-    .booking-step.is-active .booking-step__num {
-      background: var(--color-gold);
-      color: white;
-    }
-
-    .booking-step__label {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: var(--color-text-muted);
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .booking-step.is-active .booking-step__label {
-      color: var(--color-dark);
-    }
-
-    /* Service selector */
-    .service-selector {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-xs);
-      margin-bottom: var(--space-lg);
-    }
-    @media (min-width: 480px) {
-      .service-selector { grid-template-columns: repeat(3, 1fr); }
-    }
-
-    .service-select-btn {
-      padding: var(--space-sm);
-      border: 2px solid var(--color-border);
-      border-radius: var(--border-radius);
-      background: white;
-      cursor: pointer;
-      text-align: center;
-      transition: border-color 0.2s, background 0.2s;
-      font-family: var(--font-body);
-    }
-
-    .service-select-btn:hover {
-      border-color: var(--color-gold);
-      background: var(--color-cream);
-    }
-
-    .service-select-btn.is-selected {
-      border-color: var(--color-gold);
-      background: var(--color-cream);
-    }
-
-    .service-select-btn__icon { font-size: 1.5rem; margin-bottom: 0.3rem; }
-    .service-select-btn__name {
-      font-size: 0.78rem;
-      font-weight: 600;
-      color: var(--color-dark);
-      line-height: 1.3;
-    }
-
-    /* Master selector */
-    .master-selector {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--space-xs);
-      margin-bottom: var(--space-lg);
-    }
-    @media (min-width: 480px) {
-      .master-selector { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    .master-select-btn {
-      display: flex;
-      align-items: center;
-      gap: var(--space-sm);
-      padding: var(--space-sm) var(--space-md);
-      border: 2px solid var(--color-border);
-      border-radius: var(--border-radius);
-      background: white;
-      cursor: pointer;
-      text-align: left;
-      transition: border-color 0.2s, background 0.2s;
-      font-family: var(--font-body);
-    }
-
-    .master-select-btn:hover,
-    .master-select-btn.is-selected {
-      border-color: var(--color-gold);
-      background: var(--color-cream);
-    }
-
-    .master-select-avatar {
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      background: var(--color-beige);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.2rem;
-      flex-shrink: 0;
-    }
-
-    .master-select-name {
-      font-size: 0.875rem;
-      font-weight: 600;
-      color: var(--color-dark);
-    }
-
-    .master-select-role {
-      font-size: 0.75rem;
-      color: var(--color-text-muted);
-    }
-
-    /* Date/time picker placeholder */
-    .datetime-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: var(--space-sm);
-      margin-bottom: var(--space-lg);
-    }
-
-    .time-slots {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 0.4rem;
-      margin-top: var(--space-sm);
-    }
-    @media (min-width: 480px) {
-      .time-slots { grid-template-columns: repeat(4, 1fr); }
-    }
-
-    .time-slot {
-      padding: 0.5rem;
-      border: 1px solid var(--color-border);
-      border-radius: var(--border-radius);
-      background: white;
-      font-size: 0.8rem;
-      font-weight: 600;
-      color: var(--color-dark);
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.2s;
-      font-family: var(--font-body);
-    }
-
-    .time-slot:hover,
-    .time-slot.is-selected {
-      border-color: var(--color-gold);
-      background: var(--color-gold);
-      color: white;
-    }
-
-    .time-slot.is-busy {
-      opacity: 0.35;
-      cursor: not-allowed;
-      text-decoration: line-through;
-    }
-
-    /* Booking sidebar */
-    .booking-sidebar {}
 
     .booking-sidebar__card {
       background: white;
@@ -276,66 +74,16 @@
       margin-bottom: var(--space-xs);
     }
 
-    .booking-contact-btn:hover {
-      transform: translateX(4px);
-    }
-
-    .booking-contact-btn--whatsapp {
-      background: #25D366;
-      color: white;
-    }
-
-    .booking-contact-btn--phone {
-      background: var(--color-dark);
-      color: white;
-    }
-
-    .booking-contact-btn--instagram {
-      background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045);
-      color: white;
-    }
-
+    .booking-contact-btn:hover { transform: translateX(4px); }
+    .booking-contact-btn--whatsapp { background: #25D366; color: white; }
+    .booking-contact-btn--phone { background: var(--color-dark); color: white; }
+    .booking-contact-btn--instagram { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); color: white; }
     .booking-contact-btn__icon { font-size: 1.25rem; }
 
-    /* FAQ mini */
-    .mini-faq-item {
-      padding: var(--space-sm) 0;
-      border-bottom: 1px solid var(--color-border);
-    }
+    .mini-faq-item { padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border); }
     .mini-faq-item:last-child { border-bottom: none; }
-    .mini-faq-item__q {
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: var(--color-dark);
-      margin-bottom: 0.3rem;
-    }
-    .mini-faq-item__a {
-      font-size: 0.8rem;
-      color: var(--color-text-muted);
-      line-height: 1.6;
-    }
-
-    /* Yclients widget placeholder */
-    .yclients-placeholder {
-      background: var(--color-cream);
-      border: 2px dashed var(--color-border);
-      border-radius: var(--border-radius-lg);
-      padding: var(--space-xl);
-      text-align: center;
-    }
-
-    .yclients-placeholder__icon { font-size: 3rem; margin-bottom: var(--space-sm); }
-    .yclients-placeholder__title {
-      font-family: var(--font-heading);
-      font-size: 1.3rem;
-      color: var(--color-dark);
-      margin-bottom: var(--space-xs);
-    }
-    .yclients-placeholder__text {
-      font-size: 0.85rem;
-      color: var(--color-text-muted);
-      margin-bottom: var(--space-md);
-    }
+    .mini-faq-item__q { font-size: 0.85rem; font-weight: 600; color: var(--color-dark); margin-bottom: 0.3rem; }
+    .mini-faq-item__a { font-size: 0.8rem; color: var(--color-text-muted); line-height: 1.6; }
   </style>
 </head>
 <body>
@@ -356,7 +104,7 @@
         <a href="/pages/contacts.html" class="header__nav-link">Контакты</a>
       </nav>
       <div class="header__actions">
-        <a href="/pages/booking.html" class="btn btn--primary is-active" style="display:inline-flex;">Записаться</a>
+        <a href="https://dikidi.ru/#widget=206338" class="btn btn--primary is-active" style="display:inline-flex;">Записаться</a>
         <button class="burger" aria-label="Открыть меню" aria-expanded="false">
           <span class="burger__line"></span>
           <span class="burger__line"></span>
@@ -378,11 +126,11 @@
     <li><a href="/pages/contacts.html" class="mobile-nav__link">Контакты</a></li>
   </ul>
   <div class="mobile-nav__footer">
-    <a href="/pages/booking.html" class="btn btn--primary btn--full">Записаться онлайн</a>
+    <a href="https://dikidi.ru/#widget=206338" class="btn btn--primary btn--full">Записаться онлайн</a>
   </div>
 </nav>
 
-<!-- Page Hero — compact -->
+<!-- Page Hero -->
 <section class="page-hero" style="padding-top:calc(var(--header-height) + var(--space-lg)); padding-bottom:var(--space-lg);">
   <div class="container">
     <span class="page-hero__eyebrow">Онлайн-запись</span>
@@ -395,195 +143,55 @@
   <div class="container">
     <div class="booking-layout">
 
-      <!-- Main Form -->
+      <!-- Dikidi Online Booking Widget -->
       <div class="reveal">
+        <div class="booking-form-card" style="text-align:center; padding: var(--space-xl);">
 
-        <!-- Option A: Custom form (shown when Yclients not connected) -->
-        <div class="booking-form-card" id="bookingForm">
-          <h2 class="booking-form-card__title">Выберите услугу и время</h2>
-          <p class="booking-form-card__sub">Заполните форму — мы свяжемся с вами для подтверждения</p>
+          <div style="font-size:3rem; margin-bottom:var(--space-md);">📅</div>
+          <h2 class="booking-form-card__title" style="margin-bottom:0.75rem;">Запись онлайн</h2>
+          <p class="booking-form-card__sub" style="margin-bottom:var(--space-lg); max-width:380px; margin-inline:auto;">
+            Выберите услугу, мастера и удобное время прямо здесь — быстро и без звонков
+          </p>
 
-          <!-- Steps -->
-          <div class="booking-steps">
-            <div class="booking-step is-active">
-              <div class="booking-step__num">1</div>
-              <div class="booking-step__label">Услуга</div>
-            </div>
-            <div class="booking-step">
-              <div class="booking-step__num">2</div>
-              <div class="booking-step__label">Мастер</div>
-            </div>
-            <div class="booking-step">
-              <div class="booking-step__num">3</div>
-              <div class="booking-step__label">Время</div>
-            </div>
-            <div class="booking-step">
-              <div class="booking-step__num">4</div>
-              <div class="booking-step__label">Данные</div>
-            </div>
-          </div>
+          <a href="https://dikidi.ru/#widget=206338"
+             class="btn btn--primary"
+             style="padding:1.1rem 3rem; font-size:0.9rem; margin-bottom:var(--space-md); display:inline-flex;">
+            Выбрать время и записаться →
+          </a>
 
-          <!-- Service Selection -->
-          <div class="form-group">
-            <label class="form-label">Выберите направление</label>
-            <div class="service-selector">
-              <button class="service-select-btn is-selected" type="button">
-                <div class="service-select-btn__icon">💇‍♀️</div>
-                <div class="service-select-btn__name">Волосы</div>
-              </button>
-              <button class="service-select-btn" type="button">
-                <div class="service-select-btn__icon">💅</div>
-                <div class="service-select-btn__name">Маникюр</div>
-              </button>
-              <button class="service-select-btn" type="button">
-                <div class="service-select-btn__icon">👁️</div>
-                <div class="service-select-btn__name">Брови и ресницы</div>
-              </button>
-              <button class="service-select-btn" type="button">
-                <div class="service-select-btn__icon">💆‍♀️</div>
-                <div class="service-select-btn__name">Массаж и СПА</div>
-              </button>
-              <button class="service-select-btn" type="button">
-                <div class="service-select-btn__icon">💄</div>
-                <div class="service-select-btn__name">Макияж</div>
-              </button>
-              <button class="service-select-btn" type="button">
-                <div class="service-select-btn__icon">✨</div>
-                <div class="service-select-btn__name">Комплекс</div>
-              </button>
+          <div style="display:flex; flex-direction:column; gap:0.75rem; margin-top:var(--space-lg); text-align:left; border-top:1px solid var(--color-border); padding-top:var(--space-lg);">
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <span style="color:var(--color-gold); font-size:1.1rem;">✓</span>
+              <span style="font-size:0.9rem; color:var(--color-text);">Выбор конкретного мастера</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <span style="color:var(--color-gold); font-size:1.1rem;">✓</span>
+              <span style="font-size:0.9rem; color:var(--color-text);">Реальное расписание — только свободные слоты</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <span style="color:var(--color-gold); font-size:1.1rem;">✓</span>
+              <span style="font-size:0.9rem; color:var(--color-text);">Напоминание придёт за день до визита</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <span style="color:var(--color-gold); font-size:1.1rem;">✓</span>
+              <span style="font-size:0.9rem; color:var(--color-text);">Подтверждение записи сразу на телефон</span>
+            </div>
+            <div style="display:flex; align-items:center; gap:0.75rem;">
+              <span style="color:var(--color-gold); font-size:1.1rem;">✓</span>
+              <span style="font-size:0.9rem; color:var(--color-text);">Предоплата не нужна</span>
             </div>
           </div>
 
-          <!-- Specific service -->
-          <div class="form-group">
-            <label class="form-label" for="serviceDetail">Конкретная услуга</label>
-            <select class="form-input" id="serviceDetail" name="serviceDetail">
-              <option value="">— Выберите услугу —</option>
-              <optgroup label="Стрижки">
-                <option>Женская стрижка</option>
-                <option>Стрижка + укладка</option>
-                <option>Мужская стрижка</option>
-              </optgroup>
-              <optgroup label="Окрашивание">
-                <option>Балаяж</option>
-                <option>Окрашивание одним тоном</option>
-                <option>Мелирование</option>
-                <option>Омбре / Шатуш</option>
-              </optgroup>
-              <optgroup label="Уход за волосами">
-                <option>Кератиновое выпрямление</option>
-                <option>Ботокс для волос</option>
-                <option>Лечебная маска</option>
-              </optgroup>
-            </select>
-          </div>
-
-          <!-- Master Selection -->
-          <div class="form-group">
-            <label class="form-label">Выберите мастера</label>
-            <div class="master-selector">
-              <button class="master-select-btn is-selected" type="button">
-                <div class="master-select-avatar">👩‍🎨</div>
-                <div>
-                  <div class="master-select-name">Камила</div>
-                  <div class="master-select-role">Арт-директор, колорист</div>
-                </div>
-              </button>
-              <button class="master-select-btn" type="button">
-                <div class="master-select-avatar">👩‍💼</div>
-                <div>
-                  <div class="master-select-name">Аида</div>
-                  <div class="master-select-role">Стилист-колорист</div>
-                </div>
-              </button>
-              <button class="master-select-btn" type="button">
-                <div class="master-select-avatar">💅</div>
-                <div>
-                  <div class="master-select-name">Мадина</div>
-                  <div class="master-select-role">Маникюр и педикюр</div>
-                </div>
-              </button>
-              <button class="master-select-btn" type="button">
-                <div class="master-select-avatar">👁️</div>
-                <div>
-                  <div class="master-select-name">Диана</div>
-                  <div class="master-select-role">Брови и ресницы</div>
-                </div>
-              </button>
-            </div>
-            <p style="font-size:0.78rem; color:var(--color-text-muted);">
-              Или оставьте пустым — мы подберём мастера сами
-            </p>
-          </div>
-
-          <!-- Date -->
-          <div class="form-group">
-            <label class="form-label" for="bookDate">Дата</label>
-            <input class="form-input" type="date" id="bookDate" name="bookDate"
-                   min="" style="cursor:pointer;" />
-          </div>
-
-          <!-- Time Slots -->
-          <div class="form-group">
-            <label class="form-label">Удобное время</label>
-            <div class="time-slots">
-              <button class="time-slot" type="button">10:00</button>
-              <button class="time-slot is-busy" type="button">11:00</button>
-              <button class="time-slot" type="button">11:30</button>
-              <button class="time-slot" type="button">12:00</button>
-              <button class="time-slot is-selected" type="button">13:00</button>
-              <button class="time-slot" type="button">13:30</button>
-              <button class="time-slot is-busy" type="button">14:00</button>
-              <button class="time-slot" type="button">15:00</button>
-              <button class="time-slot" type="button">15:30</button>
-              <button class="time-slot" type="button">16:00</button>
-              <button class="time-slot is-busy" type="button">17:00</button>
-              <button class="time-slot" type="button">17:30</button>
-              <button class="time-slot" type="button">18:00</button>
-              <button class="time-slot" type="button">19:00</button>
-              <button class="time-slot" type="button">19:30</button>
-              <button class="time-slot" type="button">20:00</button>
-            </div>
-            <p style="font-size:0.75rem; color:var(--color-text-muted); margin-top:0.5rem;">
-              <span style="text-decoration:line-through; opacity:0.5;">зачёркнуто</span> — занято
-            </p>
-          </div>
-
-          <!-- Personal Details -->
-          <div class="form-group">
-            <label class="form-label" for="bName">Ваше имя</label>
-            <input class="form-input" type="text" id="bName" name="name" placeholder="Айгерим" required />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="bPhone">Номер телефона</label>
-            <input class="form-input" type="tel" id="bPhone" name="phone"
-                   placeholder="+7 (705) 000-00-00" required />
-          </div>
-
-          <div class="form-group">
-            <label class="form-label" for="bComment">Комментарий (необязательно)</label>
-            <textarea class="form-textarea" id="bComment" name="comment"
-                      placeholder="Пожелания к мастеру, аллергии, особые просьбы..."></textarea>
-          </div>
-
-          <button type="submit" class="btn btn--primary btn--full" style="margin-top:var(--space-sm);">
-            Отправить заявку
-          </button>
-
-          <p style="font-size:0.78rem; color:var(--color-text-muted); text-align:center; margin-top:var(--space-sm); line-height:1.6;">
-            Мы подтвердим запись в течение 30 минут по WhatsApp или телефону.<br/>
+          <p style="font-size:0.78rem; color:var(--color-text-muted); margin-top:var(--space-lg); line-height:1.7;">
             Нажимая кнопку, вы принимаете
             <a href="/pages/privacy.html" style="color:var(--color-gold);">политику конфиденциальности</a>.
           </p>
         </div>
-
-      </div><!-- /main form -->
+      </div>
 
       <!-- Sidebar -->
       <div class="booking-sidebar">
 
-        <!-- Contact Options -->
         <div class="booking-sidebar__card reveal">
           <h3 class="booking-sidebar__title">Другие способы записи</h3>
           <a href="https://wa.me/77051170000?text=Хочу%20записаться%20в%20К%20Студию"
@@ -592,8 +200,7 @@
             <span class="booking-contact-btn__icon">💬</span>
             <span>Написать в WhatsApp</span>
           </a>
-          <a href="tel:+77051170000"
-             class="booking-contact-btn booking-contact-btn--phone">
+          <a href="tel:+77051170000" class="booking-contact-btn booking-contact-btn--phone">
             <span class="booking-contact-btn__icon">📞</span>
             <span>Позвонить нам</span>
           </a>
@@ -607,7 +214,6 @@
           </p>
         </div>
 
-        <!-- Address -->
         <div class="booking-sidebar__card reveal">
           <h3 class="booking-sidebar__title">Как нас найти</h3>
           <div style="display:flex; flex-direction:column; gap:0.75rem;">
@@ -634,7 +240,6 @@
           </a>
         </div>
 
-        <!-- Mini FAQ -->
         <div class="booking-sidebar__card reveal">
           <h3 class="booking-sidebar__title">Частые вопросы</h3>
           <div class="mini-faq-item">
@@ -655,8 +260,8 @@
           </div>
         </div>
 
-      </div><!-- /sidebar -->
-    </div><!-- /booking-layout -->
+      </div>
+    </div>
   </div>
 </section>
 
@@ -673,60 +278,6 @@
 <a href="https://wa.me/77051170000" target="_blank" rel="noopener" class="whatsapp-btn" aria-label="WhatsApp">💬</a>
 
 <script src="../js/main.js" defer></script>
-<script>
-  // Set today as min date for booking
-  document.addEventListener('DOMContentLoaded', () => {
-    const dateInput = document.getElementById('bookDate');
-    if (dateInput) {
-      const today = new Date().toISOString().split('T')[0];
-      dateInput.min = today;
-      dateInput.value = today;
-    }
-
-    // Service selector interactive
-    document.querySelectorAll('.service-select-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.service-select-btn').forEach(b => b.classList.remove('is-selected'));
-        btn.classList.add('is-selected');
-      });
-    });
-
-    // Master selector interactive
-    document.querySelectorAll('.master-select-btn').forEach(btn => {
-      btn.addEventListener('click', () => {
-        document.querySelectorAll('.master-select-btn').forEach(b => b.classList.remove('is-selected'));
-        btn.classList.add('is-selected');
-      });
-    });
-
-    // Time slot interactive
-    document.querySelectorAll('.time-slot:not(.is-busy)').forEach(slot => {
-      slot.addEventListener('click', () => {
-        document.querySelectorAll('.time-slot').forEach(s => s.classList.remove('is-selected'));
-        slot.classList.add('is-selected');
-      });
-    });
-
-    // Form submit
-    const form = document.getElementById('bookingForm');
-    if (form) {
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const submitBtn = form.querySelector('button[type="submit"]');
-        submitBtn.textContent = '✓ Заявка отправлена!';
-        submitBtn.disabled = true;
-        submitBtn.style.background = '#25D366';
-        // Redirect to WhatsApp with info
-        const name = document.getElementById('bName').value;
-        const service = document.getElementById('serviceDetail').value;
-        const date = document.getElementById('bookDate').value;
-        const msg = encodeURIComponent(`Здравствуйте! Хочу записаться.\nИмя: ${name}\nУслуга: ${service}\nДата: ${date}`);
-        setTimeout(() => {
-          window.open(`https://wa.me/77051170000?text=${msg}`, '_blank');
-        }, 800);
-      });
-    }
-  });
-</script>
+<script type="text/javascript" src="https://dikidi.ru/assets/js/widget_record/widget2.min.js?v=1773811740"></script>
 </body>
 </html>
