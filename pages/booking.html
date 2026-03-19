@@ -40,25 +40,25 @@
     .bk-back { background: none; border: none; color: rgba(255,255,255,.6); font-size: .8rem; cursor: pointer; font-family: var(--font-b); display: flex; align-items: center; gap: .35rem; }
     .bk-back:hover { color: #fff; }
 
-    /* ── PROGRESS (centered, narrow) ── */
+    /* ── PROGRESS (centered, column layout) ── */
     .progress-outer { background: var(--dark); }
-    .progress-inner { max-width: 380px; margin: 0 auto; padding: .75rem 1.5rem .65rem; }
-    .progress-bar { display: flex; align-items: center; }
+    .progress-inner { max-width: 520px; margin: 0 auto; padding: .8rem 2rem .75rem; }
+    .progress-bar { display: flex; align-items: flex-start; }
+    .step-col { display: flex; flex-direction: column; align-items: center; gap: .28rem; flex-shrink: 0; }
     .step-dot {
-      width: 24px; height: 24px; border-radius: 50%;
+      width: 26px; height: 26px; border-radius: 50%;
       background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.2);
       display: flex; align-items: center; justify-content: center;
       font-size: .68rem; font-weight: 700; color: rgba(255,255,255,.4);
-      flex-shrink: 0; transition: all .3s;
+      transition: all .3s;
     }
     .step-dot.done { background: var(--gold); border-color: var(--gold); color: #fff; }
     .step-dot.active { background: #fff; border-color: #fff; color: var(--dark); }
-    .step-line { flex: 1; height: 1.5px; background: rgba(255,255,255,.15); margin: 0 .25rem; transition: background .3s; }
-    .step-line.done { background: var(--gold); }
-    .step-labels { display: flex; justify-content: space-between; padding-top: .3rem; }
-    .step-label { font-size: .58rem; color: rgba(255,255,255,.35); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; flex: 1; text-align: center; transition: color .3s; }
-    .step-label.active { color: rgba(255,255,255,.85); }
+    .step-label { font-size: .6rem; color: rgba(255,255,255,.35); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; white-space: nowrap; transition: color .3s; }
+    .step-label.active { color: rgba(255,255,255,.88); }
     .step-label.done { color: var(--gold); }
+    .step-line { flex: 1; height: 1.5px; background: rgba(255,255,255,.15); margin: 0 .3rem; margin-top: 12px; transition: background .3s; }
+    .step-line.done { background: var(--gold); }
 
     /* ── CONTAINER ── */
     .bk-container { max-width: 620px; margin: 0 auto; padding: 1.5rem 1.1rem 3rem; }
@@ -272,19 +272,25 @@
 <div class="progress-outer">
   <div class="progress-inner">
     <div class="progress-bar">
-      <div class="step-dot active" id="sdot1">1</div>
+      <div class="step-col">
+        <div class="step-dot active" id="sdot1">1</div>
+        <div class="step-label active" id="slbl1">Услуга</div>
+      </div>
       <div class="step-line" id="sline1"></div>
-      <div class="step-dot" id="sdot2">2</div>
+      <div class="step-col">
+        <div class="step-dot" id="sdot2">2</div>
+        <div class="step-label" id="slbl2">Время</div>
+      </div>
       <div class="step-line" id="sline2"></div>
-      <div class="step-dot" id="sdot3">3</div>
+      <div class="step-col">
+        <div class="step-dot" id="sdot3">3</div>
+        <div class="step-label" id="slbl3">Данные</div>
+      </div>
       <div class="step-line" id="sline3"></div>
-      <div class="step-dot" id="sdot4">4</div>
-    </div>
-    <div class="step-labels">
-      <span class="step-label active" id="slbl1">Услуга</span>
-      <span class="step-label" id="slbl2">Время</span>
-      <span class="step-label" id="slbl3">Данные</span>
-      <span class="step-label" id="slbl4">Готово</span>
+      <div class="step-col">
+        <div class="step-dot" id="sdot4">4</div>
+        <div class="step-label" id="slbl4">Готово</div>
+      </div>
     </div>
   </div>
 </div>
@@ -407,7 +413,8 @@ async function loadServices() {
     grid.innerHTML = emptyHtml('Услуги пока не добавлены');
     return;
   }
-  services = data;
+  // Deduplicate by id (safety guard against DB duplicates)
+  services = [...new Map(data.map(s => [s.id, s])).values()];
   grid.innerHTML = services.map(s => `
     <div class="service-card" id="sc_${s.id}" onclick="selectService('${s.id}')">
       <div class="service-check"></div>
@@ -466,20 +473,23 @@ async function loadSlots() {
   const list    = document.getElementById('mastersList');
   loading.style.display = 'block'; list.innerHTML = '';
 
-  // Parallel load: all masters, master-service assignments, free slots for date
-  const [mastersRes, msRes, slotsRes] = await Promise.all([
+  // Parallel load: all masters + free slots for date
+  const [mastersRes, slotsRes] = await Promise.all([
     sb.from('masters').select('*').order('name'),
-    sb.from('master_services').select('master_id').eq('service_id', selectedService.id),
     sb.from('time_slots').select('*').eq('slot_date', selectedDate).eq('is_booked', false).order('slot_time')
   ]);
 
   loading.style.display = 'none';
 
-  // Filter masters by service (only if assignments exist in DB)
+  // Filter masters by specialization_tag (if service has a tag set)
   const allMasters = mastersRes.data || [];
-  const assignments = msRes.data || [];
-  const eligibleIds = assignments.length > 0 ? new Set(assignments.map(r => r.master_id)) : null;
-  const masters = eligibleIds ? allMasters.filter(m => eligibleIds.has(m.id)) : allMasters;
+  const serviceTag = selectedService.specialization_tag || null;
+  const masters = serviceTag
+    ? allMasters.filter(function(m) {
+        if (!m.specialization) return false;
+        return m.specialization.split(',').some(function(s) { return s.trim() === serviceTag; });
+      })
+    : allMasters; // no tag set — show all masters
 
   if (!masters.length) {
     list.innerHTML = emptyHtml('Для этой услуги мастера не назначены.<br>Обратитесь к администратору.');
@@ -570,10 +580,19 @@ function setStep(n) {
     document.getElementById('screen' + i).classList.toggle('active', i === n);
     const dot = document.getElementById('sdot' + i);
     const lbl = document.getElementById('slbl' + i);
-    dot.classList.remove('active', 'done'); lbl.classList.remove('active', 'done');
-    if (i < n)  { dot.classList.add('done'); lbl.classList.add('done'); dot.textContent = ''; dot.innerHTML = checkSvg(); }
-    else if (i === n) { dot.classList.add('active'); lbl.classList.add('active'); dot.textContent = i; }
-    else { dot.textContent = i; }
+    dot.classList.remove('active', 'done');
+    lbl.classList.remove('active', 'done');
+    if (i < n) {
+      dot.classList.add('done');
+      lbl.classList.add('done');
+      dot.innerHTML = checkSvg();
+    } else if (i === n) {
+      dot.classList.add('active');
+      lbl.classList.add('active');
+      dot.textContent = i;
+    } else {
+      dot.textContent = i;
+    }
     if (i < 4) document.getElementById('sline' + i).classList.toggle('done', i < n);
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
