@@ -13,6 +13,7 @@
   <style>
     :root {
       --gold: #c9a96e;
+      --gold-lt: #f5ead8;
       --dark: #1a1a1a;
       --beige: #f4f1ee;
       --beige2: #fdf8f3;
@@ -36,212 +37,227 @@
     }
     .bk-logo { font-family: var(--font-h); font-size: 1.3rem; letter-spacing: .12em; color: #fff; }
     .bk-logo span { color: var(--gold); }
-    .bk-back { background: none; border: none; color: rgba(255,255,255,.65); font-size: .8rem; cursor: pointer; font-family: var(--font-b); display: flex; align-items: center; gap: .35rem; }
+    .bk-back { background: none; border: none; color: rgba(255,255,255,.6); font-size: .8rem; cursor: pointer; font-family: var(--font-b); display: flex; align-items: center; gap: .35rem; }
     .bk-back:hover { color: #fff; }
 
-    /* ── PROGRESS ── */
-    .progress-bar {
-      background: var(--dark);
-      padding: 0 1.25rem .9rem;
-      display: flex; align-items: center; gap: 0;
-    }
+    /* ── PROGRESS (centered, narrow) ── */
+    .progress-outer { background: var(--dark); }
+    .progress-inner { max-width: 380px; margin: 0 auto; padding: .75rem 1.5rem .65rem; }
+    .progress-bar { display: flex; align-items: center; }
     .step-dot {
-      width: 26px; height: 26px;
-      border-radius: 50%;
-      background: rgba(255,255,255,.15);
-      border: 2px solid rgba(255,255,255,.2);
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(255,255,255,.12); border: 1.5px solid rgba(255,255,255,.2);
       display: flex; align-items: center; justify-content: center;
-      font-size: .72rem; font-weight: 700; color: rgba(255,255,255,.45);
+      font-size: .68rem; font-weight: 700; color: rgba(255,255,255,.4);
       flex-shrink: 0; transition: all .3s;
     }
     .step-dot.done { background: var(--gold); border-color: var(--gold); color: #fff; }
     .step-dot.active { background: #fff; border-color: #fff; color: var(--dark); }
-    .step-line { flex: 1; height: 2px; background: rgba(255,255,255,.15); margin: 0 .3rem; transition: background .3s; }
+    .step-line { flex: 1; height: 1.5px; background: rgba(255,255,255,.15); margin: 0 .25rem; transition: background .3s; }
     .step-line.done { background: var(--gold); }
-    .step-labels { display: flex; justify-content: space-between; padding: .35rem 1.25rem 0; background: var(--dark); }
-    .step-label { font-size: .62rem; color: rgba(255,255,255,.4); font-weight: 600; letter-spacing: .04em; flex: 1; text-align: center; transition: color .3s; }
-    .step-label.active { color: rgba(255,255,255,.9); }
+    .step-labels { display: flex; justify-content: space-between; padding-top: .3rem; }
+    .step-label { font-size: .58rem; color: rgba(255,255,255,.35); font-weight: 600; letter-spacing: .04em; text-transform: uppercase; flex: 1; text-align: center; transition: color .3s; }
+    .step-label.active { color: rgba(255,255,255,.85); }
     .step-label.done { color: var(--gold); }
 
     /* ── CONTAINER ── */
-    .bk-container { max-width: 640px; margin: 0 auto; padding: 1.5rem 1.1rem 3rem; }
-    .section-title { font-family: var(--font-h); font-size: 1.7rem; font-weight: 400; margin-bottom: .35rem; }
-    .section-sub { font-size: .8rem; color: var(--muted); margin-bottom: 1.4rem; }
+    .bk-container { max-width: 620px; margin: 0 auto; padding: 1.5rem 1.1rem 3rem; }
+    .section-title { font-family: var(--font-h); font-size: 1.65rem; font-weight: 400; margin-bottom: .3rem; }
+    .section-sub { font-size: .79rem; color: var(--muted); margin-bottom: 1.35rem; }
 
     /* ── SCREEN TOGGLE ── */
     .screen { display: none; }
     .screen.active { display: block; }
 
-    /* ── LOADING SPINNER ── */
+    /* ── LOADING ── */
     .spinner-wrap { text-align: center; padding: 3rem 1rem; }
-    .spinner { width: 36px; height: 36px; border: 3px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 1rem; }
+    .spinner { width: 32px; height: 32px; border: 2.5px solid var(--border); border-top-color: var(--gold); border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 1rem; }
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* ── SERVICE CARDS ── */
-    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
-    @media (max-width: 420px) { .services-grid { grid-template-columns: 1fr; } }
+    .services-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .7rem; }
+    @media (max-width: 400px) { .services-grid { grid-template-columns: 1fr; } }
     .service-card {
-      background: #fff;
-      border: 2px solid var(--border);
-      border-radius: var(--radius);
-      padding: 1.15rem 1rem;
-      cursor: pointer;
+      background: #fff; border: 1.5px solid var(--border); border-radius: var(--radius);
+      padding: 1.1rem 1rem; cursor: pointer; position: relative;
       transition: border-color .2s, box-shadow .2s, transform .15s;
-      position: relative;
     }
-    .service-card:hover { border-color: var(--gold); box-shadow: 0 4px 20px rgba(201,169,110,.18); transform: translateY(-1px); }
-    .service-card.selected { border-color: var(--gold); background: #fdf6ea; }
-    .service-emoji { font-size: 1.9rem; margin-bottom: .6rem; display: block; }
-    .service-name { font-size: .92rem; font-weight: 700; color: var(--dark); margin-bottom: .3rem; line-height: 1.3; }
-    .service-meta { display: flex; align-items: center; gap: .5rem; flex-wrap: wrap; }
-    .service-duration { font-size: .75rem; color: var(--muted); background: #f5f0eb; padding: .2rem .5rem; border-radius: 99px; }
+    .service-card:hover { border-color: var(--gold); box-shadow: 0 4px 18px rgba(201,169,110,.15); transform: translateY(-1px); }
+    .service-card.selected { border-color: var(--gold); background: var(--gold-lt); }
+    /* monogram circle */
+    .service-mono {
+      width: 38px; height: 38px; border-radius: 50%;
+      background: var(--dark); display: flex; align-items: center; justify-content: center;
+      margin-bottom: .65rem; flex-shrink: 0;
+      font-family: var(--font-h); font-size: 1.1rem; font-weight: 400; color: var(--gold);
+      letter-spacing: .02em;
+    }
+    .service-card.selected .service-mono { background: var(--gold); color: #fff; }
+    .service-name { font-size: .88rem; font-weight: 700; color: var(--dark); margin-bottom: .35rem; line-height: 1.3; }
+    .service-meta { display: flex; flex-direction: column; gap: .12rem; }
+    .service-duration { font-size: .73rem; color: var(--muted); }
     .service-price { font-size: .82rem; font-weight: 700; color: var(--gold); }
-    .service-check { position: absolute; top: .7rem; right: .7rem; width: 20px; height: 20px; border-radius: 50%; background: var(--gold); display: none; align-items: center; justify-content: center; }
+    /* selected checkmark */
+    .service-check {
+      position: absolute; top: .65rem; right: .65rem;
+      width: 18px; height: 18px; border-radius: 50%; background: var(--gold);
+      display: none; align-items: center; justify-content: center;
+    }
     .service-card.selected .service-check { display: flex; }
-    .service-check::after { content: '✓'; color: #fff; font-size: .7rem; font-weight: 800; }
+    .service-check::after { content: ''; display: block; width: 9px; height: 5px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg) translateY(-1px); }
 
     /* ── DATE TABS ── */
-    .date-tabs-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 1.25rem; scrollbar-width: none; }
+    .date-tabs-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: 1.2rem; scrollbar-width: none; }
     .date-tabs-wrap::-webkit-scrollbar { display: none; }
-    .date-tabs { display: inline-flex; gap: .45rem; padding-bottom: .2rem; min-width: 100%; }
+    .date-tabs { display: inline-flex; gap: .4rem; padding-bottom: .2rem; }
     .date-tab {
-      flex-shrink: 0; padding: .55rem .95rem;
+      flex-shrink: 0; padding: .5rem .9rem;
       border: 1.5px solid var(--border); border-radius: 99px;
       background: #fff; cursor: pointer;
-      font-family: var(--font-b); font-size: .78rem; font-weight: 600;
-      color: var(--muted); transition: all .2s; text-align: center; white-space: nowrap;
+      font-family: var(--font-b); font-size: .76rem; font-weight: 600;
+      color: var(--muted); transition: all .2s; white-space: nowrap;
     }
     .date-tab:hover { border-color: var(--gold); color: var(--dark); }
     .date-tab.active { background: var(--dark); border-color: var(--dark); color: #fff; }
-    .date-tab__day { display: block; font-size: .65rem; opacity: .7; }
 
-    /* ── MASTER + TIME CARD ── */
-    .masters-list { display: flex; flex-direction: column; gap: 1rem; }
-    .master-card {
-      background: #fff; border-radius: var(--radius);
-      box-shadow: 0 1px 8px rgba(0,0,0,.07);
-      overflow: hidden;
+    /* ── SERVICE CHIP (step 2 top) ── */
+    .service-chip {
+      display: flex; align-items: center; gap: .8rem;
+      background: #fff; border: 1.5px solid var(--border); border-radius: 10px;
+      padding: .75rem 1rem; margin-bottom: 1.2rem;
     }
-    .master-head {
-      display: flex; align-items: center; gap: .85rem;
-      padding: 1rem 1.1rem; border-bottom: 1px solid var(--border);
+    .chip-mono {
+      width: 34px; height: 34px; border-radius: 50%;
+      background: var(--dark); display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h); font-size: 1rem; color: var(--gold); flex-shrink: 0;
     }
+    .chip-name { font-size: .88rem; font-weight: 700; color: var(--dark); }
+    .chip-meta { font-size: .73rem; color: var(--muted); margin-top: .1rem; }
+
+    /* ── MASTER CARDS ── */
+    .masters-list { display: flex; flex-direction: column; gap: .9rem; }
+    .master-card { background: #fff; border-radius: var(--radius); box-shadow: 0 1px 8px rgba(0,0,0,.06); overflow: hidden; }
+    .master-head { display: flex; align-items: center; gap: .8rem; padding: .9rem 1.1rem; border-bottom: 1px solid var(--border); }
     .master-avatar {
-      width: 46px; height: 46px; border-radius: 50%;
-      background: var(--beige); display: flex; align-items: center; justify-content: center;
-      font-size: 1.45rem; flex-shrink: 0;
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--dark); display: flex; align-items: center; justify-content: center;
+      font-family: var(--font-h); font-size: .95rem; font-weight: 400; color: var(--gold);
+      letter-spacing: .04em; flex-shrink: 0;
     }
-    .master-name { font-weight: 700; font-size: .95rem; color: var(--dark); }
-    .master-spec { font-size: .76rem; color: var(--muted); margin-top: .1rem; }
-    .master-body { padding: .85rem 1.1rem; }
-    .slots-label { font-size: .72rem; font-weight: 700; color: var(--muted); letter-spacing: .05em; text-transform: uppercase; margin-bottom: .6rem; }
-    .slots-grid { display: flex; flex-wrap: wrap; gap: .4rem; }
+    .master-name { font-weight: 700; font-size: .92rem; }
+    .master-spec { font-size: .74rem; color: var(--muted); margin-top: .1rem; }
+    .master-body { padding: .8rem 1.1rem; }
+    .slots-label { font-size: .68rem; font-weight: 700; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: .55rem; }
+    .slots-grid { display: flex; flex-wrap: wrap; gap: .38rem; }
     .slot-btn {
-      padding: .48rem .95rem;
-      border: 1.5px solid var(--border); border-radius: 99px;
+      padding: .44rem .88rem; border: 1.5px solid var(--border); border-radius: 99px;
       background: #fff; cursor: pointer;
-      font-family: var(--font-b); font-size: .82rem; font-weight: 600;
-      color: var(--dark); transition: all .2s;
+      font-family: var(--font-b); font-size: .8rem; font-weight: 600; color: var(--dark);
+      transition: all .2s;
     }
     .slot-btn:hover { border-color: var(--gold); color: var(--gold); }
     .slot-btn.selected { background: var(--dark); border-color: var(--dark); color: #fff; }
-    .no-slots { font-size: .82rem; color: var(--muted); font-style: italic; }
+    .no-slots { font-size: .8rem; color: var(--muted); font-style: italic; }
 
-    /* ── SELECTED SUMMARY CHIP ── */
-    .summary-chip {
-      background: #fff; border: 1.5px solid var(--border);
-      border-radius: 10px; padding: .85rem 1rem;
-      margin-bottom: 1.25rem; display: flex; align-items: center; gap: .75rem;
+    /* ── STEP 3: BOOKING SUMMARY ── */
+    .booking-summary {
+      background: var(--beige2); border: 1.5px solid var(--border);
+      border-radius: var(--radius); padding: 1rem 1.15rem; margin-bottom: 1.3rem;
     }
-    .chip-icon { font-size: 1.4rem; }
-    .chip-label { font-size: .72rem; color: var(--muted); font-weight: 600; text-transform: uppercase; letter-spacing: .05em; margin-bottom: .1rem; }
-    .chip-value { font-size: .9rem; font-weight: 700; color: var(--dark); }
+    .bs-title { font-size: .68rem; font-weight: 700; color: var(--muted); letter-spacing: .07em; text-transform: uppercase; margin-bottom: .75rem; }
+    .bs-row { display: flex; align-items: baseline; gap: 1rem; padding: .4rem 0; border-bottom: 1px solid var(--border); }
+    .bs-row:last-child { border-bottom: none; }
+    .bs-label { font-size: .71rem; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: .04em; min-width: 70px; flex-shrink: 0; }
+    .bs-val .bs-text { font-size: .87rem; font-weight: 700; color: var(--dark); }
+    .bs-val .bs-sub { font-size: .74rem; color: var(--muted); margin-top: .1rem; }
 
     /* ── FORM ── */
-    .form-group { margin-bottom: 1.1rem; }
-    .form-label { display: block; font-size: .78rem; font-weight: 700; color: var(--dark); margin-bottom: .45rem; letter-spacing: .03em; }
+    .form-group { margin-bottom: 1rem; }
+    .form-label { display: block; font-size: .76rem; font-weight: 700; color: var(--dark); margin-bottom: .4rem; letter-spacing: .03em; }
     .form-input {
-      width: 100%; padding: .85rem 1rem;
-      border: 1.5px solid var(--border); border-radius: 10px;
-      font-size: .95rem; font-family: var(--font-b); color: var(--dark);
+      width: 100%; padding: .82rem 1rem; border: 1.5px solid var(--border); border-radius: 10px;
+      font-size: .93rem; font-family: var(--font-b); color: var(--dark);
       background: #fff; outline: none; transition: border-color .2s;
     }
     .form-input:focus { border-color: var(--gold); }
-    .form-hint { font-size: .73rem; color: var(--muted); margin-top: .35rem; }
-
-    /* ── BOOKING SUMMARY BOX ── */
-    .booking-summary {
-      background: var(--beige2); border: 1.5px solid var(--border);
-      border-radius: var(--radius); padding: 1.1rem 1.15rem;
-      margin-bottom: 1.4rem;
-    }
-    .booking-summary-title { font-size: .72rem; font-weight: 700; color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-bottom: .8rem; }
-    .bs-row { display: flex; align-items: flex-start; gap: .7rem; padding: .45rem 0; border-bottom: 1px solid var(--border); }
-    .bs-row:last-child { border-bottom: none; }
-    .bs-icon { font-size: 1rem; min-width: 22px; margin-top: .05rem; }
-    .bs-text { font-size: .85rem; color: var(--dark); }
-    .bs-sub { font-size: .75rem; color: var(--muted); margin-top: .1rem; }
+    .form-hint { font-size: .72rem; color: var(--muted); margin-top: .3rem; }
 
     /* ── BUTTONS ── */
     .btn-primary {
-      width: 100%; padding: 1rem; background: var(--dark); color: #fff;
+      width: 100%; padding: .95rem; background: var(--dark); color: #fff;
       border: none; border-radius: 11px; font-family: var(--font-b);
-      font-size: .95rem; font-weight: 700; cursor: pointer; letter-spacing: .04em;
-      transition: opacity .2s; margin-top: .35rem;
+      font-size: .92rem; font-weight: 700; cursor: pointer; letter-spacing: .04em;
+      transition: opacity .2s; margin-top: .3rem;
     }
     .btn-primary:hover { opacity: .85; }
-    .btn-primary:disabled { opacity: .45; cursor: not-allowed; }
+    .btn-primary:disabled { opacity: .4; cursor: not-allowed; }
     .btn-primary.gold { background: var(--gold); }
     .btn-outline {
-      width: 100%; padding: .85rem; background: transparent; color: var(--dark);
+      width: 100%; padding: .82rem; background: transparent; color: var(--muted);
       border: 1.5px solid var(--border); border-radius: 11px; font-family: var(--font-b);
-      font-size: .9rem; font-weight: 600; cursor: pointer; transition: all .2s; margin-top: .6rem;
+      font-size: .87rem; font-weight: 600; cursor: pointer; transition: all .2s; margin-top: .55rem;
     }
-    .btn-outline:hover { border-color: var(--dark); }
+    .btn-outline:hover { border-color: var(--dark); color: var(--dark); }
 
     /* ── SUCCESS SCREEN ── */
-    .success-wrap { text-align: center; padding: 2rem 1rem; }
-    .success-icon { font-size: 4rem; margin-bottom: 1rem; animation: pop .4s ease; }
-    @keyframes pop { 0%{transform:scale(.3);opacity:0} 70%{transform:scale(1.15)} 100%{transform:scale(1);opacity:1} }
-    .success-title { font-family: var(--font-h); font-size: 2rem; margin-bottom: .5rem; }
-    .success-sub { font-size: .88rem; color: var(--muted); margin-bottom: 2rem; line-height: 1.6; }
+    .success-wrap { text-align: center; padding: 2rem 0; }
+    .success-icon-wrap {
+      width: 68px; height: 68px; border-radius: 50%; background: var(--gold);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 1.1rem; animation: pop .45s cubic-bezier(.34,1.56,.64,1);
+    }
+    .success-check {
+      width: 26px; height: 14px;
+      border-left: 3px solid #fff; border-bottom: 3px solid #fff;
+      transform: rotate(-48deg) translateY(-3px);
+    }
+    @keyframes pop { 0%{transform:scale(.3);opacity:0} 100%{transform:scale(1);opacity:1} }
+    .success-title { font-family: var(--font-h); font-size: 2rem; font-weight: 400; margin-bottom: .4rem; }
+    .success-sub { font-size: .85rem; color: var(--muted); margin-bottom: 1.75rem; line-height: 1.65; }
     .success-card {
       background: #fff; border-radius: var(--radius);
-      box-shadow: 0 2px 16px rgba(0,0,0,.08);
-      padding: 1.3rem; text-align: left; margin-bottom: 1.5rem;
+      box-shadow: 0 2px 14px rgba(0,0,0,.07);
+      padding: 1.2rem; text-align: left; margin-bottom: 1.4rem;
     }
-    .success-card-title { font-size: .7rem; font-weight: 700; color: var(--muted); letter-spacing: .07em; text-transform: uppercase; margin-bottom: .9rem; }
-    .sc-row { display: flex; gap: .7rem; padding: .45rem 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+    .sc-title { font-size: .68rem; font-weight: 700; color: var(--muted); letter-spacing: .07em; text-transform: uppercase; margin-bottom: .8rem; }
+    .sc-row { display: flex; gap: 1rem; padding: .38rem 0; border-bottom: 1px solid var(--border); align-items: baseline; }
     .sc-row:last-child { border-bottom: none; }
-    .sc-ico { font-size: 1rem; min-width: 22px; }
-    .sc-lbl { font-size: .72rem; color: var(--muted); font-weight: 600; }
-    .sc-val { font-size: .88rem; font-weight: 700; color: var(--dark); }
+    .sc-lbl { font-size: .7rem; color: var(--muted); font-weight: 600; min-width: 70px; flex-shrink: 0; text-transform: uppercase; letter-spacing: .03em; }
+    .sc-val { font-size: .86rem; font-weight: 700; color: var(--dark); }
     .wa-btn {
       display: flex; align-items: center; justify-content: center; gap: .5rem;
-      background: #25D366; color: #fff;
-      padding: .9rem 1.5rem; border-radius: 11px;
-      font-family: var(--font-b); font-size: .9rem; font-weight: 700;
-      text-decoration: none; margin-bottom: .75rem; transition: opacity .2s;
+      background: #25D366; color: #fff; padding: .9rem 1.5rem; border-radius: 11px;
+      font-family: var(--font-b); font-size: .88rem; font-weight: 700;
+      text-decoration: none; margin-bottom: .7rem; transition: opacity .2s;
     }
     .wa-btn:hover { opacity: .88; }
     .again-btn {
       background: none; border: 1.5px solid var(--border); color: var(--dark);
-      padding: .8rem 1.5rem; border-radius: 11px;
-      font-family: var(--font-b); font-size: .88rem; font-weight: 600;
+      padding: .78rem 1.5rem; border-radius: 11px;
+      font-family: var(--font-b); font-size: .86rem; font-weight: 600;
       cursor: pointer; width: 100%; transition: border-color .2s;
     }
     .again-btn:hover { border-color: var(--dark); }
 
-    /* ── TOAST ── */
-    .toast-wrap { position: fixed; bottom: 1.5rem; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: .5rem; pointer-events: none; }
-    .toast { background: var(--dark); color: #fff; padding: .8rem 1.3rem; border-radius: 10px; font-size: .84rem; font-weight: 500; opacity: 0; transform: translateY(10px); transition: all .3s; white-space: nowrap; box-shadow: 0 4px 20px rgba(0,0,0,.3); }
-    .toast.show { opacity: 1; transform: translateY(0); }
-    .toast.error { background: #c53030; }
-    .toast.success { background: #276749; }
-
     /* ── EMPTY STATE ── */
-    .empty-msg { text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: .88rem; }
-    .empty-msg span { display: block; font-size: 2rem; margin-bottom: .6rem; }
+    .empty-msg {
+      text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: .85rem;
+      line-height: 1.6;
+    }
+    .empty-msg .empty-ico {
+      width: 44px; height: 44px; border-radius: 50%; background: var(--border);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto .75rem;
+    }
+    /* SVG empty icons */
+    .ico-sad, .ico-cal { fill: none; stroke: var(--muted); stroke-width: 1.8; stroke-linecap: round; }
+
+    /* ── TOAST ── */
+    .toast-wrap { position: fixed; bottom: 1.4rem; left: 50%; transform: translateX(-50%); z-index: 9999; display: flex; flex-direction: column; gap: .45rem; pointer-events: none; }
+    .toast { background: var(--dark); color: #fff; padding: .75rem 1.2rem; border-radius: 10px; font-size: .82rem; font-weight: 500; opacity: 0; transform: translateY(8px); transition: all .28s; white-space: nowrap; box-shadow: 0 4px 18px rgba(0,0,0,.28); }
+    .toast.show { opacity: 1; transform: translateY(0); }
+    .toast.error { background: #b91c1c; }
+    .toast.success { background: #15803d; }
   </style>
 </head>
 <body>
@@ -252,64 +268,61 @@
   <button class="bk-back" onclick="history.back()">← Назад</button>
 </header>
 
-<!-- PROGRESS BAR -->
-<div class="progress-bar">
-  <div class="step-dot active" id="sdot1">1</div>
-  <div class="step-line" id="sline1"></div>
-  <div class="step-dot" id="sdot2">2</div>
-  <div class="step-line" id="sline2"></div>
-  <div class="step-dot" id="sdot3">3</div>
-  <div class="step-line" id="sline3"></div>
-  <div class="step-dot" id="sdot4">4</div>
-</div>
-<div class="step-labels">
-  <span class="step-label active" id="slbl1">Услуга</span>
-  <span class="step-label" id="slbl2">Время</span>
-  <span class="step-label" id="slbl3">Данные</span>
-  <span class="step-label" id="slbl4">Готово</span>
+<!-- PROGRESS BAR (narrow, centered) -->
+<div class="progress-outer">
+  <div class="progress-inner">
+    <div class="progress-bar">
+      <div class="step-dot active" id="sdot1">1</div>
+      <div class="step-line" id="sline1"></div>
+      <div class="step-dot" id="sdot2">2</div>
+      <div class="step-line" id="sline2"></div>
+      <div class="step-dot" id="sdot3">3</div>
+      <div class="step-line" id="sline3"></div>
+      <div class="step-dot" id="sdot4">4</div>
+    </div>
+    <div class="step-labels">
+      <span class="step-label active" id="slbl1">Услуга</span>
+      <span class="step-label" id="slbl2">Время</span>
+      <span class="step-label" id="slbl3">Данные</span>
+      <span class="step-label" id="slbl4">Готово</span>
+    </div>
+  </div>
 </div>
 
-<!-- SCREENS -->
 <div class="bk-container">
 
   <!-- ── STEP 1: SERVICES ── -->
   <div class="screen active" id="screen1">
     <h1 class="section-title">Выберите услугу</h1>
-    <p class="section-sub">Укажите что вы хотите, и мы подберём мастера</p>
+    <p class="section-sub">Укажите что вы хотите — и мы подберём мастера</p>
     <div id="servicesLoading" class="spinner-wrap">
       <div class="spinner"></div>
-      <p style="font-size:.82rem;color:var(--muted)">Загружаем услуги…</p>
     </div>
     <div id="servicesGrid" class="services-grid" style="display:none"></div>
-    <button class="btn-primary" id="btnStep1" onclick="goStep2()" disabled style="margin-top:1.25rem">
+    <button class="btn-primary" id="btnStep1" onclick="goStep2()" disabled style="margin-top:1.2rem">
       Выбрать время →
     </button>
   </div>
 
   <!-- ── STEP 2: DATE + MASTER + TIME ── -->
   <div class="screen" id="screen2">
-    <!-- Selected service chip -->
-    <div class="summary-chip" id="serviceChip">
-      <div class="chip-icon" id="chipEmoji">✨</div>
+    <!-- Service chip -->
+    <div class="service-chip">
+      <div class="chip-mono" id="chipMono">?</div>
       <div>
-        <div class="chip-label">Услуга</div>
-        <div class="chip-value" id="chipName">—</div>
-      </div>
-      <div style="margin-left:auto;text-align:right">
-        <div class="chip-label">Длительность</div>
-        <div class="chip-value" id="chipDuration">—</div>
+        <div class="chip-name" id="chipName">—</div>
+        <div class="chip-meta" id="chipMeta">—</div>
       </div>
     </div>
 
     <h1 class="section-title">Выберите дату</h1>
-    <p class="section-sub" id="step2sub">Показываем только доступное время для выбранной услуги</p>
+    <p class="section-sub">Показываем мастеров и свободное время для вашей услуги</p>
     <div class="date-tabs-wrap">
       <div class="date-tabs" id="dateTabs"></div>
     </div>
 
     <div id="mastersLoading" class="spinner-wrap" style="display:none">
       <div class="spinner"></div>
-      <p style="font-size:.82rem;color:var(--muted)">Загружаем расписание…</p>
     </div>
     <div id="mastersList" class="masters-list"></div>
 
@@ -321,7 +334,6 @@
     <h1 class="section-title">Ваши данные</h1>
     <p class="section-sub">Для подтверждения записи</p>
 
-    <!-- Booking summary -->
     <div class="booking-summary" id="bookingSummary"></div>
 
     <div class="form-group">
@@ -329,9 +341,9 @@
       <input class="form-input" id="clientName" type="text" placeholder="Ваше имя" autocomplete="given-name" oninput="validateForm()" />
     </div>
     <div class="form-group">
-      <label class="form-label" for="clientPhone">Номер телефона</label>
+      <label class="form-label" for="clientPhone">Телефон</label>
       <input class="form-input" id="clientPhone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel" oninput="formatPhone(this); validateForm()" />
-      <p class="form-hint">Мы напишем вам в WhatsApp для подтверждения</p>
+      <p class="form-hint">Напишем в WhatsApp для подтверждения</p>
     </div>
 
     <button class="btn-primary gold" id="btnSubmit" onclick="submitBooking()" disabled>
@@ -343,13 +355,15 @@
   <!-- ── STEP 4: SUCCESS ── -->
   <div class="screen" id="screen4">
     <div class="success-wrap">
-      <div class="success-icon">🎉</div>
+      <div class="success-icon-wrap">
+        <div class="success-check"></div>
+      </div>
       <h1 class="success-title">Вы записаны!</h1>
       <p class="success-sub">Ждём вас. Мастер свяжется с вами<br>для подтверждения записи.</p>
       <div class="success-card" id="successCard"></div>
       <a class="wa-btn" id="waLink" href="#" target="_blank">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        Написать мастеру в WhatsApp
+        <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Написать в WhatsApp
       </a>
       <button class="again-btn" onclick="resetBooking()">Записаться снова</button>
     </div>
@@ -357,36 +371,32 @@
 
 </div>
 
-<!-- TOASTS -->
 <div class="toast-wrap" id="toastWrap"></div>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────────
-const SUPABASE_URL = 'https://azqnxataowbovezrxapm.supabase.co';
-const SUPABASE_KEY = 'sb_publishable_QcB-6J0EWsEppsSscAKQMQ_KdmYcn3k';
-const WHATSAPP_ADMIN = '77001234567'; // замените на реальный номер администратора
+// ── CONFIG ───────────────────────────────────────────
+const SUPABASE_URL  = 'https://azqnxataowbovezrxapm.supabase.co';
+const SUPABASE_KEY  = 'sb_publishable_QcB-6J0EWsEppsSscAKQMQ_KdmYcn3k';
+const WHATSAPP_ADMIN = '77001234567'; // замените на реальный номер
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-// ── STATE ───────────────────────────────────────────────────
+// ── STATE ────────────────────────────────────────────
 let services = [];
 let selectedService = null;
-let selectedDate = null;
-let selectedMaster = null;
-let selectedTime = null;
-let currentStep = 1;
+let selectedDate    = null;
+let selectedMaster  = null; // { id, name }
+let selectedTime    = null;
 
-// ── INIT ─────────────────────────────────────────────────────
+// ── INIT ─────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', async () => {
   buildDateTabs();
   await loadServices();
 });
 
-// ── SERVICES ────────────────────────────────────────────────
+// ── STEP 1: SERVICES ─────────────────────────────────
 async function loadServices() {
   const { data, error } = await sb
-    .from('services')
-    .select('*')
-    .eq('is_active', true)
+    .from('services').select('*').eq('is_active', true)
     .order('sort_order', { ascending: true });
 
   document.getElementById('servicesLoading').style.display = 'none';
@@ -394,18 +404,17 @@ async function loadServices() {
   grid.style.display = 'grid';
 
   if (error || !data || data.length === 0) {
-    grid.innerHTML = '<div class="empty-msg"><span>😔</span>Услуги пока не добавлены</div>';
+    grid.innerHTML = emptyHtml('Услуги пока не добавлены');
     return;
   }
-
   services = data;
   grid.innerHTML = services.map(s => `
     <div class="service-card" id="sc_${s.id}" onclick="selectService('${s.id}')">
       <div class="service-check"></div>
-      <span class="service-emoji">${s.emoji || '✨'}</span>
-      <div class="service-name">${s.name}</div>
+      <div class="service-mono">${s.name.charAt(0).toUpperCase()}</div>
+      <div class="service-name">${esc(s.name)}</div>
       <div class="service-meta">
-        <span class="service-duration">⏱ ${formatDuration(s.duration_minutes)}</span>
+        <span class="service-duration">${formatDuration(s.duration_minutes)}</span>
         <span class="service-price">${s.price.toLocaleString('ru-RU')} ₸</span>
       </div>
     </div>
@@ -419,145 +428,135 @@ function selectService(id) {
   document.getElementById('btnStep1').disabled = false;
 }
 
-// ── DATE TABS ───────────────────────────────────────────────
+// ── DATE TABS ────────────────────────────────────────
 function buildDateTabs() {
-  const days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+  const days   = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
   const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
-  const tabs = document.getElementById('dateTabs');
-  const today = new Date();
+  const tabs   = document.getElementById('dateTabs');
+  const today  = new Date();
   tabs.innerHTML = '';
   for (let i = 0; i < 14; i++) {
-    const d = new Date(today);
-    d.setDate(today.getDate() + i);
-    const dateStr = formatDate(d);
-    const label = i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
+    const d   = new Date(today); d.setDate(today.getDate() + i);
+    const str = formatDate(d);
+    const lbl = i === 0 ? 'Сегодня' : i === 1 ? 'Завтра'
+              : `${days[d.getDay()]}, ${d.getDate()} ${months[d.getMonth()]}`;
     const tab = document.createElement('button');
     tab.className = 'date-tab' + (i === 0 ? ' active' : '');
-    tab.dataset.date = dateStr;
-    tab.textContent = label;
-    tab.onclick = () => pickDate(dateStr, tab);
+    tab.dataset.date = str;
+    tab.textContent  = lbl;
+    tab.onclick = () => pickDate(str, tab);
     tabs.appendChild(tab);
   }
   selectedDate = formatDate(today);
 }
 
 function pickDate(dateStr, tabEl) {
-  selectedDate = dateStr;
-  selectedMaster = null;
-  selectedTime = null;
+  selectedDate = dateStr; selectedMaster = null; selectedTime = null;
   document.querySelectorAll('.date-tab').forEach(t => t.classList.remove('active'));
   tabEl.classList.add('active');
   loadSlots();
 }
 
-// ── SLOTS ───────────────────────────────────────────────────
+// ── STEP 2: SLOTS (filtered by service + past time) ──
 async function loadSlots() {
   if (!selectedService || !selectedDate) return;
   const slotsNeeded = Math.ceil(selectedService.duration_minutes / 30);
 
   const loading = document.getElementById('mastersLoading');
-  const list = document.getElementById('mastersList');
-  loading.style.display = 'block';
-  list.innerHTML = '';
+  const list    = document.getElementById('mastersList');
+  loading.style.display = 'block'; list.innerHTML = '';
 
-  // Load masters
-  const { data: masters } = await sb.from('masters').select('*').order('name');
-  // Load all free slots for this date
-  const { data: slots } = await sb
-    .from('time_slots')
-    .select('*')
-    .eq('slot_date', selectedDate)
-    .eq('is_booked', false)
-    .order('slot_time');
+  // Parallel load: all masters, master-service assignments, free slots for date
+  const [mastersRes, msRes, slotsRes] = await Promise.all([
+    sb.from('masters').select('*').order('name'),
+    sb.from('master_services').select('master_id').eq('service_id', selectedService.id),
+    sb.from('time_slots').select('*').eq('slot_date', selectedDate).eq('is_booked', false).order('slot_time')
+  ]);
 
   loading.style.display = 'none';
 
-  if (!masters || masters.length === 0) {
-    list.innerHTML = '<div class="empty-msg"><span>😔</span>Мастера пока не добавлены</div>';
+  // Filter masters by service (only if assignments exist in DB)
+  const allMasters = mastersRes.data || [];
+  const assignments = msRes.data || [];
+  const eligibleIds = assignments.length > 0 ? new Set(assignments.map(r => r.master_id)) : null;
+  const masters = eligibleIds ? allMasters.filter(m => eligibleIds.has(m.id)) : allMasters;
+
+  if (!masters.length) {
+    list.innerHTML = emptyHtml('Для этой услуги мастера не назначены.<br>Обратитесь к администратору.');
     return;
   }
 
-  let anyMasterHasSlots = false;
+  // Filter past slots for today
+  let slots = slotsRes.data || [];
+  const todayStr = formatDate(new Date());
+  if (selectedDate === todayStr) {
+    const now = new Date();
+    const nowMin = now.getHours() * 60 + now.getMinutes();
+    slots = slots.filter(s => timeToMin(s.slot_time.slice(0, 5)) > nowMin);
+  }
 
-  list.innerHTML = masters.map(master => {
-    const masterSlots = (slots || []).filter(s => s.master_id === master.id);
-    const freeSet = new Set(masterSlots.map(s => s.slot_time.slice(0,5)));
-    const availableTimes = getAvailableStartTimes(freeSet, masterSlots, slotsNeeded);
-
-    if (availableTimes.length > 0) anyMasterHasSlots = true;
-
+  let anyHasSlots = false;
+  const rows = masters.map(m => {
+    const mSlots = slots.filter(s => s.master_id === m.id);
+    const freeSet = new Set(mSlots.map(s => s.slot_time.slice(0, 5)));
+    const times   = getAvailableStartTimes(freeSet, mSlots, slotsNeeded);
+    if (times.length > 0) anyHasSlots = true;
+    const ini = initials(m.name);
     return `
       <div class="master-card">
         <div class="master-head">
-          <div class="master-avatar">${master.emoji || '👩‍🦰'}</div>
+          <div class="master-avatar">${ini}</div>
           <div>
-            <div class="master-name">${master.name}</div>
-            <div class="master-spec">${master.specialization || 'Мастер'}</div>
+            <div class="master-name">${esc(m.name)}</div>
+            <div class="master-spec">${esc(m.specialization || 'Мастер')}</div>
           </div>
         </div>
         <div class="master-body">
-          <div class="slots-label">Доступное время</div>
-          <div class="slots-grid">
-            ${availableTimes.length === 0
-              ? `<span class="no-slots">Нет свободного времени на эту дату</span>`
-              : availableTimes.map(t => `
-                  <button class="slot-btn" id="slot_${master.id}_${t}" onclick="selectSlot('${master.id}', '${t}', this)">
-                    ${t}
-                  </button>
-                `).join('')
-            }
-          </div>
+          ${times.length === 0
+            ? '<span class="no-slots">Нет свободного времени на эту дату</span>'
+            : `<div class="slots-label">Доступное время</div>
+               <div class="slots-grid">
+                 ${times.map(t => `<button class="slot-btn" onclick="selectSlot('${m.id}','${esc(m.name)}','${t}',this)">${t}</button>`).join('')}
+               </div>`
+          }
         </div>
-      </div>
-    `;
+      </div>`;
   }).join('');
 
-  if (!anyMasterHasSlots) {
-    list.innerHTML = '<div class="empty-msg"><span>📅</span>На выбранную дату нет доступного времени.<br>Попробуйте другой день.</div>';
-  }
+  list.innerHTML = anyHasSlots ? rows
+    : emptyHtml('На эту дату нет свободного времени.<br>Попробуйте другой день.');
 }
 
 function getAvailableStartTimes(freeSet, masterSlots, slotsNeeded) {
-  const times = masterSlots.map(s => s.slot_time.slice(0,5)).sort();
-  const result = [];
-  for (const t of times) {
-    let ok = true;
-    const baseMin = timeToMin(t);
+  const times = masterSlots.map(s => s.slot_time.slice(0, 5)).sort();
+  return times.filter(t => {
+    const base = timeToMin(t);
     for (let i = 0; i < slotsNeeded; i++) {
-      if (!freeSet.has(minToTime(baseMin + i * 30))) { ok = false; break; }
+      if (!freeSet.has(minToTime(base + i * 30))) return false;
     }
-    if (ok) result.push(t);
-  }
-  return result;
+    return true;
+  });
 }
 
-function selectSlot(masterId, time, btn) {
-  // Deselect previous
+function selectSlot(masterId, masterName, time, btn) {
   document.querySelectorAll('.slot-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
-  selectedMaster = { id: masterId, _el: btn };
-  // Find master data
-  const masterCards = document.querySelectorAll('.master-card');
-  // Store master name from the card
-  const card = btn.closest('.master-card');
-  selectedMaster.name = card.querySelector('.master-name').textContent;
-  selectedMaster.emoji = card.querySelector('.master-avatar').textContent.trim();
-  selectedTime = time;
+  selectedMaster = { id: masterId, name: masterName };
+  selectedTime   = time;
   goStep3();
 }
 
-// ── STEP NAVIGATION ─────────────────────────────────────────
+// ── NAVIGATION ───────────────────────────────────────
+function goStep1() { setStep(1); }
+
 function goStep2() {
   if (!selectedService) return;
   setStep(2);
-  document.getElementById('chipEmoji').textContent = selectedService.emoji || '✨';
+  document.getElementById('chipMono').textContent = selectedService.name.charAt(0).toUpperCase();
   document.getElementById('chipName').textContent = selectedService.name;
-  document.getElementById('chipDuration').textContent = formatDuration(selectedService.duration_minutes);
+  document.getElementById('chipMeta').textContent =
+    formatDuration(selectedService.duration_minutes) + '  ·  ' + selectedService.price.toLocaleString('ru-RU') + ' ₸';
   loadSlots();
-}
-
-function goStep1() {
-  setStep(1);
 }
 
 function goStep3() {
@@ -567,59 +566,54 @@ function goStep3() {
 }
 
 function setStep(n) {
-  currentStep = n;
   for (let i = 1; i <= 4; i++) {
-    const screen = document.getElementById('screen' + i);
+    document.getElementById('screen' + i).classList.toggle('active', i === n);
     const dot = document.getElementById('sdot' + i);
     const lbl = document.getElementById('slbl' + i);
-    screen.classList.toggle('active', i === n);
-    dot.classList.remove('active', 'done');
-    lbl.classList.remove('active', 'done');
-    if (i < n) { dot.classList.add('done'); lbl.classList.add('done'); dot.textContent = '✓'; }
+    dot.classList.remove('active', 'done'); lbl.classList.remove('active', 'done');
+    if (i < n)  { dot.classList.add('done'); lbl.classList.add('done'); dot.textContent = ''; dot.innerHTML = checkSvg(); }
     else if (i === n) { dot.classList.add('active'); lbl.classList.add('active'); dot.textContent = i; }
     else { dot.textContent = i; }
-    if (i < 4) {
-      const line = document.getElementById('sline' + i);
-      line.classList.toggle('done', i < n);
-    }
+    if (i < 4) document.getElementById('sline' + i).classList.toggle('done', i < n);
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ── BOOKING SUMMARY ─────────────────────────────────────────
+function checkSvg() {
+  return '<svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 3l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+}
+
+// ── STEP 3: SUMMARY + FORM ───────────────────────────
 function renderBookingSummary() {
   const endMin = timeToMin(selectedTime) + selectedService.duration_minutes;
   const endTime = minToTime(endMin);
-  const dateFormatted = formatDateRu(selectedDate);
-
+  const dateRu  = formatDateRu(selectedDate);
   document.getElementById('bookingSummary').innerHTML = `
-    <div class="booking-summary-title">Детали записи</div>
+    <div class="bs-title">Детали записи</div>
     <div class="bs-row">
-      <div class="bs-icon">${selectedService.emoji || '✨'}</div>
-      <div>
-        <div class="bs-text" style="font-weight:700">${selectedService.name}</div>
+      <div class="bs-label">Услуга</div>
+      <div class="bs-val">
+        <div class="bs-text">${esc(selectedService.name)}</div>
         <div class="bs-sub">${formatDuration(selectedService.duration_minutes)} · ${selectedService.price.toLocaleString('ru-RU')} ₸</div>
       </div>
     </div>
     <div class="bs-row">
-      <div class="bs-icon">📅</div>
-      <div>
-        <div class="bs-text">${dateFormatted}</div>
+      <div class="bs-label">Дата</div>
+      <div class="bs-val">
+        <div class="bs-text">${dateRu}</div>
         <div class="bs-sub">${selectedTime} — ${endTime}</div>
       </div>
     </div>
     <div class="bs-row">
-      <div class="bs-icon">${selectedMaster.emoji || '👩‍🦰'}</div>
-      <div><div class="bs-text">${selectedMaster.name}</div></div>
-    </div>
-  `;
+      <div class="bs-label">Мастер</div>
+      <div class="bs-val"><div class="bs-text">${esc(selectedMaster.name)}</div></div>
+    </div>`;
   validateForm();
 }
 
-// ── FORM ────────────────────────────────────────────────────
 function validateForm() {
-  const name = document.getElementById('clientName').value.trim();
-  const phone = document.getElementById('clientPhone').value.replace(/\D/g,'');
+  const name  = document.getElementById('clientName').value.trim();
+  const phone = document.getElementById('clientPhone').value.replace(/\D/g, '');
   document.getElementById('btnSubmit').disabled = !(name.length >= 2 && phone.length >= 10);
 }
 
@@ -637,64 +631,46 @@ function formatPhone(input) {
   input.value = out;
 }
 
-// ── SUBMIT ──────────────────────────────────────────────────
+// ── SUBMIT ───────────────────────────────────────────
 async function submitBooking() {
   const btn = document.getElementById('btnSubmit');
-  btn.disabled = true;
-  btn.textContent = 'Сохраняем…';
+  btn.disabled = true; btn.textContent = 'Сохраняем…';
 
   const clientName  = document.getElementById('clientName').value.trim();
   const clientPhone = document.getElementById('clientPhone').value.trim();
   const slotsNeeded = Math.ceil(selectedService.duration_minutes / 30);
+  const startMin    = timeToMin(selectedTime);
+  const timesList   = [];
+  for (let i = 0; i < slotsNeeded; i++) timesList.push(minToTime(startMin + i * 30) + ':00');
 
   try {
-    // 1. Check slots are still free
-    const startMin = timeToMin(selectedTime);
-    const timesList = [];
-    for (let i = 0; i < slotsNeeded; i++) timesList.push(minToTime(startMin + i * 30) + ':00');
-
-    // timesList is already in HH:MM:00 format
-    const { data: checkSlots } = await sb
-      .from('time_slots')
+    // 1. Verify slots still free
+    const { data: chk } = await sb.from('time_slots')
       .select('id, slot_time, is_booked')
-      .eq('master_id', selectedMaster.id)
-      .eq('slot_date', selectedDate)
+      .eq('master_id', selectedMaster.id).eq('slot_date', selectedDate)
       .in('slot_time', timesList);
 
-    const allFree = checkSlots && checkSlots.length === slotsNeeded && checkSlots.every(s => !s.is_booked);
-    if (!allFree) {
-      toast('Это время уже заняли 😔 Выберите другое', 'error');
+    if (!chk || chk.length < slotsNeeded || chk.some(s => s.is_booked)) {
+      toast('Это время уже заняли. Выберите другое.', 'error');
       btn.disabled = false; btn.textContent = 'Записаться';
-      setStep(2); loadSlots();
-      return;
+      setStep(2); loadSlots(); return;
     }
 
-    // 2. Create booking record
-    const { data: booking, error: bErr } = await sb
-      .from('bookings')
-      .insert({
-        master_id:    selectedMaster.id,
-        service_id:   selectedService.id,
-        client_name:  clientName,
-        client_phone: clientPhone,
-        date:         selectedDate,
-        start_time:   selectedTime + ':00',
-        status:       'new'
-      })
-      .select().single();
-
+    // 2. Insert booking
+    const { data: bk, error: bErr } = await sb.from('bookings').insert({
+      master_id: selectedMaster.id, service_id: selectedService.id,
+      client_name: clientName, client_phone: clientPhone,
+      date: selectedDate, start_time: selectedTime + ':00', status: 'new'
+    }).select().single();
     if (bErr) throw bErr;
 
-    // 3. Mark all slots as booked
+    // 3. Mark slots as booked
     await sb.from('time_slots')
-      .update({ is_booked: true, client_name: clientName, client_phone: clientPhone, booking_id: booking.id })
-      .eq('master_id', selectedMaster.id)
-      .eq('slot_date', selectedDate)
+      .update({ is_booked: true, client_name: clientName, client_phone: clientPhone, booking_id: bk.id })
+      .eq('master_id', selectedMaster.id).eq('slot_date', selectedDate)
       .in('slot_time', timesList);
 
-    // 4. Show success
-    showSuccess(clientName, clientPhone, booking.id);
-
+    showSuccess(clientName, clientPhone, bk.id);
   } catch(e) {
     console.error(e);
     toast('Ошибка при записи, попробуйте ещё раз', 'error');
@@ -702,23 +678,22 @@ async function submitBooking() {
   }
 }
 
-// ── SUCCESS ─────────────────────────────────────────────────
+// ── SUCCESS ──────────────────────────────────────────
 function showSuccess(name, phone, bookingId) {
   setStep(4);
-  const endMin = timeToMin(selectedTime) + selectedService.duration_minutes;
+  const endMin  = timeToMin(selectedTime) + selectedService.duration_minutes;
   const endTime = minToTime(endMin);
-  const dateFormatted = formatDateRu(selectedDate);
+  const dateRu  = formatDateRu(selectedDate);
 
   document.getElementById('successCard').innerHTML = `
-    <div class="success-card-title">Ваша запись</div>
-    <div class="sc-row"><div class="sc-ico">${selectedService.emoji}</div><div><div class="sc-lbl">Услуга</div><div class="sc-val">${selectedService.name}</div></div></div>
-    <div class="sc-row"><div class="sc-ico">📅</div><div><div class="sc-lbl">Дата и время</div><div class="sc-val">${dateFormatted}, ${selectedTime} — ${endTime}</div></div></div>
-    <div class="sc-row"><div class="sc-ico">${selectedMaster.emoji}</div><div><div class="sc-lbl">Мастер</div><div class="sc-val">${selectedMaster.name}</div></div></div>
-    <div class="sc-row"><div class="sc-ico">👤</div><div><div class="sc-lbl">Клиент</div><div class="sc-val">${name}</div></div></div>
-  `;
+    <div class="sc-title">Ваша запись</div>
+    <div class="sc-row"><div class="sc-lbl">Услуга</div><div class="sc-val">${esc(selectedService.name)}</div></div>
+    <div class="sc-row"><div class="sc-lbl">Дата</div><div class="sc-val">${dateRu}, ${selectedTime} — ${endTime}</div></div>
+    <div class="sc-row"><div class="sc-lbl">Мастер</div><div class="sc-val">${esc(selectedMaster.name)}</div></div>
+    <div class="sc-row"><div class="sc-lbl">Клиент</div><div class="sc-val">${esc(name)}</div></div>`;
 
   const msg = encodeURIComponent(
-    `Здравствуйте! Я записался(ась) на *${selectedService.name}* — ${dateFormatted} в ${selectedTime}. Мастер: ${selectedMaster.name}. Имя: ${name}, тел: ${phone}`
+    `Здравствуйте! Я записался(ась) на *${selectedService.name}* — ${dateRu} в ${selectedTime}. Мастер: ${selectedMaster.name}. Имя: ${name}, тел: ${phone}`
   );
   document.getElementById('waLink').href = `https://wa.me/${WHATSAPP_ADMIN}?text=${msg}`;
 }
@@ -727,42 +702,43 @@ function resetBooking() {
   selectedService = null; selectedMaster = null; selectedTime = null;
   document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('btnStep1').disabled = true;
-  document.getElementById('clientName').value = '';
+  document.getElementById('clientName').value  = '';
   document.getElementById('clientPhone').value = '';
   setStep(1);
 }
 
-// ── UTILS ────────────────────────────────────────────────────
-function timeToMin(t) {
-  const [h, m] = t.split(':').map(Number);
-  return h * 60 + m;
-}
-function minToTime(m) {
-  return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0');
-}
-function formatDate(d) {
-  return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
-}
-function formatDateRu(dateStr) {
-  const months = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
-  const days = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
-  const d = new Date(dateStr + 'T00:00:00');
-  return `${d.getDate()} ${months[d.getMonth()]}, ${days[d.getDay()]}`;
+// ── UTILS ────────────────────────────────────────────
+function timeToMin(t)   { const [h,m] = t.split(':').map(Number); return h*60+m; }
+function minToTime(m)   { return String(Math.floor(m/60)).padStart(2,'0')+':'+String(m%60).padStart(2,'0'); }
+function formatDate(d)  { return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function formatDateRu(s) {
+  const M = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  const D = ['воскресенье','понедельник','вторник','среда','четверг','пятница','суббота'];
+  const d = new Date(s + 'T00:00:00');
+  return `${d.getDate()} ${M[d.getMonth()]}, ${D[d.getDay()]}`;
 }
 function formatDuration(min) {
   if (min < 60) return min + ' мин';
   const h = Math.floor(min/60), m = min%60;
   return m === 0 ? `${h} ч` : `${h} ч ${m} мин`;
 }
-
+function initials(name) {
+  return name.trim().split(/\s+/).map(w => w[0]).join('').slice(0, 2).toUpperCase();
+}
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function emptyHtml(msg) {
+  return `<div class="empty-msg"><div class="empty-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#aaa" stroke-width="1.8" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></div>${msg}</div>`;
+}
 function toast(msg, type = 'info') {
   const wrap = document.getElementById('toastWrap');
   const t = document.createElement('div');
   t.className = 'toast' + (type !== 'info' ? ' ' + type : '');
   t.textContent = msg;
   wrap.appendChild(t);
-  requestAnimationFrame(() => { requestAnimationFrame(() => t.classList.add('show')); });
-  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 400); }, 3500);
+  requestAnimationFrame(() => requestAnimationFrame(() => t.classList.add('show')));
+  setTimeout(() => { t.classList.remove('show'); setTimeout(() => t.remove(), 350); }, 3500);
 }
 </script>
 </body>
