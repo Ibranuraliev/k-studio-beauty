@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Запись онлайн — К Студия | Астана</title>
-  <meta name="description" content="Запишитесь онлайн в К Студию. Выберите услугу, мастера и удобное время. Или позвоните / напишите в WhatsApp." />
+  <meta name="description" content="Запишитесь онлайн в К Студию. Выберите мастера, дату и удобное время." />
   <link rel="canonical" href="https://kstudio.kz/booking" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,78 +12,171 @@
   <link rel="stylesheet" href="../styles/base.css" />
   <link rel="stylesheet" href="../styles/components.css" />
   <link rel="stylesheet" href="../styles/layout.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
   <style>
-    /* Booking Page */
-    .booking-layout {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: var(--space-xl);
-      margin-top: var(--space-xl);
-    }
-    @media (min-width: 1024px) {
-      .booking-layout { grid-template-columns: 3fr 2fr; }
-    }
-
-    .booking-form-card {
-      background: white;
-      border-radius: var(--border-radius-lg);
-      padding: var(--space-xl);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .booking-form-card__title {
-      font-family: var(--font-heading);
-      font-size: 1.75rem;
-      font-weight: 400;
-      color: var(--color-dark);
-      margin-bottom: var(--space-xs);
-    }
-
-    .booking-form-card__sub {
+    /* ── Date tabs ── */
+    .date-tabs-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; margin-bottom: var(--space-lg); }
+    .date-tabs { display: inline-flex; gap: .5rem; padding-bottom: .25rem; min-width: 100%; }
+    .date-tab {
+      flex-shrink: 0;
+      padding: .6rem 1.1rem;
+      border: 1.5px solid var(--color-border);
+      border-radius: 999px;
+      background: #fff;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: .8rem;
+      font-weight: 600;
       color: var(--color-text-muted);
-      font-size: 0.875rem;
-      margin-bottom: var(--space-lg);
+      transition: all .2s;
+      text-align: center;
+      line-height: 1.3;
+      white-space: nowrap;
     }
+    .date-tab:hover { border-color: var(--color-gold); color: var(--color-dark); }
+    .date-tab.active { background: var(--color-dark); border-color: var(--color-dark); color: #fff; }
+    .date-tab__day { display: block; font-size: .68rem; opacity: .75; }
 
-    .booking-sidebar__card {
-      background: white;
+    /* ── Master cards ── */
+    .masters-booking-grid { display: flex; flex-direction: column; gap: 1.25rem; }
+    .master-booking-card {
+      background: #fff;
       border-radius: var(--border-radius-lg);
       padding: var(--space-lg);
       box-shadow: var(--shadow-sm);
-      margin-bottom: var(--space-md);
     }
-
-    .booking-sidebar__title {
-      font-family: var(--font-heading);
-      font-size: 1.2rem;
-      color: var(--color-dark);
-      margin-bottom: var(--space-md);
-    }
-
-    .booking-contact-btn {
+    .master-booking-header {
       display: flex;
       align-items: center;
-      gap: var(--space-sm);
-      padding: var(--space-sm) var(--space-md);
-      border-radius: var(--border-radius);
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 0.875rem;
-      transition: transform 0.2s, box-shadow 0.2s;
-      width: 100%;
-      margin-bottom: var(--space-xs);
+      gap: var(--space-md);
+      margin-bottom: var(--space-md);
+      padding-bottom: var(--space-md);
+      border-bottom: 1px solid var(--color-border);
     }
+    .master-booking-avatar {
+      width: 52px; height: 52px;
+      border-radius: 50%;
+      background: var(--color-beige);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .master-booking-name { font-weight: 600; font-size: 1rem; color: var(--color-dark); margin-bottom: .15rem; }
+    .master-booking-spec { font-size: .78rem; color: var(--color-text-muted); }
 
-    .booking-contact-btn:hover { transform: translateX(4px); }
-    .booking-contact-btn--whatsapp { background: #25D366; color: white; }
-    .booking-contact-btn--phone { background: var(--color-dark); color: white; }
-    .booking-contact-btn--instagram { background: linear-gradient(135deg, #833ab4, #fd1d1d, #fcb045); color: white; }
-    .booking-contact-btn__icon { font-size: 1.25rem; }
+    /* ── Time slots ── */
+    .time-slots-grid { display: flex; flex-wrap: wrap; gap: .5rem; }
+    .slot-btn {
+      padding: .55rem 1.1rem;
+      border: 1.5px solid var(--color-border);
+      border-radius: 999px;
+      background: #fff;
+      cursor: pointer;
+      font-family: var(--font-body);
+      font-size: .875rem;
+      font-weight: 600;
+      color: var(--color-dark);
+      transition: all .2s;
+    }
+    .slot-btn:hover { border-color: var(--color-gold); background: var(--color-cream); }
 
+    /* ── No slots ── */
+    .no-slots-msg {
+      text-align: center;
+      padding: var(--space-xl) var(--space-md);
+      color: var(--color-text-muted);
+    }
+    .no-slots-msg .icon { font-size: 2.5rem; margin-bottom: var(--space-sm); }
+    .no-slots-msg p { font-size: .9rem; line-height: 1.7; }
+
+    /* ── Loading ── */
+    .loading-state { text-align: center; padding: var(--space-xl); }
+    .spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid var(--color-border); border-top-color: var(--color-gold); border-radius: 50%; animation: spin .8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── Booking Modal ── */
+    .book-modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.45);
+      display: none; align-items: center; justify-content: center;
+      z-index: 1000; padding: 1rem;
+      backdrop-filter: blur(3px);
+    }
+    .book-modal-overlay.open { display: flex; }
+    .book-modal {
+      background: #fff;
+      border-radius: 20px;
+      padding: 2rem;
+      width: 100%; max-width: 420px;
+      position: relative;
+      animation: slideUp .25s ease;
+    }
+    @keyframes slideUp { from { transform: translateY(20px); opacity:0; } to { transform: translateY(0); opacity:1; } }
+    .book-modal-close {
+      position: absolute; top: 1rem; right: 1rem;
+      background: none; border: none; font-size: 1.1rem; cursor: pointer;
+      color: var(--color-text-muted); padding: .25rem;
+    }
+    .book-modal-slot-info {
+      background: var(--color-cream);
+      border-radius: 10px;
+      padding: .85rem 1rem;
+      margin-bottom: var(--space-lg);
+      font-size: .9rem;
+      color: var(--color-dark);
+    }
+    .book-modal-slot-info strong { display: block; font-size: 1.05rem; margin-bottom: .2rem; }
+    .book-modal h3 { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 400; margin-bottom: var(--space-md); }
+    .book-field { margin-bottom: 1rem; }
+    .book-field label { display: block; font-size: .82rem; font-weight: 600; margin-bottom: .4rem; color: #555; }
+    .book-field input {
+      width: 100%; padding: .75rem 1rem;
+      border: 1.5px solid var(--color-border); border-radius: 10px;
+      font-size: .95rem; font-family: var(--font-body);
+      outline: none; transition: border-color .2s;
+    }
+    .book-field input:focus { border-color: var(--color-gold); }
+    .book-submit { width: 100%; margin-top: .5rem; }
+    .book-privacy { font-size: .74rem; color: var(--color-text-muted); margin-top: .75rem; text-align: center; line-height: 1.6; }
+    .book-privacy a { color: var(--color-gold); }
+
+    /* ── Success card ── */
+    .success-card {
+      background: #fff;
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-xl);
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+      animation: slideUp .3s ease;
+    }
+    .success-card .icon { font-size: 3rem; margin-bottom: var(--space-md); }
+    .success-card h2 { font-family: var(--font-heading); font-size: 1.8rem; font-weight: 400; margin-bottom: var(--space-sm); }
+    .success-card p { color: var(--color-text-muted); font-size: .9rem; line-height: 1.7; margin-bottom: var(--space-lg); }
+    .success-actions { display: flex; flex-direction: column; gap: .75rem; align-items: center; }
+
+    /* ── Sidebar ── */
+    .booking-layout { display: grid; grid-template-columns: 1fr; gap: var(--space-xl); }
+    @media (min-width: 1024px) { .booking-layout { grid-template-columns: 3fr 2fr; } }
+    .booking-sidebar__card {
+      background: #fff; border-radius: var(--border-radius-lg);
+      padding: var(--space-lg); box-shadow: var(--shadow-sm); margin-bottom: var(--space-md);
+    }
+    .booking-sidebar__title { font-family: var(--font-heading); font-size: 1.2rem; color: var(--color-dark); margin-bottom: var(--space-md); }
+    .contact-btn {
+      display: flex; align-items: center; gap: var(--space-sm);
+      padding: var(--space-sm) var(--space-md); border-radius: var(--border-radius);
+      text-decoration: none; font-weight: 600; font-size: .875rem;
+      transition: transform .2s; width: 100%; margin-bottom: var(--space-xs);
+    }
+    .contact-btn:hover { transform: translateX(4px); }
+    .contact-btn--whatsapp { background: #25D366; color: #fff; }
+    .contact-btn--phone { background: var(--color-dark); color: #fff; }
+    .contact-btn__icon { font-size: 1.2rem; }
     .mini-faq-item { padding: var(--space-sm) 0; border-bottom: 1px solid var(--color-border); }
     .mini-faq-item:last-child { border-bottom: none; }
-    .mini-faq-item__q { font-size: 0.85rem; font-weight: 600; color: var(--color-dark); margin-bottom: 0.3rem; }
-    .mini-faq-item__a { font-size: 0.8rem; color: var(--color-text-muted); line-height: 1.6; }
+    .mini-faq-item__q { font-size: .85rem; font-weight: 600; color: var(--color-dark); margin-bottom: .3rem; }
+    .mini-faq-item__a { font-size: .8rem; color: var(--color-text-muted); line-height: 1.6; }
   </style>
 </head>
 <body>
@@ -104,7 +197,7 @@
         <a href="/pages/contacts.html" class="header__nav-link">Контакты</a>
       </nav>
       <div class="header__actions">
-        <a href="https://dikidi.ru/#widget=206338" class="btn btn--primary is-active" style="display:inline-flex;">Записаться</a>
+        <a href="/pages/booking.html" class="btn btn--primary is-active" style="display:inline-flex;">Записаться</a>
         <button class="burger" aria-label="Открыть меню" aria-expanded="false">
           <span class="burger__line"></span>
           <span class="burger__line"></span>
@@ -126,7 +219,7 @@
     <li><a href="/pages/contacts.html" class="mobile-nav__link">Контакты</a></li>
   </ul>
   <div class="mobile-nav__footer">
-    <a href="https://dikidi.ru/#widget=206338" class="btn btn--primary btn--full">Записаться онлайн</a>
+    <a href="/pages/booking.html" class="btn btn--primary btn--full">Записаться онлайн</a>
   </div>
 </nav>
 
@@ -134,133 +227,69 @@
 <section class="page-hero" style="padding-top:calc(var(--header-height) + var(--space-lg)); padding-bottom:var(--space-lg);">
   <div class="container">
     <span class="page-hero__eyebrow">Онлайн-запись</span>
-    <h1 class="page-hero__title">Записаться</h1>
+    <h1 class="page-hero__title">Выберите время</h1>
   </div>
 </section>
 
-<!-- Booking Content -->
+<!-- Main Booking Section -->
 <section class="section" style="padding-top:0;">
   <div class="container">
     <div class="booking-layout">
 
-      <!-- Dikidi Online Booking Widget -->
-      <div class="reveal">
-        <div class="booking-form-card" style="text-align:center; padding: var(--space-xl);">
+      <!-- Left: slots -->
+      <div id="bookingMain">
 
-          <div style="font-size:3rem; margin-bottom:var(--space-md);">📅</div>
-          <h2 class="booking-form-card__title" style="margin-bottom:0.75rem;">Запись онлайн</h2>
-          <p class="booking-form-card__sub" style="margin-bottom:var(--space-lg); max-width:380px; margin-inline:auto;">
-            Выберите услугу, мастера и удобное время прямо здесь — быстро и без звонков
-          </p>
-
-          <a href="https://dikidi.ru/#widget=206338"
-             class="btn btn--primary"
-             style="padding:1.1rem 3rem; font-size:0.9rem; margin-bottom:var(--space-md); display:inline-flex;">
-            Выбрать время и записаться →
-          </a>
-
-          <div style="display:flex; flex-direction:column; gap:0.75rem; margin-top:var(--space-lg); text-align:left; border-top:1px solid var(--color-border); padding-top:var(--space-lg);">
-            <div style="display:flex; align-items:center; gap:0.75rem;">
-              <span style="color:var(--color-gold); font-size:1.1rem;">✓</span>
-              <span style="font-size:0.9rem; color:var(--color-text);">Выбор конкретного мастера</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:0.75rem;">
-              <span style="color:var(--color-gold); font-size:1.1rem;">✓</span>
-              <span style="font-size:0.9rem; color:var(--color-text);">Реальное расписание — только свободные слоты</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:0.75rem;">
-              <span style="color:var(--color-gold); font-size:1.1rem;">✓</span>
-              <span style="font-size:0.9rem; color:var(--color-text);">Напоминание придёт за день до визита</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:0.75rem;">
-              <span style="color:var(--color-gold); font-size:1.1rem;">✓</span>
-              <span style="font-size:0.9rem; color:var(--color-text);">Подтверждение записи сразу на телефон</span>
-            </div>
-            <div style="display:flex; align-items:center; gap:0.75rem;">
-              <span style="color:var(--color-gold); font-size:1.1rem;">✓</span>
-              <span style="font-size:0.9rem; color:var(--color-text);">Предоплата не нужна</span>
-            </div>
-          </div>
-
-          <p style="font-size:0.78rem; color:var(--color-text-muted); margin-top:var(--space-lg); line-height:1.7;">
-            Нажимая кнопку, вы принимаете
-            <a href="/pages/privacy.html" style="color:var(--color-gold);">политику конфиденциальности</a>.
-          </p>
+        <!-- Date tabs -->
+        <div class="date-tabs-wrap">
+          <div class="date-tabs" id="dateTabs"></div>
         </div>
-      </div>
 
-      <!-- Sidebar -->
+        <!-- Slot content (masters + times) or success screen -->
+        <div id="slotsArea">
+          <div class="loading-state"><div class="spinner"></div></div>
+        </div>
+
+      </div><!-- /bookingMain -->
+
+      <!-- Right: sidebar -->
       <div class="booking-sidebar">
-
         <div class="booking-sidebar__card reveal">
           <h3 class="booking-sidebar__title">Другие способы записи</h3>
           <a href="https://wa.me/77051170000?text=Хочу%20записаться%20в%20К%20Студию"
-             target="_blank" rel="noopener"
-             class="booking-contact-btn booking-contact-btn--whatsapp">
-            <span class="booking-contact-btn__icon">💬</span>
+             target="_blank" rel="noopener" class="contact-btn contact-btn--whatsapp">
+            <span class="contact-btn__icon">💬</span>
             <span>Написать в WhatsApp</span>
           </a>
-          <a href="tel:+77051170000" class="booking-contact-btn booking-contact-btn--phone">
-            <span class="booking-contact-btn__icon">📞</span>
+          <a href="tel:+77051170000" class="contact-btn contact-btn--phone">
+            <span class="contact-btn__icon">📞</span>
             <span>Позвонить нам</span>
           </a>
-          <a href="https://www.instagram.com/k_studio_01/" target="_blank" rel="noopener"
-             class="booking-contact-btn booking-contact-btn--instagram">
-            <span class="booking-contact-btn__icon">📸</span>
-            <span>Instagram @k_studio_01</span>
-          </a>
-          <p style="font-size:0.78rem; color:var(--color-text-muted); margin-top:var(--space-sm); text-align:center;">
+          <p style="font-size:.78rem;color:var(--color-text-muted);margin-top:var(--space-sm);text-align:center;">
             Работаем ежедневно с 10:00 до 21:00
           </p>
-        </div>
-
-        <div class="booking-sidebar__card reveal">
-          <h3 class="booking-sidebar__title">Как нас найти</h3>
-          <div style="display:flex; flex-direction:column; gap:0.75rem;">
-            <div style="display:flex; gap:0.75rem; align-items:flex-start;">
-              <span style="font-size:1.2rem; flex-shrink:0;">📍</span>
-              <div>
-                <p style="font-weight:600; font-size:0.875rem; color:var(--color-dark); margin-bottom:0.2rem;">Адрес</p>
-                <p style="font-size:0.8rem; color:var(--color-text-muted); line-height:1.6;">
-                  Кабанбай батыр пр., 58Б<br/>Есиль район, Астана
-                </p>
-              </div>
-            </div>
-            <div style="display:flex; gap:0.75rem; align-items:flex-start;">
-              <span style="font-size:1.2rem; flex-shrink:0;">🕙</span>
-              <div>
-                <p style="font-weight:600; font-size:0.875rem; color:var(--color-dark); margin-bottom:0.2rem;">Часы работы</p>
-                <p style="font-size:0.8rem; color:var(--color-text-muted);">Ежедневно 10:00 – 21:00</p>
-              </div>
-            </div>
-          </div>
-          <a href="https://2gis.kz/astana/firm/70000001104862663" target="_blank" rel="noopener"
-             class="btn btn--secondary btn--sm" style="width:100%; margin-top:var(--space-md); text-align:center; justify-content:center;">
-            Открыть в 2GIS ↗
-          </a>
         </div>
 
         <div class="booking-sidebar__card reveal">
           <h3 class="booking-sidebar__title">Частые вопросы</h3>
           <div class="mini-faq-item">
             <p class="mini-faq-item__q">Нужна ли предоплата?</p>
-            <p class="mini-faq-item__a">Нет, предоплата не требуется. Достаточно подтвердить запись.</p>
+            <p class="mini-faq-item__a">Нет, предоплата не требуется.</p>
           </div>
           <div class="mini-faq-item">
             <p class="mini-faq-item__q">Как отменить запись?</p>
-            <p class="mini-faq-item__a">Напишите в WhatsApp или позвоните не менее чем за 2 часа до визита.</p>
+            <p class="mini-faq-item__a">Напишите в WhatsApp или позвоните за 2 часа до визита.</p>
           </div>
           <div class="mini-faq-item">
             <p class="mini-faq-item__q">Можно выбрать конкретного мастера?</p>
-            <p class="mini-faq-item__a">Да, при записи вы можете выбрать любого свободного мастера.</p>
+            <p class="mini-faq-item__a">Да — у каждого мастера своё расписание.</p>
           </div>
           <div class="mini-faq-item">
-            <p class="mini-faq-item__q">Принимаете карты?</p>
-            <p class="mini-faq-item__a">Да, принимаем все карты Visa, Mastercard и Kaspi.</p>
+            <p class="mini-faq-item__q">Когда придёт подтверждение?</p>
+            <p class="mini-faq-item__a">Мы свяжемся с вами в течение нескольких минут.</p>
           </div>
         </div>
-
       </div>
+
     </div>
   </div>
 </section>
@@ -277,7 +306,220 @@
 
 <a href="https://wa.me/77051170000" target="_blank" rel="noopener" class="whatsapp-btn" aria-label="WhatsApp">💬</a>
 
+<!-- ═══════════ BOOKING MODAL ═══════════ -->
+<div id="bookModal" class="book-modal-overlay" onclick="if(event.target===this)closeBookModal()">
+  <div class="book-modal">
+    <button class="book-modal-close" onclick="closeBookModal()">✕</button>
+    <h3>Запись</h3>
+    <div class="book-modal-slot-info" id="bookModalInfo"></div>
+    <form id="bookForm" onsubmit="submitBooking(event)">
+      <div class="book-field">
+        <label>Ваше имя *</label>
+        <input type="text" id="bName" required placeholder="Айгерим" autocomplete="name">
+      </div>
+      <div class="book-field">
+        <label>Номер телефона *</label>
+        <input type="tel" id="bPhone" required placeholder="+7 705 000 0000" autocomplete="tel">
+      </div>
+      <button type="submit" class="btn btn--primary book-submit" id="bookSubmitBtn">
+        Записаться →
+      </button>
+      <p class="book-privacy">
+        Нажимая кнопку, вы принимаете
+        <a href="/pages/privacy.html">политику конфиденциальности</a>
+      </p>
+    </form>
+  </div>
+</div>
+
 <script src="../js/main.js" defer></script>
-<script type="text/javascript" src="https://dikidi.ru/assets/js/widget_record/widget2.min.js?v=1773811740"></script>
+<script>
+// ═══════════════════════════════════════════════════
+//  CONFIG  ← замените на свои данные из Supabase
+// ═══════════════════════════════════════════════════
+const SUPABASE_URL = 'https://azqnxataowbovezrxapm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_QcB-6J0EWsEppsSscAKQMQ_KdmYcn3k';
+// ═══════════════════════════════════════════════════
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// State
+let selectedDate  = todayStr();
+let selectedSlot  = null; // { id, masterName, date, time }
+
+// ─── INIT ────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  buildDateTabs();
+  loadSlots();
+});
+
+// ─── DATE TABS ───────────────────────────────────────
+function buildDateTabs() {
+  const wrap = document.getElementById('dateTabs');
+  const days = ['Вс','Пн','Вт','Ср','Чт','Пт','Сб'];
+  const months = ['янв','фев','мар','апр','май','июн','июл','авг','сен','окт','ноя','дек'];
+
+  for (let i = 0; i < 7; i++) {
+    const d = new Date();
+    d.setDate(d.getDate() + i);
+    const str  = d.toISOString().split('T')[0];
+    const day  = days[d.getDay()];
+    const date = d.getDate() + ' ' + months[d.getMonth()];
+    const label = i === 0 ? 'Сегодня' : i === 1 ? 'Завтра' : day;
+
+    const btn = document.createElement('button');
+    btn.className  = 'date-tab' + (str === selectedDate ? ' active' : '');
+    btn.innerHTML  = label + '<span class="date-tab__day">' + date + '</span>';
+    btn.onclick    = () => selectDate(str, btn);
+    wrap.appendChild(btn);
+  }
+}
+
+function selectDate(dateStr, btn) {
+  selectedDate = dateStr;
+  document.querySelectorAll('.date-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  loadSlots();
+}
+
+// ─── LOAD SLOTS ──────────────────────────────────────
+async function loadSlots() {
+  const area = document.getElementById('slotsArea');
+  area.innerHTML = '<div class="loading-state"><div class="spinner"></div></div>';
+
+  const { data, error } = await sb
+    .from('time_slots')
+    .select('id, slot_time, master_id, masters(id, name, specialization, emoji)')
+    .eq('slot_date', selectedDate)
+    .eq('is_booked', false)
+    .order('slot_time');
+
+  if (error) {
+    area.innerHTML = '<div class="no-slots-msg"><div class="icon">⚠️</div><p>Ошибка загрузки. Попробуйте позже.</p></div>';
+    return;
+  }
+
+  if (!data || !data.length) {
+    area.innerHTML = '<div class="no-slots-msg"><div class="icon">📅</div><p>На этот день свободных записей нет.<br>Выберите другой день или свяжитесь с нами напрямую.</p></div>';
+    return;
+  }
+
+  // Group by master
+  const byMaster = {};
+  data.forEach(s => {
+    const m = s.masters;
+    if (!byMaster[s.master_id]) byMaster[s.master_id] = { master: m, slots: [] };
+    byMaster[s.master_id].slots.push(s);
+  });
+
+  area.innerHTML = '<div class="masters-booking-grid">' +
+    Object.values(byMaster).map(({ master, slots }) =>
+      '<div class="master-booking-card reveal">' +
+        '<div class="master-booking-header">' +
+          '<div class="master-booking-avatar">' + (master?.emoji || '💅') + '</div>' +
+          '<div>' +
+            '<div class="master-booking-name">' + esc(master?.name || '') + '</div>' +
+            '<div class="master-booking-spec">' + esc(master?.specialization || '') + '</div>' +
+          '</div>' +
+        '</div>' +
+        '<div class="time-slots-grid">' +
+          slots.map(s =>
+            '<button class="slot-btn" onclick="openBookModal('' + s.id + '','' + esc(master?.name || '') + '','' + s.slot_time + '')">' +
+              s.slot_time.slice(0,5) +
+            '</button>'
+          ).join('') +
+        '</div>' +
+      '</div>'
+    ).join('') +
+  '</div>';
+}
+
+// ─── BOOKING MODAL ───────────────────────────────────
+function openBookModal(slotId, masterName, slotTime) {
+  selectedSlot = { id: slotId, masterName, time: slotTime };
+
+  const d = new Date(selectedDate + 'T00:00:00');
+  const dayStr = d.toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
+
+  document.getElementById('bookModalInfo').innerHTML =
+    '<strong>📅 ' + dayStr + ' в ' + slotTime.slice(0,5) + '</strong>' +
+    '👤 Мастер: ' + masterName;
+
+  document.getElementById('bName').value  = '';
+  document.getElementById('bPhone').value = '';
+  document.getElementById('bookSubmitBtn').disabled  = false;
+  document.getElementById('bookSubmitBtn').textContent = 'Записаться →';
+  document.getElementById('bookModal').classList.add('open');
+  setTimeout(() => document.getElementById('bName').focus(), 80);
+}
+
+function closeBookModal() {
+  document.getElementById('bookModal').classList.remove('open');
+  selectedSlot = null;
+}
+
+// ─── SUBMIT BOOKING ──────────────────────────────────
+async function submitBooking(e) {
+  e.preventDefault();
+  if (!selectedSlot) return;
+
+  const name  = document.getElementById('bName').value.trim();
+  const phone = document.getElementById('bPhone').value.trim();
+  const btn   = document.getElementById('bookSubmitBtn');
+
+  btn.disabled = true;
+  btn.textContent = 'Оформляем...';
+
+  const { error } = await sb.from('time_slots').update({
+    is_booked:    true,
+    client_name:  name,
+    client_phone: phone,
+    booked_at:    new Date().toISOString()
+  })
+  .eq('id', selectedSlot.id)
+  .eq('is_booked', false);
+
+  if (error) {
+    btn.disabled = false;
+    btn.textContent = 'Записаться →';
+    alert('Это время уже занято. Пожалуйста, выберите другое.');
+    closeBookModal();
+    loadSlots();
+    return;
+  }
+
+  closeBookModal();
+  showSuccess(name, phone);
+  loadSlots();
+}
+
+// ─── SUCCESS SCREEN ───────────────────────────────────
+function showSuccess(name, phone) {
+  const d = new Date(selectedDate + 'T00:00:00');
+  const dayStr = d.toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
+
+  document.getElementById('slotsArea').innerHTML =
+    '<div class="success-card">' +
+      '<div class="icon">✅</div>' +
+      '<h2>Отлично, ' + esc(name) + '!</h2>' +
+      '<p>Вы записались на <strong>' + dayStr + '</strong>.<br>' +
+      'Мы свяжемся с вами по номеру <strong>' + esc(phone) + '</strong> для подтверждения.</p>' +
+      '<div class="success-actions">' +
+        '<a href="https://wa.me/77051170000" target="_blank" rel="noopener" class="btn btn--primary" style="display:inline-flex;">💬 Написать в WhatsApp</a>' +
+        '<button onclick="resetBooking()" class="btn btn--secondary">Записать ещё раз</button>' +
+      '</div>' +
+    '</div>';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetBooking() {
+  loadSlots();
+}
+
+// ─── HELPERS ─────────────────────────────────────────
+function todayStr() { return new Date().toISOString().split('T')[0]; }
+function esc(s) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+</script>
 </body>
 </html>
