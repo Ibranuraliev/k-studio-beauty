@@ -374,6 +374,12 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
         </div>
         <input type="hidden" id="mEmoji" value="💅">
       </div>
+      <div class="form-group">
+        <label>Услуги мастера <span style="font-size:.72rem;color:#aaa;font-weight:400">(что умеет делать)</span></label>
+        <div id="masterServicesChecks" style="display:flex;flex-wrap:wrap;gap:.45rem .7rem;margin-top:.5rem;max-height:180px;overflow-y:auto;padding:.1rem 0">
+          <span style="font-size:.8rem;color:#aaa">Загрузка…</span>
+        </div>
+      </div>
       <div class="modal-actions">
         <button type="button" class="btn btn-outline" onclick="closeMasterModal()">Отмена</button>
         <button type="submit" class="btn btn-dark" id="masterSaveBtn">Сохранить</button>
@@ -615,17 +621,30 @@ function renderMasters() {
   }).join('');
 }
 
+function renderServiceChecks(checkedIds) {
+  var box = document.getElementById('masterServicesChecks');
+  if (!services.length) { box.innerHTML = '<span style="font-size:.8rem;color:#aaa">Сначала добавьте услуги</span>'; return; }
+  var ids = checkedIds || [];
+  box.innerHTML = services.map(function(s) {
+    var chk = ids.indexOf(s.id) >= 0 ? ' checked' : '';
+    return '<label style="display:flex;align-items:center;gap:.35rem;font-size:.82rem;cursor:pointer;padding:.2rem .1rem">' +
+      '<input type="checkbox" name="masterSvc" value="' + s.id + '"' + chk + ' style="accent-color:#c9a96e;width:14px;height:14px"> ' +
+      esc(s.name) + '</label>';
+  }).join('');
+}
+
 function openMasterModal() {
   editingId = null;
   document.getElementById('masterModalTitle').textContent = 'Добавить мастера';
   document.getElementById('mName').value = '';
   document.getElementById('mSpec').value = '';
   setEmoji('💅');
+  renderServiceChecks([]);
   document.getElementById('masterModal').classList.add('open');
   setTimeout(function(){ document.getElementById('mName').focus(); }, 80);
 }
 
-function editMaster(id) {
+async function editMaster(id) {
   var m = masters.find(function(x){ return x.id === id; });
   if (!m) return;
   editingId = id;
@@ -633,6 +652,10 @@ function editMaster(id) {
   document.getElementById('mName').value = m.name;
   document.getElementById('mSpec').value = m.specialization || '';
   setEmoji(m.emoji || '💅');
+  // Load master's current services
+  var r = await sb.from('master_services').select('service_id').eq('master_id', id);
+  var checkedIds = (r.data || []).map(function(x){ return x.service_id; });
+  renderServiceChecks(checkedIds);
   document.getElementById('masterModal').classList.add('open');
 }
 
@@ -659,11 +682,28 @@ async function saveMaster(ev) {
     specialization: document.getElementById('mSpec').value.trim(),
     emoji: document.getElementById('mEmoji').value
   };
-  var r = editingId
-    ? await sb.from('masters').update(payload).eq('id', editingId)
-    : await sb.from('masters').insert(payload);
+
+  var masterId = editingId;
+  var r;
+  if (editingId) {
+    r = await sb.from('masters').update(payload).eq('id', editingId);
+  } else {
+    var ins = await sb.from('masters').insert(payload).select().single();
+    r = ins; masterId = ins.data ? ins.data.id : null;
+  }
+
   btn.disabled = false; btn.textContent = 'Сохранить';
   if (r.error) { toast('Ошибка: ' + r.error.message, 'error'); return; }
+
+  // Save master_services
+  if (masterId) {
+    var checked = Array.from(document.querySelectorAll('#masterServicesChecks input[name=masterSvc]:checked')).map(function(el){ return el.value; });
+    await sb.from('master_services').delete().eq('master_id', masterId);
+    if (checked.length > 0) {
+      await sb.from('master_services').insert(checked.map(function(sid){ return { master_id: masterId, service_id: sid }; }));
+    }
+  }
+
   toast(editingId ? 'Мастер обновлён ✓' : 'Мастер добавлен ✓', 'success');
   closeMasterModal();
   await loadMasters();
