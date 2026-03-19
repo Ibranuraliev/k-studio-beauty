@@ -41,7 +41,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
 .pane-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem;flex-wrap:wrap;gap:.75rem}
 .pane-title{font-size:1.25rem;font-weight:700}
 .empty-state{text-align:center;padding:3.5rem 1rem;color:#aaa}
-.empty-icon{font-size:2.5rem;margin-bottom:.75rem}
+.empty-icon{margin-bottom:.85rem;display:flex;justify-content:center;align-items:center}
 .empty-state p:first-of-type{font-size:1rem;margin-bottom:.4rem;color:#888}
 .empty-state p{font-size:.875rem}
 
@@ -57,8 +57,9 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
 .btn-wa:hover{opacity:.88}
 .btn-wa-sm{background:#25D366;color:#fff;text-decoration:none;padding:.3rem .65rem;border-radius:7px;font-size:.78rem;font-weight:600;display:inline-flex;align-items:center;gap:.3rem}
 .btn-wa-sm:hover{opacity:.88}
-.icon-btn{background:none;border:none;cursor:pointer;font-size:1rem;padding:.3rem;opacity:.5;transition:opacity .2s;font-family:inherit}
-.icon-btn:hover{opacity:1}
+.icon-btn{background:none;border:1.5px solid transparent;border-radius:7px;cursor:pointer;padding:.3rem .38rem;color:#c0b8b0;transition:all .18s;display:inline-flex;align-items:center;line-height:1;font-family:inherit}
+.icon-btn:hover{background:#f4f1ee;border-color:#e0dbd3;color:#555}
+.icon-btn.danger:hover{background:#fff0f0;border-color:#fecaca;color:#c53030}
 
 /* ── DASHBOARD ── */
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1rem;margin-bottom:1.75rem}
@@ -80,7 +81,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
 .masters-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem}
 .master-card{background:#fff;border-radius:14px;padding:1.2rem;display:flex;align-items:center;gap:1rem;box-shadow:0 1px 6px rgba(0,0,0,.07);transition:box-shadow .2s}
 .master-card:hover{box-shadow:0 3px 14px rgba(0,0,0,.11)}
-.master-avatar{width:54px;height:54px;border-radius:50%;background:#f4f1ee;display:flex;align-items:center;justify-content:center;font-size:1.7rem;flex-shrink:0}
+.master-avatar{width:48px;height:48px;border-radius:50%;background:#f0ebe4;display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:800;color:#c9a96e;letter-spacing:.04em;flex-shrink:0;font-family:inherit;border:2px solid #e8e0d5}
 .master-name{font-weight:700;font-size:.95rem;margin-bottom:.2rem}
 .master-spec{font-size:.78rem;color:#999;line-height:1.5}
 .master-card-actions{margin-left:auto;display:flex;gap:.3rem;flex-shrink:0}
@@ -124,7 +125,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
 .booking-card:hover{box-shadow:0 3px 14px rgba(0,0,0,.10)}
 .booking-card.is-new{border-left-color:#c9a96e}
 .booking-card.is-past{opacity:.6}
-.booking-status{display:inline-flex;align-items:center;gap:.3rem;font-size:.7rem;font-weight:700;padding:.18rem .55rem;border-radius:999px;margin-bottom:.4rem;letter-spacing:.02em}
+.booking-status{display:inline-flex;align-items:center;gap:.28rem;font-size:.68rem;font-weight:800;padding:.2rem .58rem;border-radius:999px;margin-bottom:.4rem;letter-spacing:.05em;text-transform:uppercase}
 .st-new{background:#fef3c7;color:#92400e}
 .st-upcoming{background:#dbeafe;color:#1e40af}
 .st-today{background:#d1fae5;color:#065f46}
@@ -196,12 +197,12 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
   </header>
 
   <div class="tabs-bar">
-    <button class="tab-btn active" onclick="switchTab('overview',this)">📊 Обзор</button>
-    <button class="tab-btn" onclick="switchTab('masters',this)">👩‍🦰 Мастера</button>
-    <button class="tab-btn" onclick="switchTab('services',this)">✨ Услуги</button>
-    <button class="tab-btn" onclick="switchTab('schedule',this)">📅 Расписание</button>
+    <button class="tab-btn active" onclick="switchTab('overview',this)">Обзор</button>
+    <button class="tab-btn" onclick="switchTab('masters',this)">Мастера</button>
+    <button class="tab-btn" onclick="switchTab('services',this)">Услуги</button>
+    <button class="tab-btn" onclick="switchTab('schedule',this)">Расписание</button>
     <button class="tab-btn" id="bookingsTabBtn" onclick="switchTab('bookings',this)">
-      📋 Записи<span class="badge" id="newBadge" style="display:none">0</span>
+      Записи<span class="badge" id="newBadge" style="display:none">0</span>
     </button>
   </div>
 
@@ -359,22 +360,6 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
         <div id="mSpecChecks" style="display:grid;grid-template-columns:1fr 1fr;gap:.38rem .6rem;margin-top:.45rem"></div>
         <input type="hidden" id="mSpec">
       </div>
-      <div class="form-group">
-        <label>Иконка</label>
-        <div class="emoji-row" id="emojiRow">
-          <button type="button" class="emoji-opt selected" onclick="pickEmoji('💅',this)">💅</button>
-          <button type="button" class="emoji-opt" onclick="pickEmoji('💆',this)">💆</button>
-          <button type="button" class="emoji-opt" onclick="pickEmoji('✂️',this)">✂️</button>
-          <button type="button" class="emoji-opt" onclick="pickEmoji('💇',this)">💇</button>
-          <button type="button" class="emoji-opt" onclick="pickEmoji('🌸',this)">🌸</button>
-          <button type="button" class="emoji-opt" onclick="pickEmoji('💄',this)">💄</button>
-          <button type="button" class="emoji-opt" onclick="pickEmoji('🧖',this)">🧖</button>
-          <button type="button" class="emoji-opt" onclick="pickEmoji('🌺',this)">🌺</button>
-          <button type="button" class="emoji-opt" onclick="pickEmoji('💋',this)">💋</button>
-          <button type="button" class="emoji-opt" onclick="pickEmoji('🪄',this)">🪄</button>
-        </div>
-        <input type="hidden" id="mEmoji" value="💅">
-      </div>
       <div class="modal-actions">
         <button type="button" class="btn btn-outline" onclick="closeMasterModal()">Отмена</button>
         <button type="submit" class="btn btn-dark" id="masterSaveBtn">Сохранить</button>
@@ -465,6 +450,21 @@ const ADMIN_PASS   = 'kstudio2025';
 
 const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── ICON CONSTANTS ──────────────────────────────────────
+var ICO_EDIT    = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+var ICO_TRASH   = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
+var ICO_EYE     = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+var ICO_EYEOFF  = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+var ICO_CAL     = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+var ICO_PIN     = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+var ICO_CLOCKSM = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+var ICO_CLOCKMD = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+var ICO_WA      = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>';
+var ICO_EMPTYUSER = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d0ccc6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+var ICO_EMPTYSTAR = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d0ccc6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+var ICO_EMPTYCLIP = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d0ccc6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>';
+// ─────────────────────────────────────────────────────────
 
 let masters          = [];
 let services         = [];
@@ -562,7 +562,7 @@ async function refreshOverview() {
           (b.services ? '<div class="today-phone">' + (b.services.emoji||'✨') + ' ' + esc(b.services.name) + '</div>' : '') +
           '<div class="today-phone">' + esc(b.client_phone || '') + '</div>' +
         '</div>' +
-        '<a href="' + waLink(b) + '" target="_blank" class="btn-wa-sm">💬</a>' +
+        '<a href="' + waLink(b) + '" target="_blank" class="btn-wa-sm">' + ICO_WA + '</a>' +
       '</div>';
     }).join('');
   }
@@ -595,7 +595,7 @@ async function refreshOverview() {
           (b.services ? '<div class="today-phone">' + (b.services.emoji||'✨') + ' ' + esc(b.services.name) + '</div>' : '') +
           '<div class="today-phone">' + esc(b.client_phone || '') + '</div>' +
         '</div>' +
-        '<a href="' + waLink(b) + '" target="_blank" class="btn-wa-sm">💬</a>' +
+        '<a href="' + waLink(b) + '" target="_blank" class="btn-wa-sm">' + ICO_WA + '</a>' +
       '</div>';
     }).join('');
   }
@@ -612,19 +612,19 @@ async function loadMasters() {
 function renderMasters() {
   var g = document.getElementById('mastersGrid');
   if (!masters.length) {
-    g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">👩‍🦰</div><p>Мастера не добавлены</p><p>Нажмите «+ Добавить мастера» чтобы начать</p></div>';
+    g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">' + ICO_EMPTYUSER + '</div><p>Мастера не добавлены</p><p>Нажмите «+ Добавить мастера» чтобы начать</p></div>';
     return;
   }
   g.innerHTML = masters.map(function(m) {
     return '<div class="master-card">' +
-      '<div class="master-avatar">' + (m.emoji || '💅') + '</div>' +
+      '<div class="master-avatar">' + initials(m.name) + '</div>' +
       '<div style="flex:1;min-width:0">' +
         '<div class="master-name">' + esc(m.name) + '</div>' +
         '<div class="master-spec">' + esc(m.specialization || 'Без специализации') + '</div>' +
       '</div>' +
       '<div class="master-card-actions">' +
-        '<button class="icon-btn" title="Редактировать" onclick="editMaster(\'' + m.id + '\')">✏️</button>' +
-        '<button class="icon-btn" title="Удалить" onclick="deleteMaster(\'' + m.id + '\',\'' + esc(m.name) + '\')">🗑️</button>' +
+        '<button class="icon-btn" title="Редактировать" onclick="editMaster(\'' + m.id + '\')">' + ICO_EDIT + '</button>' +
+        '<button class="icon-btn danger" title="Удалить" onclick="deleteMaster(\'' + m.id + '\',\'' + esc(m.name) + '\')">' + ICO_TRASH + '</button>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -659,7 +659,6 @@ function openMasterModal() {
   document.getElementById('masterModalTitle').textContent = 'Добавить мастера';
   document.getElementById('mName').value = '';
   document.getElementById('mSpec').value = '';
-  setEmoji('💅');
   renderSpecChecks([]);
   document.getElementById('masterModal').classList.add('open');
   setTimeout(function(){ document.getElementById('mName').focus(); }, 80);
@@ -672,7 +671,6 @@ async function editMaster(id) {
   document.getElementById('masterModalTitle').textContent = 'Редактировать мастера';
   document.getElementById('mName').value = m.name;
   document.getElementById('mSpec').value = m.specialization || '';
-  setEmoji(m.emoji || '💅');
   // Parse comma-separated specialization into array
   var currentSpecs = (m.specialization || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean);
   renderSpecChecks(currentSpecs);
@@ -684,14 +682,6 @@ function closeMasterModal() {
   editingId = null;
 }
 
-function pickEmoji(e, btn) { setEmoji(e); }
-
-function setEmoji(e) {
-  document.getElementById('mEmoji').value = e;
-  document.querySelectorAll('.emoji-opt').forEach(function(b){
-    b.classList.toggle('selected', b.textContent.trim() === e);
-  });
-}
 
 async function saveMaster(ev) {
   ev.preventDefault();
@@ -706,8 +696,7 @@ async function saveMaster(ev) {
 
   var payload = {
     name: document.getElementById('mName').value.trim(),
-    specialization: specString,
-    emoji: document.getElementById('mEmoji').value
+    specialization: specString
   };
 
   var r;
@@ -743,7 +732,7 @@ async function loadServices() {
 function renderServices() {
   var g = document.getElementById('servicesGrid');
   if (!services.length) {
-    g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">✨</div><p>Услуги не добавлены</p><p>Нажмите «+ Добавить услугу» чтобы начать</p></div>';
+    g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">' + ICO_EMPTYSTAR + '</div><p>Услуги не добавлены</p><p>Нажмите «+ Добавить услугу» чтобы начать</p></div>';
     return;
   }
   g.innerHTML = services.map(function(s) {
@@ -752,15 +741,15 @@ function renderServices() {
       '<div class="master-avatar">' + (s.emoji || '✨') + '</div>' +
       '<div style="flex:1;min-width:0">' +
         '<div class="master-name">' + esc(s.name) + '</div>' +
-        '<div class="master-spec">⏱ ' + dur + ' · ' + s.price.toLocaleString('ru-RU') + ' ₸</div>' +
+        '<div class="master-spec">' + ICO_CLOCKMD + ' ' + dur + ' · ' + s.price.toLocaleString('ru-RU') + ' ₸</div>' +
         (s.specialization_tag ? '<div class="master-spec" style="color:#c9a96e;font-weight:600;margin-top:.1rem">' + esc(s.specialization_tag) + '</div>' : '') +
         (s.description ? '<div class="master-spec" style="margin-top:.2rem">' + esc(s.description) + '</div>' : '') +
         (!s.is_active ? '<span style="font-size:.7rem;color:#e53e3e;font-weight:700">СКРЫТА</span>' : '') +
       '</div>' +
       '<div class="master-card-actions">' +
-        '<button class="icon-btn" title="Редактировать" onclick="editService(\'' + s.id + '\')">✏️</button>' +
-        '<button class="icon-btn" title="' + (s.is_active ? 'Скрыть' : 'Показать') + '" onclick="toggleService(\'' + s.id + '\',' + s.is_active + ')">' + (s.is_active ? '👁' : '🚫') + '</button>' +
-        '<button class="icon-btn" title="Удалить" onclick="deleteService(\'' + s.id + '\',\'' + esc(s.name) + '\')">🗑️</button>' +
+        '<button class="icon-btn" title="Редактировать" onclick="editService(\'' + s.id + '\')">' + ICO_EDIT + '</button>' +
+        '<button class="icon-btn" title="' + (s.is_active ? 'Скрыть' : 'Показать') + '" onclick="toggleService(\'' + s.id + '\',' + s.is_active + ')">' + (s.is_active ? ICO_EYE : ICO_EYEOFF) + '</button>' +
+        '<button class="icon-btn danger" title="Удалить" onclick="deleteService(\'' + s.id + '\',\'' + esc(s.name) + '\')">' + ICO_TRASH + '</button>' +
       '</div>' +
     '</div>';
   }).join('');
@@ -993,7 +982,7 @@ function renderBookings() {
 
   var c = document.getElementById('bookingsContainer');
   if (!list.length) {
-    c.innerHTML = '<div class="empty-state"><div class="empty-icon">📋</div><p>Записей нет</p><p>Они появятся когда клиенты запишутся на сайте</p></div>';
+    c.innerHTML = '<div class="empty-state"><div class="empty-icon">' + ICO_EMPTYCLIP + '</div><p>Записей нет</p><p>Они появятся когда клиенты запишутся на сайте</p></div>';
     return;
   }
 
@@ -1010,17 +999,17 @@ function renderBookings() {
 
     var statusHtml;
     if (b.status === 'cancelled') statusHtml = '<span class="booking-status st-past">✕ Отменена</span>';
-    else if (isNew && !isPast)    statusHtml = '<span class="booking-status st-new">🆕 Новая</span>';
-    else if (isToday)             statusHtml = '<span class="booking-status st-today">📍 Сегодня</span>';
-    else if (!isPast)             statusHtml = '<span class="booking-status st-upcoming">⏰ Предстоящая</span>';
+    else if (isNew && !isPast)    statusHtml = '<span class="booking-status st-new">NEW</span>';
+    else if (isToday)             statusHtml = '<span class="booking-status st-today">' + ICO_PIN + ' Сегодня</span>';
+    else if (!isPast)             statusHtml = '<span class="booking-status st-upcoming">' + ICO_CLOCKSM + ' Предстоящая</span>';
     else                          statusHtml = '<span class="booking-status st-past">✓ Состоялась</span>';
 
     return '<div class="booking-card' + (isNew && !isPast && b.status !== 'cancelled' ? ' is-new' : '') + (isPast || b.status === 'cancelled' ? ' is-past' : '') + '">' +
       '<div style="flex:1;min-width:0">' +
         statusHtml +
         '<div class="booking-head">' +
-          (b.masters ? (b.masters.emoji || '💅') + ' ' + esc(b.masters.name) + ' · ' : '') +
-          '📅 ' + shortDay + ' в ' + time + (endTime ? '–' + endTime : '') +
+          (b.masters ? '<span style="font-weight:700">' + esc(b.masters.name) + '</span> · ' : '') +
+          ICO_CAL + ' ' + shortDay + ' в ' + time + (endTime ? '–' + endTime : '') +
         '</div>' +
         (svc ? '<div style="display:inline-flex;align-items:center;gap:.35rem;background:#fdf6ea;border-radius:99px;padding:.2rem .65rem;font-size:.78rem;font-weight:700;color:#c9a96e;margin:.3rem 0 .2rem">' +
           (svc.emoji||'✨') + ' ' + esc(svc.name) + ' · ' + fmtDur(svc.duration_minutes) + ' · ' + svc.price.toLocaleString('ru-RU') + ' ₸</div>' : '') +
@@ -1029,7 +1018,7 @@ function renderBookings() {
         '<div class="booking-ts">Записался: ' + new Date(b.created_at).toLocaleString('ru-RU') + '</div>' +
       '</div>' +
       '<div class="booking-actions">' +
-        '<a href="' + waLink(b) + '" target="_blank" rel="noopener" class="btn-wa">💬 WhatsApp</a>' +
+        '<a href="' + waLink(b) + '" target="_blank" rel="noopener" class="btn-wa">' + ICO_WA + ' WhatsApp</a>' +
         (b.status !== 'cancelled' && !isPast ? '<button class="btn-danger" onclick="cancelBooking(\'' + b.id + '\')">Отменить</button>' : '') +
       '</div>' +
     '</div>';
@@ -1058,9 +1047,9 @@ function subscribeRealtime() {
         loadBookings();
       }
       var name = (payload.new && payload.new.client_name) || 'Новый клиент';
-      toast('🔔 ' + name + ' записался!', 'info');
+      toast(name + ' записался!', 'info');
       var orig = document.title;
-      document.title = '🔔 Новая запись!';
+      document.title = '● Новая запись!';
       setTimeout(function(){ document.title = orig; }, 6000);
       if (window.Notification && Notification.permission === 'granted') {
         new Notification('Новая запись — К Студия', { body: name + ' · ' + (payload.new ? payload.new.date : '') });
@@ -1108,11 +1097,11 @@ function waLink(b) {
   var timeField = b.start_time || b.slot_time || '';
   var dayStr = new Date(dateField + 'T00:00:00').toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
   var phone  = (b.client_phone || '').replace(/\D/g, '');
-  var svcLine = b.services ? '\n✨ Услуга: ' + b.services.name + ' (' + fmtDur(b.services.duration_minutes) + ')' : '';
+  var svcLine = b.services ? '\nУслуга: ' + b.services.name + ' (' + fmtDur(b.services.duration_minutes) + ')' : '';
   var text   = 'Здравствуйте, ' + (b.client_name || '') + '! Подтверждаем запись в К Студию:\n' +
-               '📅 ' + dayStr + ' в ' + timeField.slice(0,5) +
+               dayStr + ' в ' + timeField.slice(0,5) +
                svcLine + '\n' +
-               '👤 Мастер: ' + (b.masters ? b.masters.name : '') + '\nЖдём вас! 🌸';
+               'Мастер: ' + (b.masters ? b.masters.name : '') + '\nЖдём вас!';
   return 'https://wa.me/' + phone + '?text=' + encodeURIComponent(text);
 }
 
@@ -1123,6 +1112,11 @@ function toMin(t) { var p = t.split(':').map(Number); return p[0] * 60 + p[1]; }
 function cap(s)   { return s.charAt(0).toUpperCase() + s.slice(1); }
 function todayStr(){ return new Date().toISOString().split('T')[0]; }
 function esc(s)   { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function initials(n){
+  var p = (n||'').trim().split(/\s+/);
+  return p.length >= 2 ? (p[0][0]+p[1][0]).toUpperCase() : (p[0]||'').slice(0,2).toUpperCase();
+}
 
 init();
 </script>
