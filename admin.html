@@ -198,6 +198,7 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
   <div class="tabs-bar">
     <button class="tab-btn active" onclick="switchTab('overview',this)">📊 Обзор</button>
     <button class="tab-btn" onclick="switchTab('masters',this)">👩‍🦰 Мастера</button>
+    <button class="tab-btn" onclick="switchTab('services',this)">✨ Услуги</button>
     <button class="tab-btn" onclick="switchTab('schedule',this)">📅 Расписание</button>
     <button class="tab-btn" id="bookingsTabBtn" onclick="switchTab('bookings',this)">
       📋 Записи<span class="badge" id="newBadge" style="display:none">0</span>
@@ -255,6 +256,15 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
       <button class="btn btn-dark" onclick="openMasterModal()">+ Добавить мастера</button>
     </div>
     <div id="mastersGrid" class="masters-grid"></div>
+  </div>
+
+  <!-- ── УСЛУГИ ── -->
+  <div id="paneServices" class="tab-pane" style="display:none">
+    <div class="pane-header">
+      <h2 class="pane-title">Услуги</h2>
+      <button class="btn btn-dark" onclick="openServiceModal()">+ Добавить услугу</button>
+    </div>
+    <div id="servicesGrid" class="masters-grid"></div>
   </div>
 
   <!-- ── РАСПИСАНИЕ ── -->
@@ -372,6 +382,60 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
   </div>
 </div>
 
+<!-- ════════════ MODAL: УСЛУГА ════════════ -->
+<div id="serviceModal" class="modal-overlay" onclick="if(event.target===this)closeServiceModal()">
+  <div class="modal-box">
+    <h3 class="modal-title" id="serviceModalTitle">Добавить услугу</h3>
+    <form id="serviceForm" onsubmit="saveService(event)">
+      <div class="form-group">
+        <label>Название услуги *</label>
+        <input type="text" id="svcName" required placeholder="Маникюр">
+      </div>
+      <div class="form-group">
+        <label>Длительность (минут) *</label>
+        <select id="svcDuration">
+          <option value="30">30 мин</option>
+          <option value="60" selected>60 мин (1 час)</option>
+          <option value="90">90 мин (1.5 ч)</option>
+          <option value="120">120 мин (2 ч)</option>
+          <option value="150">150 мин (2.5 ч)</option>
+          <option value="180">180 мин (3 ч)</option>
+          <option value="210">210 мин (3.5 ч)</option>
+          <option value="240">240 мин (4 ч)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Цена (₸) *</label>
+        <input type="number" id="svcPrice" required placeholder="3000" min="0" step="100">
+      </div>
+      <div class="form-group">
+        <label>Описание</label>
+        <input type="text" id="svcDesc" placeholder="Короткое описание (необязательно)">
+      </div>
+      <div class="form-group">
+        <label>Иконка</label>
+        <div class="emoji-row" id="svcEmojiRow">
+          <button type="button" class="emoji-opt selected" onclick="pickSvcEmoji('💅',this)">💅</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('🦶',this)">🦶</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('✨',this)">✨</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('💎',this)">💎</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('👁',this)">👁</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('🌟',this)">🌟</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('🖊',this)">🖊</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('🎨',this)">🎨</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('🌸',this)">🌸</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('💄',this)">💄</button>
+        </div>
+        <input type="hidden" id="svcEmoji" value="💅">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeServiceModal()">Отмена</button>
+        <button type="submit" class="btn btn-dark" id="serviceSaveBtn">Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div class="toast-wrap" id="toastWrap"></div>
 
@@ -388,8 +452,10 @@ const { createClient } = supabase;
 const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 let masters          = [];
+let services         = [];
 let allBookings      = [];
 let editingId        = null;
+let editingSvcId     = null;
 let newBookingsCount = 0;
 let bookingFilter    = 'upcoming';
 
@@ -418,6 +484,7 @@ function showDashboard() {
   document.getElementById('headerDate').textContent =
     d.toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
   loadMasters().then(function() {
+    loadServices();
     refreshOverview();
     loadBookings();
     subscribeRealtime();
@@ -436,6 +503,7 @@ function switchTab(name, btn) {
   document.getElementById('pane' + cap(name)).style.display = 'block';
   btn.classList.add('active');
   if (name === 'overview')  refreshOverview();
+  if (name === 'services')  renderServices();
   if (name === 'schedule')  { fillSchedMasters(); loadSlots(); }
   if (name === 'bookings')  { loadBookings(); clearBadge(); }
 }
@@ -451,8 +519,8 @@ async function refreshOverview() {
   var weekEndStr = weekEnd.toISOString().split('T')[0];
 
   var [r1, r2, r3] = await Promise.all([
-    sb.from('time_slots').select('*, masters(name,emoji)').eq('slot_date', today).eq('is_booked', true).order('slot_time'),
-    sb.from('time_slots').select('id').eq('is_booked', true).gte('slot_date', today).lte('slot_date', weekEndStr),
+    sb.from('bookings').select('*, masters(name,emoji), services(name,emoji,duration_minutes)').eq('date', today).neq('status','cancelled').order('start_time'),
+    sb.from('bookings').select('id').neq('status','cancelled').gte('date', today).lte('date', weekEndStr),
     sb.from('time_slots').select('id').eq('slot_date', today).eq('is_booked', false)
   ]);
 
@@ -470,12 +538,13 @@ async function refreshOverview() {
   } else {
     tl.innerHTML = todayBooked.map(function(b) {
       return '<div class="today-row">' +
-        '<div class="today-time">' + b.slot_time.slice(0,5) + '</div>' +
+        '<div class="today-time">' + (b.start_time||'').slice(0,5) + '</div>' +
         '<div style="flex:1;min-width:0">' +
           '<div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.1rem">' +
             '<span class="today-client">' + esc(b.client_name || '—') + '</span>' +
             '<span class="today-master-tag">' + esc(b.masters ? b.masters.name : '') + '</span>' +
           '</div>' +
+          (b.services ? '<div class="today-phone">' + (b.services.emoji||'✨') + ' ' + esc(b.services.name) + '</div>' : '') +
           '<div class="today-phone">' + esc(b.client_phone || '') + '</div>' +
         '</div>' +
         '<a href="' + waLink(b) + '" target="_blank" class="btn-wa-sm">💬</a>' +
@@ -487,27 +556,28 @@ async function refreshOverview() {
   var ul = document.getElementById('upcomingList');
   var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
   var tomorrowStr = tomorrow.toISOString().split('T')[0];
-  var r4 = await sb.from('time_slots')
-    .select('*, masters(name,emoji)')
-    .eq('is_booked', true)
-    .gte('slot_date', tomorrowStr)
-    .lte('slot_date', weekEndStr)
-    .order('slot_date').order('slot_time')
+  var r4 = await sb.from('bookings')
+    .select('*, masters(name,emoji), services(name,emoji,duration_minutes)')
+    .neq('status','cancelled')
+    .gte('date', tomorrowStr)
+    .lte('date', weekEndStr)
+    .order('date').order('start_time')
     .limit(20);
   var upcoming = r4.data || [];
   if (!upcoming.length) {
     ul.innerHTML = '<div style="text-align:center;padding:1.5rem;color:#ccc;font-size:.875rem">Нет предстоящих записей</div>';
   } else {
     ul.innerHTML = upcoming.map(function(b) {
-      var dayStr = new Date(b.slot_date + 'T00:00:00').toLocaleDateString('ru-RU', { weekday:'short', day:'numeric', month:'short' });
+      var dayStr = new Date(b.date + 'T00:00:00').toLocaleDateString('ru-RU', { weekday:'short', day:'numeric', month:'short' });
       return '<div class="today-row">' +
         '<div class="today-time" style="min-width:88px;font-size:.8rem;font-weight:700;color:#888">' + dayStr + '</div>' +
-        '<div class="today-time" style="min-width:40px">' + b.slot_time.slice(0,5) + '</div>' +
+        '<div class="today-time" style="min-width:40px">' + (b.start_time||'').slice(0,5) + '</div>' +
         '<div style="flex:1;min-width:0">' +
           '<div style="display:flex;align-items:center;gap:.4rem">' +
             '<span class="today-client">' + esc(b.client_name || '—') + '</span>' +
             '<span class="today-master-tag">' + esc(b.masters ? b.masters.name : '') + '</span>' +
           '</div>' +
+          (b.services ? '<div class="today-phone">' + (b.services.emoji||'✨') + ' ' + esc(b.services.name) + '</div>' : '') +
           '<div class="today-phone">' + esc(b.client_phone || '') + '</div>' +
         '</div>' +
         '<a href="' + waLink(b) + '" target="_blank" class="btn-wa-sm">💬</a>' +
@@ -604,6 +674,117 @@ async function deleteMaster(id, name) {
   await sb.from('masters').delete().eq('id', id);
   toast('Мастер удалён', 'success');
   await loadMasters();
+}
+
+// ── SERVICES ─────────────────────────────────────────
+async function loadServices() {
+  var r = await sb.from('services').select('*').order('sort_order').order('name');
+  services = r.data || [];
+  renderServices();
+}
+
+function renderServices() {
+  var g = document.getElementById('servicesGrid');
+  if (!services.length) {
+    g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">✨</div><p>Услуги не добавлены</p><p>Нажмите «+ Добавить услугу» чтобы начать</p></div>';
+    return;
+  }
+  g.innerHTML = services.map(function(s) {
+    var dur = fmtDur(s.duration_minutes);
+    return '<div class="master-card">' +
+      '<div class="master-avatar">' + (s.emoji || '✨') + '</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div class="master-name">' + esc(s.name) + '</div>' +
+        '<div class="master-spec">⏱ ' + dur + ' · ' + s.price.toLocaleString('ru-RU') + ' ₸</div>' +
+        (s.description ? '<div class="master-spec" style="margin-top:.2rem">' + esc(s.description) + '</div>' : '') +
+        (!s.is_active ? '<span style="font-size:.7rem;color:#e53e3e;font-weight:700">СКРЫТА</span>' : '') +
+      '</div>' +
+      '<div class="master-card-actions">' +
+        '<button class="icon-btn" title="Редактировать" onclick="editService(\'' + s.id + '\')">✏️</button>' +
+        '<button class="icon-btn" title="' + (s.is_active ? 'Скрыть' : 'Показать') + '" onclick="toggleService(\'' + s.id + '\',' + s.is_active + ')">' + (s.is_active ? '👁' : '🚫') + '</button>' +
+        '<button class="icon-btn" title="Удалить" onclick="deleteService(\'' + s.id + '\',\'' + esc(s.name) + '\')">🗑️</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function openServiceModal() {
+  editingSvcId = null;
+  document.getElementById('serviceModalTitle').textContent = 'Добавить услугу';
+  document.getElementById('svcName').value = '';
+  document.getElementById('svcDuration').value = '60';
+  document.getElementById('svcPrice').value = '';
+  document.getElementById('svcDesc').value = '';
+  setSvcEmoji('💅');
+  document.getElementById('serviceModal').classList.add('open');
+  setTimeout(function(){ document.getElementById('svcName').focus(); }, 80);
+}
+
+function editService(id) {
+  var s = services.find(function(x){ return x.id === id; });
+  if (!s) return;
+  editingSvcId = id;
+  document.getElementById('serviceModalTitle').textContent = 'Редактировать услугу';
+  document.getElementById('svcName').value = s.name;
+  document.getElementById('svcDuration').value = String(s.duration_minutes);
+  document.getElementById('svcPrice').value = s.price;
+  document.getElementById('svcDesc').value = s.description || '';
+  setSvcEmoji(s.emoji || '💅');
+  document.getElementById('serviceModal').classList.add('open');
+}
+
+function closeServiceModal() {
+  document.getElementById('serviceModal').classList.remove('open');
+  editingSvcId = null;
+}
+
+function pickSvcEmoji(e, btn) { setSvcEmoji(e); }
+
+function setSvcEmoji(e) {
+  document.getElementById('svcEmoji').value = e;
+  document.querySelectorAll('#svcEmojiRow .emoji-opt').forEach(function(b){
+    b.classList.toggle('selected', b.textContent.trim() === e);
+  });
+}
+
+async function saveService(ev) {
+  ev.preventDefault();
+  var btn = document.getElementById('serviceSaveBtn');
+  btn.disabled = true; btn.textContent = 'Сохранение...';
+  var payload = {
+    name:             document.getElementById('svcName').value.trim(),
+    duration_minutes: parseInt(document.getElementById('svcDuration').value),
+    price:            parseInt(document.getElementById('svcPrice').value),
+    description:      document.getElementById('svcDesc').value.trim() || null,
+    emoji:            document.getElementById('svcEmoji').value
+  };
+  var r = editingSvcId
+    ? await sb.from('services').update(payload).eq('id', editingSvcId)
+    : await sb.from('services').insert(payload);
+  btn.disabled = false; btn.textContent = 'Сохранить';
+  if (r.error) { toast('Ошибка: ' + r.error.message, 'error'); return; }
+  toast(editingSvcId ? 'Услуга обновлена ✓' : 'Услуга добавлена ✓', 'success');
+  closeServiceModal();
+  await loadServices();
+}
+
+async function toggleService(id, isActive) {
+  await sb.from('services').update({ is_active: !isActive }).eq('id', id);
+  toast(isActive ? 'Услуга скрыта' : 'Услуга показана', 'success');
+  await loadServices();
+}
+
+async function deleteService(id, name) {
+  if (!confirm('Удалить услугу «' + name + '»?')) return;
+  await sb.from('services').delete().eq('id', id);
+  toast('Услуга удалена', 'success');
+  await loadServices();
+}
+
+function fmtDur(min) {
+  if (min < 60) return min + ' мин';
+  var h = Math.floor(min/60), m = min%60;
+  return m === 0 ? h + ' ч' : h + ' ч ' + m + ' мин';
 }
 
 // ── SCHEDULE ─────────────────────────────────────────
@@ -717,10 +898,9 @@ async function copySchedule() {
 
 // ── BOOKINGS ─────────────────────────────────────────
 async function loadBookings() {
-  var r = await sb.from('time_slots')
-    .select('*, masters(id,name,emoji)')
-    .eq('is_booked', true)
-    .order('slot_date').order('slot_time');
+  var r = await sb.from('bookings')
+    .select('*, masters(id,name,emoji), services(id,name,duration_minutes,price,emoji)')
+    .order('date').order('start_time');
   allBookings = r.data || [];
   renderBookings();
   showBadgeIfNeeded();
@@ -745,9 +925,9 @@ function renderBookings() {
   var list  = allBookings.slice();
 
   if (mf) list = list.filter(function(b){ return b.masters && b.masters.id === mf; });
-  if (bookingFilter === 'today')    list = list.filter(function(b){ return b.slot_date === today; });
-  if (bookingFilter === 'upcoming') list = list.filter(function(b){ return b.slot_date >= today; });
-  if (bookingFilter === 'past')     list = list.filter(function(b){ return b.slot_date < today; });
+  if (bookingFilter === 'today')    list = list.filter(function(b){ return b.date === today; });
+  if (bookingFilter === 'upcoming') list = list.filter(function(b){ return b.date >= today; });
+  if (bookingFilter === 'past')     list = list.filter(function(b){ return b.date < today; });
   if (bookingFilter === 'past' || bookingFilter === 'all') list.reverse();
 
   var c = document.getElementById('bookingsContainer');
@@ -758,41 +938,49 @@ function renderBookings() {
 
   var oneDayAgo = Date.now() - 86400000;
   c.innerHTML = list.map(function(b) {
-    var isNew    = new Date(b.booked_at).getTime() > oneDayAgo;
-    var isPast   = b.slot_date < today;
-    var isToday  = b.slot_date === today;
-    var dayStr   = new Date(b.slot_date + 'T00:00:00').toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
-    var shortDay = new Date(b.slot_date + 'T00:00:00').toLocaleDateString('ru-RU', { weekday:'short', day:'numeric', month:'short' });
-    var time     = b.slot_time.slice(0,5);
+    var isNew    = new Date(b.created_at).getTime() > oneDayAgo;
+    var isPast   = b.date < today;
+    var isToday  = b.date === today;
+    var shortDay = new Date(b.date + 'T00:00:00').toLocaleDateString('ru-RU', { weekday:'short', day:'numeric', month:'short' });
+    var time     = b.start_time ? b.start_time.slice(0,5) : '—';
+    var svc      = b.services;
+    var endMin   = svc ? (toMin(time) + svc.duration_minutes) : null;
+    var endTime  = endMin ? (String(Math.floor(endMin/60)).padStart(2,'0') + ':' + String(endMin%60).padStart(2,'0')) : '';
 
     var statusHtml;
-    if (isNew && !isPast)  statusHtml = '<span class="booking-status st-new">🆕 Новая</span>';
-    else if (isToday)      statusHtml = '<span class="booking-status st-today">📍 Сегодня</span>';
-    else if (!isPast)      statusHtml = '<span class="booking-status st-upcoming">⏰ Предстоящая</span>';
-    else                   statusHtml = '<span class="booking-status st-past">✓ Состоялась</span>';
+    if (b.status === 'cancelled') statusHtml = '<span class="booking-status st-past">✕ Отменена</span>';
+    else if (isNew && !isPast)    statusHtml = '<span class="booking-status st-new">🆕 Новая</span>';
+    else if (isToday)             statusHtml = '<span class="booking-status st-today">📍 Сегодня</span>';
+    else if (!isPast)             statusHtml = '<span class="booking-status st-upcoming">⏰ Предстоящая</span>';
+    else                          statusHtml = '<span class="booking-status st-past">✓ Состоялась</span>';
 
-    return '<div class="booking-card' + (isNew && !isPast ? ' is-new' : '') + (isPast ? ' is-past' : '') + '">' +
+    return '<div class="booking-card' + (isNew && !isPast && b.status !== 'cancelled' ? ' is-new' : '') + (isPast || b.status === 'cancelled' ? ' is-past' : '') + '">' +
       '<div style="flex:1;min-width:0">' +
         statusHtml +
         '<div class="booking-head">' +
           (b.masters ? (b.masters.emoji || '💅') + ' ' + esc(b.masters.name) + ' · ' : '') +
-          '📅 ' + shortDay + ' в ' + time +
+          '📅 ' + shortDay + ' в ' + time + (endTime ? '–' + endTime : '') +
         '</div>' +
+        (svc ? '<div style="display:inline-flex;align-items:center;gap:.35rem;background:#fdf6ea;border-radius:99px;padding:.2rem .65rem;font-size:.78rem;font-weight:700;color:#c9a96e;margin:.3rem 0 .2rem">' +
+          (svc.emoji||'✨') + ' ' + esc(svc.name) + ' · ' + fmtDur(svc.duration_minutes) + ' · ' + svc.price.toLocaleString('ru-RU') + ' ₸</div>' : '') +
         '<div class="booking-name">' + esc(b.client_name || '—') + '</div>' +
         '<div><a class="booking-phone-link" href="tel:' + esc(b.client_phone || '') + '">' + esc(b.client_phone || '') + '</a></div>' +
-        '<div class="booking-ts">Записался: ' + new Date(b.booked_at).toLocaleString('ru-RU') + '</div>' +
+        '<div class="booking-ts">Записался: ' + new Date(b.created_at).toLocaleString('ru-RU') + '</div>' +
       '</div>' +
       '<div class="booking-actions">' +
         '<a href="' + waLink(b) + '" target="_blank" rel="noopener" class="btn-wa">💬 WhatsApp</a>' +
-        (!isPast ? '<button class="btn-danger" onclick="cancelBooking(\'' + b.id + '\')">Отменить</button>' : '') +
+        (b.status !== 'cancelled' && !isPast ? '<button class="btn-danger" onclick="cancelBooking(\'' + b.id + '\')">Отменить</button>' : '') +
       '</div>' +
     '</div>';
   }).join('');
 }
 
 async function cancelBooking(id) {
-  if (!confirm('Отменить запись и освободить слот?')) return;
-  await sb.from('time_slots').update({ is_booked: false, client_name: null, client_phone: null, booked_at: null }).eq('id', id);
+  if (!confirm('Отменить запись и освободить слоты?')) return;
+  // Mark booking as cancelled
+  await sb.from('bookings').update({ status: 'cancelled' }).eq('id', id);
+  // Free time_slots that belong to this booking
+  await sb.from('time_slots').update({ is_booked: false, client_name: null, client_phone: null, booking_id: null }).eq('booking_id', id);
   toast('Запись отменена', 'success');
   await loadBookings();
 }
@@ -800,24 +988,23 @@ async function cancelBooking(id) {
 // ── REALTIME ─────────────────────────────────────────
 function subscribeRealtime() {
   sb.channel('admin-rt')
-    .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'time_slots' }, function(payload) {
-      if (payload.new && payload.new.is_booked) {
-        var active = document.getElementById('paneBookings').style.display !== 'none';
-        if (!active) {
-          newBookingsCount++;
-          updateBadge(newBookingsCount);
-        } else {
-          loadBookings();
-        }
-        var name = payload.new.client_name || 'Новый клиент';
-        toast('🔔 ' + name + ' записался!', 'info');
-        var orig = document.title;
-        document.title = '🔔 Новая запись!';
-        setTimeout(function(){ document.title = orig; }, 6000);
-        if (window.Notification && Notification.permission === 'granted') {
-          new Notification('Новая запись — К Студия', { body: name + ' · ' + (payload.new.slot_date || '') });
-        }
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'bookings' }, function(payload) {
+      var active = document.getElementById('paneBookings').style.display !== 'none';
+      if (!active) {
+        newBookingsCount++;
+        updateBadge(newBookingsCount);
+      } else {
+        loadBookings();
       }
+      var name = (payload.new && payload.new.client_name) || 'Новый клиент';
+      toast('🔔 ' + name + ' записался!', 'info');
+      var orig = document.title;
+      document.title = '🔔 Новая запись!';
+      setTimeout(function(){ document.title = orig; }, 6000);
+      if (window.Notification && Notification.permission === 'granted') {
+        new Notification('Новая запись — К Студия', { body: name + ' · ' + (payload.new ? payload.new.date : '') });
+      }
+      refreshOverview();
     })
     .subscribe();
   if (window.Notification && Notification.permission === 'default') {
@@ -829,7 +1016,7 @@ function showBadgeIfNeeded() {
   var today = todayStr();
   var oneDayAgo = Date.now() - 86400000;
   var n = allBookings.filter(function(b){
-    return new Date(b.booked_at).getTime() > oneDayAgo && b.slot_date >= today;
+    return new Date(b.created_at).getTime() > oneDayAgo && b.date >= today && b.status !== 'cancelled';
   }).length;
   if (n > 0 && document.getElementById('paneBookings').style.display === 'none') updateBadge(n);
 }
@@ -856,10 +1043,14 @@ function toast(msg, type) {
 
 // ── HELPERS ──────────────────────────────────────────
 function waLink(b) {
-  var dayStr = new Date(b.slot_date + 'T00:00:00').toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
+  var dateField = b.date || b.slot_date || '';
+  var timeField = b.start_time || b.slot_time || '';
+  var dayStr = new Date(dateField + 'T00:00:00').toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
   var phone  = (b.client_phone || '').replace(/\D/g, '');
+  var svcLine = b.services ? '\n✨ Услуга: ' + b.services.name + ' (' + fmtDur(b.services.duration_minutes) + ')' : '';
   var text   = 'Здравствуйте, ' + (b.client_name || '') + '! Подтверждаем запись в К Студию:\n' +
-               '📅 ' + dayStr + ' в ' + b.slot_time.slice(0,5) + '\n' +
+               '📅 ' + dayStr + ' в ' + timeField.slice(0,5) +
+               svcLine + '\n' +
                '👤 Мастер: ' + (b.masters ? b.masters.name : '') + '\nЖдём вас! 🌸';
   return 'https://wa.me/' + phone + '?text=' + encodeURIComponent(text);
 }
