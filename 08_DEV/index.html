@@ -1,0 +1,967 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#2C1F14" />
+
+  <!-- SEO -->
+  <title>К Студия — Салон красоты в Астане. Запись онлайн</title>
+  <meta name="description" content="К Студия — mid-premium салон красоты в Астане. Стрижки, окрашивание, маникюр, педикюр, макияж. Рейтинг 4.9★. Запись онлайн 24/7. Кабанбай батыр пр., 58Б." />
+  <meta name="keywords" content="салон красоты Астана, парикмахер Астана, маникюр Астана, окрашивание волос Астана, К Студия" />
+  <link rel="canonical" href="https://kstudio.kz/" />
+
+  <!-- Open Graph -->
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://kstudio.kz/" />
+  <meta property="og:title"       content="К Студия — Салон красоты в Астане" />
+  <meta property="og:description" content="Mid-premium салон красоты. Стрижки, окрашивание, маникюр, макияж. Рейтинг 4.9★. Запись 24/7." />
+  <meta property="og:image"       content="https://kstudio.kz/images/og-image.jpg" />
+  <meta property="og:locale"      content="ru_KZ" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles/base.css" />
+  <link rel="stylesheet" href="styles/components.css" />
+  <link rel="stylesheet" href="styles/layout.css" />
+
+  <!-- Schema.org — LocalBusiness -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": ["LocalBusiness", "BeautySalon"],
+    "name": "К Студия",
+    "image": "https://kstudio.kz/images/og-image.jpg",
+    "url": "https://kstudio.kz",
+    "telephone": "+77051170000",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "Кабанбай батыр проспект, 58Б",
+      "addressLocality": "Астана",
+      "addressCountry": "KZ",
+      "postalCode": "Z05P1T1"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": 51.09504,
+      "longitude": 71.420289
+    },
+    "openingHoursSpecification": {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "10:00",
+      "closes": "21:00"
+    },
+    "aggregateRating": {
+      "@type": "AggregateRating",
+      "ratingValue": "4.9",
+      "reviewCount": "68"
+    },
+    "sameAs": [
+      "https://www.instagram.com/k_studio_01/",
+      "https://2gis.kz/astana/firm/70000001104862663"
+    ]
+  }
+  </script>
+</head>
+
+<body>
+
+<!-- ══════════════════════════════════════
+     INTRO SCREEN
+══════════════════════════════════════ -->
+<div id="intro-overlay" aria-hidden="true">
+  <div class="intro-inner">
+    <svg class="intro-k" viewBox="0 0 160 210" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Vertical stem of К -->
+      <path class="k-stroke k-stroke-1"
+            d="M 52 20 C 50 70, 50 130, 52 185"
+            stroke="#c9a96e" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <!-- Upper arm — diagonal to upper right -->
+      <path class="k-stroke k-stroke-2"
+            d="M 52 100 C 72 86, 98 62, 132 22"
+            stroke="#c9a96e" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+      <!-- Lower arm — diagonal to lower right -->
+      <path class="k-stroke k-stroke-3"
+            d="M 74 116 C 94 134, 114 157, 135 183"
+            stroke="#c9a96e" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    </svg>
+    <div class="intro-divider"></div>
+    <p class="intro-subtitle">Studio of Beauty</p>
+    <p class="intro-city">Астана</p>
+  </div>
+</div>
+
+<style>
+/* ─── Intro Overlay ─── */
+#intro-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: #1a1208;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+#intro-overlay.intro-gone {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+.intro-inner {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+.intro-k {
+  width: 110px;
+  height: 137px;
+  display: block;
+}
+/* Stroke draw animation */
+.k-stroke {
+  stroke-dasharray: 350;
+  stroke-dashoffset: 350;
+  animation: drawK 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+.k-stroke-1 { animation-delay: 0.15s; }
+.k-stroke-2 { animation-delay: 0.62s; }
+.k-stroke-3 { animation-delay: 0.95s; }
+@keyframes drawK {
+  to { stroke-dashoffset: 0; }
+}
+/* Gold line divider */
+.intro-divider {
+  width: 0;
+  height: 1px;
+  background: rgba(201,169,110,0.5);
+  margin-top: 1.2rem;
+  animation: expandLine 0.45s ease 1.35s forwards;
+}
+@keyframes expandLine {
+  to { width: 80px; }
+}
+/* Studio text */
+.intro-subtitle {
+  font-family: 'Cormorant Garamond', Georgia, serif;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: rgba(201,169,110,0.9);
+  margin-top: 0.85rem;
+  margin-bottom: 0;
+  opacity: 0;
+  transform: translateY(6px);
+  animation: fadeUpText 0.55s ease 1.5s forwards;
+}
+.intro-city {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.5em;
+  text-transform: uppercase;
+  color: rgba(201,169,110,0.4);
+  margin-top: 0.45rem;
+  opacity: 0;
+  animation: fadeUpText 0.55s ease 1.75s forwards;
+}
+@keyframes fadeUpText {
+  to { opacity: 1; transform: translateY(0); }
+}
+</style>
+
+<!-- ══════════════════════════════════════
+     HEADER
+══════════════════════════════════════ -->
+<header class="header header--transparent" role="banner">
+  <div class="container">
+    <div class="header__inner">
+
+      <!-- Logo -->
+      <a href="/" class="header__logo" aria-label="К Студия — на главную">
+        <span class="header__logo-letter">К</span>
+        <span class="header__logo-sub">Studio of Beauty</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="header__nav" role="navigation" aria-label="Основная навигация">
+        <a href="/pages/services.html" class="header__nav-link">Услуги</a>
+        <a href="/pages/gallery.html"  class="header__nav-link">Галерея</a>
+        <a href="/pages/masters.html"  class="header__nav-link">Мастера</a>
+        <a href="/pages/about.html"    class="header__nav-link">О нас</a>
+        <a href="/pages/contacts.html" class="header__nav-link">Контакты</a>
+      </nav>
+
+      <!-- Actions -->
+      <div class="header__actions">
+        <a href="/pages/booking.html" class="btn btn--primary" style="display:none" id="headerBookingBtn">
+          Записаться
+        </a>
+        <button class="burger" aria-label="Открыть меню" aria-expanded="false" aria-controls="mobileNav">
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+        </button>
+      </div>
+
+    </div>
+  </div>
+</header>
+
+<!-- Mobile Nav Overlay -->
+<div class="mobile-nav__overlay" aria-hidden="true"></div>
+
+<!-- Mobile Nav Drawer -->
+<nav class="mobile-nav" id="mobileNav" aria-label="Мобильная навигация">
+  <button class="mobile-nav__close" aria-label="Закрыть меню">✕</button>
+
+  <ul class="mobile-nav__links">
+    <li><a href="/pages/services.html" class="mobile-nav__link">Услуги</a></li>
+    <li><a href="/pages/gallery.html"  class="mobile-nav__link">Галерея</a></li>
+    <li><a href="/pages/masters.html"  class="mobile-nav__link">Мастера</a></li>
+    <li><a href="/pages/about.html"    class="mobile-nav__link">О нас</a></li>
+    <li><a href="/pages/contacts.html" class="mobile-nav__link">Контакты</a></li>
+    <li><a href="/pages/faq.html"      class="mobile-nav__link">FAQ</a></li>
+  </ul>
+
+  <div class="mobile-nav__footer">
+    <a href="/pages/booking.html" class="btn btn--primary btn--full">Записаться онлайн</a>
+    <div class="mobile-nav__contact" style="margin-top:1rem;">
+      <div style="display:flex;align-items:center;gap:.5rem"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg> Кабанбай батыр пр., 58Б</div>
+      <div style="display:flex;align-items:center;gap:.5rem"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> Ежедневно 10:00–21:00</div>
+      <div>⭐ Рейтинг 4.9 (68 отзывов)</div>
+    </div>
+  </div>
+</nav>
+
+<!-- ══════════════════════════════════════
+     HERO
+══════════════════════════════════════ -->
+<section class="hero" aria-label="Главный баннер">
+
+  <!-- Background: replace src with real salon photo -->
+  <div class="hero__bg-placeholder"></div>
+
+  <!-- Gradient overlay for text readability -->
+  <div class="hero__overlay" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="hero__inner">
+
+      <div class="hero__content">
+
+        <p class="hero__eyebrow" aria-hidden="true">
+          <span></span>
+          Астана · Есиль район
+          <span></span>
+        </p>
+
+        <h1 class="hero__title">
+          Красота,<br/>
+          которая <span>говорит</span><br/>
+          за себя
+        </h1>
+
+        <p class="hero__subtitle">
+          Профессиональные мастера, прозрачные цены и атмосфера,
+          в которой хочется возвращаться снова.
+        </p>
+
+        <div class="hero__actions">
+          <a href="/pages/booking.html" class="btn btn--primary">
+            Записаться онлайн
+          </a>
+          <a href="/pages/gallery.html" class="btn btn--ghost">
+            Смотреть работы
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Desktop-only right photo -->
+      <div class="hero__photo" aria-hidden="true">
+        <div class="hero__photo-frame">
+          <img src="images/image2.jpg" alt="" loading="eager" />
+        </div>
+        <div class="hero__photo-accent"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scroll hint -->
+  <div class="hero__scroll-hint" aria-hidden="true">
+    <span>Прокрутить</span>
+    <div class="hero__scroll-arrow"></div>
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════
+     TRUST BAR
+══════════════════════════════════════ -->
+<div class="trust-bar" aria-label="Ключевые показатели">
+  <div class="container">
+    <div class="trust-bar__grid">
+
+      <div class="trust-item reveal">
+        <span class="trust-item__number">4.9★</span>
+        <span class="trust-item__label">Рейтинг 2GIS</span>
+      </div>
+
+      <div class="trust-item reveal reveal--delay-1">
+        <span class="trust-item__number">68+</span>
+        <span class="trust-item__label">Отзывов</span>
+      </div>
+
+      <div class="trust-item reveal reveal--delay-2">
+        <span class="trust-item__number">10–21</span>
+        <span class="trust-item__label">Ежедневно</span>
+      </div>
+
+      <div class="trust-item reveal reveal--delay-3">
+        <span class="trust-item__number">Express</span>
+        <span class="trust-item__label">4, 6 и 8 рук</span>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     SERVICES
+══════════════════════════════════════ -->
+<section class="section" id="services" aria-labelledby="services-title">
+  <div class="container">
+
+    <header class="section-header">
+      <span class="section-eyebrow">Наши услуги</span>
+      <h2 class="section-title" id="services-title">Всё для вашей красоты</h2>
+      <div class="divider" aria-hidden="true"></div>
+      <p class="section-subtitle">
+        Полный спектр beauty-услуг в одном месте — от стрижки до макияжа.
+        Express-обслуживание в 4, 6 и 8 рук.
+      </p>
+    </header>
+
+    <div class="services-grid">
+
+      <!-- Волосы -->
+      <article class="service-card reveal">
+        <div class="service-card__image-placeholder" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div>
+        <div class="service-card__body">
+          <h3 class="service-card__name">Волосы</h3>
+          <p class="service-card__desc">
+            Стрижки, окрашивание, ламинирование, укладки и уходовые процедуры
+            от опытных колористов и парикмахеров.
+          </p>
+          <div class="service-card__footer">
+            <div>
+              <div class="service-card__price">от 3 000 ₸</div>
+              <div class="service-card__duration">от 30 мин</div>
+            </div>
+            <a href="/pages/services.html#volosy" class="btn btn--sm btn--primary">Записаться</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Маникюр -->
+      <article class="service-card reveal reveal--delay-1">
+        <div class="service-card__image-placeholder" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><path d="M12 2C9.79 2 8 3.79 8 6v8c0 2.21 1.79 4 4 4s4-1.79 4-4V6c0-2.21-1.79-4-4-4z"/><path d="M8 10h8"/></svg></div>
+        <div class="service-card__body">
+          <h3 class="service-card__name">Маникюр</h3>
+          <p class="service-card__desc">
+            Классический и аппаратный маникюр, гель-лак, наращивание,
+            дизайн ногтей — любой запрос выполним.
+          </p>
+          <div class="service-card__footer">
+            <div>
+              <div class="service-card__price">от 4 000 ₸</div>
+              <div class="service-card__duration">от 60 мин</div>
+            </div>
+            <a href="/pages/services.html#manikyur" class="btn btn--sm btn--primary">Записаться</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Педикюр -->
+      <article class="service-card reveal reveal--delay-2">
+        <div class="service-card__image-placeholder" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><path d="M8 18c0 2 1.3 4 4 4s4-2 4-4v-6"/><circle cx="10" cy="7" r="2"/><circle cx="14" cy="5" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="7" cy="11" r="2"/></svg></div>
+        <div class="service-card__body">
+          <h3 class="service-card__name">Педикюр</h3>
+          <p class="service-card__desc">
+            Аппаратный педикюр, SPA-уход, покрытие гель-лаком.
+            Уходим за собой до кончиков пальцев.
+          </p>
+          <div class="service-card__footer">
+            <div>
+              <div class="service-card__price">от 5 000 ₸</div>
+              <div class="service-card__duration">от 60 мин</div>
+            </div>
+            <a href="/pages/services.html#pedikyur" class="btn btn--sm btn--primary">Записаться</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Брови и ресницы -->
+      <article class="service-card reveal">
+        <div class="service-card__image-placeholder" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div class="service-card__body">
+          <h3 class="service-card__name">Брови и ресницы</h3>
+          <p class="service-card__desc">
+            Коррекция и окраска бровей, ламинирование ресниц,
+            наращивание — взгляд, который говорит за вас.
+          </p>
+          <div class="service-card__footer">
+            <div>
+              <div class="service-card__price">от 2 500 ₸</div>
+              <div class="service-card__duration">от 45 мин</div>
+            </div>
+            <a href="/pages/services.html#brovi" class="btn btn--sm btn--primary">Записаться</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Макияж -->
+      <article class="service-card reveal reveal--delay-1">
+        <div class="service-card__image-placeholder" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><path d="M12 16c-4 0-7-2-7-4 0-1.5 1.5-2.5 3-3 1.5-.5 2.5-1 4-1s2.5.5 4 1c1.5.5 3 1.5 3 3 0 2-3 4-7 4z"/><path d="M9 9c0-1.7 1.3-3 3-3s3 1.3 3 3"/></svg></div>
+        <div class="service-card__body">
+          <h3 class="service-card__name">Макияж</h3>
+          <p class="service-card__desc">
+            Дневной, вечерний, свадебный макияж. Профессиональная
+            косметика, результат — безупречный.
+          </p>
+          <div class="service-card__footer">
+            <div>
+              <div class="service-card__price">от 8 000 ₸</div>
+              <div class="service-card__duration">от 60 мин</div>
+            </div>
+            <a href="/pages/services.html#makiyazh" class="btn btn--sm btn--primary">Записаться</a>
+          </div>
+        </div>
+      </article>
+
+      <!-- Express -->
+      <article class="service-card reveal reveal--delay-2" style="background: var(--color-dark); color: var(--color-cream);">
+        <div class="service-card__image-placeholder" style="background:rgba(201,169,110,.08)" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div class="service-card__body">
+          <h3 class="service-card__name" style="color: var(--color-cream);">Express-услуги</h3>
+          <p class="service-card__desc" style="color: rgba(248,245,241,0.65);">
+            Уникальный формат — в 4, 6 и 8 рук. Сэкономьте время:
+            несколько мастеров работают одновременно.
+          </p>
+          <div class="service-card__footer" style="border-top-color: rgba(255,255,255,0.1);">
+            <div>
+              <div class="service-card__price" style="color: var(--color-gold);">Уточнить цену</div>
+              <div class="service-card__duration" style="color: rgba(248,245,241,0.5);">Вдвое быстрее</div>
+            </div>
+            <a href="/pages/booking.html" class="btn btn--sm btn--primary">Записаться</a>
+          </div>
+        </div>
+      </article>
+
+    </div>
+
+    <div style="text-align:center; margin-top: var(--space-lg);">
+      <a href="/pages/services.html" class="btn btn--secondary">
+        Все услуги и цены →
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     ABOUT SNIPPET
+══════════════════════════════════════ -->
+<section class="section section--beige" id="about" aria-labelledby="about-title">
+  <div class="container">
+    <div class="about-grid">
+
+      <!-- Image side -->
+      <div class="about-image reveal">
+        <img src="images/image4.jpg" alt="К Студия — интерьер" loading="lazy" style="width:100%;height:420px;object-fit:cover;display:block;border-radius:16px">
+        <div class="about-image__badge">
+          <span class="about-image__badge-number">2023</span>
+          <span class="about-image__badge-label">Год открытия</span>
+        </div>
+      </div>
+
+      <!-- Text side -->
+      <div class="about-content reveal reveal--delay-1">
+        <span class="section-eyebrow">О студии</span>
+        <h2 class="section-title" id="about-title">
+          Место, где<br/>рождается красота
+        </h2>
+        <div class="divider" style="margin-inline: 0;"></div>
+        <p style="color: var(--color-text-muted); line-height: 1.9; margin-bottom: var(--space-md);">
+          К Студия — это пространство, где каждая деталь продумана для вашего
+          комфорта. Мы предоставляем полный спектр beauty-услуг с фокусом
+          на качество, результат и ваше время.
+        </p>
+        <p style="color: var(--color-text-muted); line-height: 1.9;">
+          Наши мастера — профессионалы, которые следят за трендами
+          и умеют слышать каждого клиента. Ваш идеальный образ —
+          это наша работа.
+        </p>
+
+        <div class="about-features">
+          <div class="about-feature">
+            <span class="about-feature__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.25em;height:1.25em;vertical-align:middle"><polyline points="8 21 12 21 16 21"/><line x1="12" y1="17" x2="12" y2="21"/><path d="M7 4H4a2 2 0 0 0-2 2v3a4 4 0 0 0 4 4h.5"/><path d="M17 4h3a2 2 0 0 1 2 2v3a4 4 0 0 1-4 4h-.5"/><path d="M7 4a5 5 0 0 0 5 5 5 5 0 0 0 5-5"/><line x1="12" y1="9" x2="12" y2="4"/></svg></span>
+            <div>
+              <div class="about-feature__title">Рейтинг 4.9★</div>
+              <p class="about-feature__text">68 отзывов на 2GIS — клиенты возвращаются и рекомендуют</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <span class="about-feature__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.25em;height:1.25em;vertical-align:middle"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></span>
+            <div>
+              <div class="about-feature__title">Express в 4, 6 и 8 рук</div>
+              <p class="about-feature__text">Уникальный формат — несколько мастеров работают одновременно</p>
+            </div>
+          </div>
+          <div class="about-feature">
+            <span class="about-feature__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.25em;height:1.25em;vertical-align:middle"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></span>
+            <div>
+              <div class="about-feature__title">Запись 24/7 онлайн</div>
+              <p class="about-feature__text">Без звонков — выбирайте время и мастера в любое время суток</p>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top: var(--space-lg);">
+          <a href="/pages/about.html" class="btn btn--secondary">Узнать больше</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     GALLERY PREVIEW
+══════════════════════════════════════ -->
+<section class="section" id="gallery" aria-labelledby="gallery-title">
+  <div class="container">
+
+    <header class="section-header">
+      <span class="section-eyebrow">Галерея работ</span>
+      <h2 class="section-title" id="gallery-title">Наши работы</h2>
+      <div class="divider" aria-hidden="true"></div>
+      <p class="section-subtitle">
+        Реальные работы наших мастеров — никаких стоков, только результат
+      </p>
+    </header>
+
+    <!-- Filter -->
+    <div class="gallery-filters" role="group" aria-label="Фильтр по категориям">
+      <button class="gallery-filter-btn is-active" data-filter="all">Все</button>
+      <button class="gallery-filter-btn" data-filter="volosy">Волосы</button>
+      <button class="gallery-filter-btn" data-filter="manikyur">Маникюр</button>
+      <button class="gallery-filter-btn" data-filter="makiyazh">Брови/Ресницы</button>
+    </div>
+
+    <!-- Gallery grid — placeholder items -->
+    <div class="gallery-grid reveal">
+
+      <div class="gallery-item" data-category="volosy" style="break-inside:avoid;margin-bottom:.75rem">
+        <img src="images/image1.jpg" alt="Работа: волосы" loading="lazy" style="height:240px;width:100%;object-fit:cover;display:block;border-radius:var(--border-radius,10px)">
+      </div>
+      <div class="gallery-item" data-category="manikyur" style="break-inside:avoid;margin-bottom:.75rem">
+        <img src="images/image2.jpg" alt="Работа: маникюр" loading="lazy" style="height:180px;width:100%;object-fit:cover;display:block;border-radius:var(--border-radius,10px)">
+      </div>
+      <div class="gallery-item" data-category="makiyazh" style="break-inside:avoid;margin-bottom:.75rem">
+        <img src="images/iamge3.jpg" alt="Работа: ресницы" loading="lazy" style="height:280px;width:100%;object-fit:cover;display:block;border-radius:var(--border-radius,10px)">
+      </div>
+      <div class="gallery-item" data-category="volosy" style="break-inside:avoid;margin-bottom:.75rem">
+        <img src="images/image4.jpg" alt="Работа: окрашивание" loading="lazy" style="height:200px;width:100%;object-fit:cover;display:block;border-radius:var(--border-radius,10px)">
+      </div>
+      <div class="gallery-item" data-category="manikyur" style="break-inside:avoid;margin-bottom:.75rem">
+        <img src="images/image5.jpg" alt="Работа: дизайн" loading="lazy" style="height:220px;width:100%;object-fit:cover;display:block;border-radius:var(--border-radius,10px)">
+      </div>
+      <div class="gallery-item" data-category="volosy" style="break-inside:avoid;margin-bottom:.75rem">
+        <img src="images/heroimage.jpg" alt="Работа: стрижка" loading="lazy" style="height:260px;width:100%;object-fit:cover;display:block;border-radius:var(--border-radius,10px)">
+      </div>
+      <div class="gallery-item" data-category="makiyazh" style="break-inside:avoid;margin-bottom:.75rem">
+        <img src="images/image1.jpg" alt="Работа: брови" loading="lazy" style="height:190px;width:100%;object-fit:cover;display:block;border-radius:var(--border-radius,10px)">
+      </div>
+      <div class="gallery-item" data-category="manikyur" style="break-inside:avoid;margin-bottom:.75rem">
+        <img src="images/image2.jpg" alt="Работа: педикюр" loading="lazy" style="height:230px;width:100%;object-fit:cover;display:block;border-radius:var(--border-radius,10px)">
+      </div>
+      <div class="gallery-item" data-category="volosy" style="break-inside:avoid;margin-bottom:.75rem">
+        <img src="images/iamge3.jpg" alt="Работа: укладка" loading="lazy" style="height:200px;width:100%;object-fit:cover;display:block;border-radius:var(--border-radius,10px)">
+      </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top: var(--space-lg);">
+      <a href="/pages/gallery.html" class="btn btn--secondary">Смотреть все работы →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     MASTERS
+══════════════════════════════════════ -->
+<section class="section section--beige" id="masters" aria-labelledby="masters-title">
+  <div class="container">
+
+    <header class="section-header">
+      <span class="section-eyebrow">Команда</span>
+      <h2 class="section-title" id="masters-title">Наши мастера</h2>
+      <div class="divider" aria-hidden="true"></div>
+      <p class="section-subtitle">
+        Профессионалы с опытом, которые любят своё дело
+      </p>
+    </header>
+
+    <div class="masters-grid">
+
+      <div class="master-card reveal">
+        <div style="width:160px;height:160px;border-radius:50%;background:linear-gradient(135deg,#c9a96e 0%,#d4b882 100%);display:flex;align-items:center;justify-content:center;font-size:3.5rem;font-weight:700;color:#fff;font-family:Georgia,serif;margin-inline:auto;margin-bottom:1.5rem;border:3px solid rgba(201,169,110,.2);">К</div>
+        <h3 class="master-card__name">Мастер</h3>
+        <p class="master-card__spec">Колорист · Парикмахер</p>
+        <p class="master-card__exp">Опыт 5+ лет</p>
+        <a href="/pages/masters.html" class="btn btn--sm btn--secondary">Записаться</a>
+      </div>
+
+      <div class="master-card reveal reveal--delay-1">
+        <div style="width:160px;height:160px;border-radius:50%;background:linear-gradient(135deg,#c9a96e 0%,#d4b882 100%);display:flex;align-items:center;justify-content:center;font-size:3.5rem;font-weight:700;color:#fff;font-family:Georgia,serif;margin-inline:auto;margin-bottom:1.5rem;border:3px solid rgba(201,169,110,.2);">М</div>
+        <h3 class="master-card__name">Мастер</h3>
+        <p class="master-card__spec">Маникюр · Педикюр</p>
+        <p class="master-card__exp">Опыт 4+ лет</p>
+        <a href="/pages/masters.html" class="btn btn--sm btn--secondary">Записаться</a>
+      </div>
+
+      <div class="master-card reveal reveal--delay-2">
+        <div style="width:160px;height:160px;border-radius:50%;background:linear-gradient(135deg,#c9a96e 0%,#d4b882 100%);display:flex;align-items:center;justify-content:center;font-size:3.5rem;font-weight:700;color:#fff;font-family:Georgia,serif;margin-inline:auto;margin-bottom:1.5rem;border:3px solid rgba(201,169,110,.2);">А</div>
+        <h3 class="master-card__name">Мастер</h3>
+        <p class="master-card__spec">Брови · Ресницы</p>
+        <p class="master-card__exp">Опыт 3+ лет</p>
+        <a href="/pages/masters.html" class="btn btn--sm btn--secondary">Записаться</a>
+      </div>
+
+      <div class="master-card reveal reveal--delay-3">
+        <div style="width:160px;height:160px;border-radius:50%;background:linear-gradient(135deg,#c9a96e 0%,#d4b882 100%);display:flex;align-items:center;justify-content:center;font-size:3.5rem;font-weight:700;color:#fff;font-family:Georgia,serif;margin-inline:auto;margin-bottom:1.5rem;border:3px solid rgba(201,169,110,.2);">Д</div>
+        <h3 class="master-card__name">Мастер</h3>
+        <p class="master-card__spec">Макияж · Визажист</p>
+        <p class="master-card__exp">Опыт 5+ лет</p>
+        <a href="/pages/masters.html" class="btn btn--sm btn--secondary">Записаться</a>
+      </div>
+
+    </div>
+
+    <div style="text-align:center; margin-top: var(--space-lg);">
+      <a href="/pages/masters.html" class="btn btn--secondary">Все мастера →</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     REVIEWS
+══════════════════════════════════════ -->
+<section class="section" id="reviews" aria-labelledby="reviews-title">
+  <div class="container">
+
+    <header class="section-header">
+      <span class="section-eyebrow">Отзывы клиентов</span>
+      <h2 class="section-title" id="reviews-title">Что говорят о нас</h2>
+      <div class="divider" aria-hidden="true"></div>
+      <p class="section-subtitle">
+        Рейтинг 4.9★ на 2GIS — реальные отзывы реальных клиентов
+      </p>
+    </header>
+
+    <div class="reviews-track">
+
+      <article class="review-card reveal">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">
+          Делала окрашивание — результат просто восхитительный! Мастер
+          выслушала все пожелания и предложила идеальный вариант для моего
+          типа волос. Однозначно вернусь!
+        </p>
+        <div class="review-card__author">
+          <div style="width:42px;height:42px;border-radius:50%;background:#c9a96e;display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:700;color:#fff;font-family:Georgia,serif;flex-shrink:0;">А</div>
+          <div>
+            <div class="review-card__name">Айгерим К.</div>
+            <div class="review-card__service">Окрашивание</div>
+          </div>
+          <div class="review-card__source">2GIS</div>
+        </div>
+      </article>
+
+      <article class="review-card reveal reveal--delay-1">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">
+          Первый раз пробовала express-маникюр в 4 руки — невероятно удобно!
+          За час сделали маникюр и педикюр одновременно. Качество на высшем
+          уровне, буду рекомендовать всем подругам.
+        </p>
+        <div class="review-card__author">
+          <div style="width:42px;height:42px;border-radius:50%;background:#b8956a;display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:700;color:#fff;font-family:Georgia,serif;flex-shrink:0;">К</div>
+          <div>
+            <div class="review-card__name">Камила А.</div>
+            <div class="review-card__service">Express маникюр</div>
+          </div>
+          <div class="review-card__source">2GIS</div>
+        </div>
+      </article>
+
+      <article class="review-card reveal reveal--delay-2">
+        <div class="review-card__stars">★★★★★</div>
+        <p class="review-card__text">
+          Делала брови — мастер настоящий профессионал. Учла форму лица,
+          предложила идеальную форму. Теперь хожу только сюда. Атмосфера
+          в студии очень уютная и приятная.
+        </p>
+        <div class="review-card__author">
+          <div style="width:42px;height:42px;border-radius:50%;background:#a07855;display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:700;color:#fff;font-family:Georgia,serif;flex-shrink:0;">Д</div>
+          <div>
+            <div class="review-card__name">Дина Б.</div>
+            <div class="review-card__service">Коррекция бровей</div>
+          </div>
+          <div class="review-card__source">2GIS</div>
+        </div>
+      </article>
+
+    </div>
+
+    <div style="text-align:center; margin-top: var(--space-lg);">
+      <a href="https://2gis.kz/astana/firm/70000001104862663" target="_blank" rel="noopener" class="btn btn--secondary">
+        Читать все отзывы на 2GIS ↗
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     BOOKING CTA
+══════════════════════════════════════ -->
+<section class="booking-cta" aria-labelledby="cta-title">
+  <div class="container" style="position:relative; z-index:1;">
+
+    <span class="booking-cta__eyebrow">Запись онлайн 24/7</span>
+    <h2 class="booking-cta__title" id="cta-title">
+      Запишитесь прямо сейчас —<br/>
+      это займёт 2 минуты
+    </h2>
+    <p class="booking-cta__subtitle">
+      Выбирайте удобное время, мастера и услугу. Без звонков.
+      Подтверждение придёт в WhatsApp.
+    </p>
+
+    <a href="/pages/booking.html" class="btn btn--primary" style="padding: 1rem 2.5rem; font-size:0.85rem;">
+      Выбрать время и мастера
+    </a>
+
+    <div class="booking-cta__info">
+      <div class="booking-cta__info-item">
+        <span style="display:flex;align-items:center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+        <span>Кабанбай батыр пр., 58Б, Астана</span>
+      </div>
+      <div class="booking-cta__info-item">
+        <span style="display:flex;align-items:center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+        <span>Ежедневно 10:00–21:00</span>
+      </div>
+      <div class="booking-cta__info-item">
+        <span style="display:flex;align-items:center"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></span>
+        <span>Ответим в WhatsApp</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+     FOOTER
+══════════════════════════════════════ -->
+<footer class="footer" role="contentinfo">
+  <div class="container">
+    <div class="footer__grid">
+
+      <!-- Brand -->
+      <div class="footer__brand">
+        <span class="footer__logo">К</span>
+        <span class="footer__logo-sub">Studio of Beauty</span>
+        <p class="footer__desc">
+          Mid-premium салон красоты в Астане. Все beauty-услуги в одном месте.
+        </p>
+        <div class="footer__socials">
+          <a href="https://www.instagram.com/k_studio_01/" target="_blank" rel="noopener"
+             class="footer__social-link" aria-label="Instagram К Студия">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+          </a>
+          <a href="https://wa.me/77051170000" target="_blank" rel="noopener"
+             class="footer__social-link" aria-label="WhatsApp К Студия">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+          </a>
+          <a href="https://2gis.kz/astana/firm/70000001104862663" target="_blank" rel="noopener"
+             class="footer__social-link" aria-label="2GIS К Студия">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Services -->
+      <div>
+        <p class="footer__col-title">Услуги</p>
+        <ul class="footer__links">
+          <li><a href="/pages/services.html#volosy"   class="footer__link">Волосы</a></li>
+          <li><a href="/pages/services.html#manikyur" class="footer__link">Маникюр</a></li>
+          <li><a href="/pages/services.html#pedikyur" class="footer__link">Педикюр</a></li>
+          <li><a href="/pages/services.html#brovi"    class="footer__link">Брови и ресницы</a></li>
+          <li><a href="/pages/services.html#makiyazh" class="footer__link">Макияж</a></li>
+          <li><a href="/pages/services.html"          class="footer__link">Все услуги →</a></li>
+        </ul>
+      </div>
+
+      <!-- Studio -->
+      <div>
+        <p class="footer__col-title">Студия</p>
+        <ul class="footer__links">
+          <li><a href="/pages/about.html"   class="footer__link">О нас</a></li>
+          <li><a href="/pages/masters.html" class="footer__link">Мастера</a></li>
+          <li><a href="/pages/gallery.html" class="footer__link">Галерея</a></li>
+          <li><a href="/pages/faq.html"     class="footer__link">FAQ</a></li>
+          <li><a href="/pages/booking.html" class="footer__link">Записаться</a></li>
+        </ul>
+      </div>
+
+      <!-- Contacts -->
+      <div>
+        <p class="footer__col-title">Контакты</p>
+        <ul class="footer__contact-list">
+          <li class="footer__contact-item">
+            <span class="footer__contact-icon" style="font-size:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+            <span class="footer__contact-text">
+              Кабанбай батыр пр., 58Б<br/>
+              Есиль район, Астана
+            </span>
+          </li>
+          <li class="footer__contact-item">
+            <span class="footer__contact-icon" style="font-size:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></span>
+            <span class="footer__contact-text">Ежедневно 10:00–21:00</span>
+          </li>
+          <li class="footer__contact-item">
+            <span class="footer__contact-icon" style="font-size:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.08 6.08l.81-.81a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg></span>
+            <a href="tel:+77051170000" class="footer__contact-text footer__link">
+              +7-705-117-XXXX
+            </a>
+          </li>
+          <li class="footer__contact-item">
+            <span class="footer__contact-icon" style="font-size:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></span>
+            <a href="https://wa.me/77051170000" target="_blank" rel="noopener"
+               class="footer__contact-text footer__link">
+              WhatsApp
+            </a>
+          </li>
+          <li class="footer__contact-item">
+            <span class="footer__contact-icon" style="font-size:0"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></span>
+            <a href="https://www.instagram.com/k_studio_01/" target="_blank" rel="noopener"
+               class="footer__contact-text footer__link">
+              @k_studio_01
+            </a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+
+    <!-- Bottom bar -->
+    <div class="footer__bottom">
+      <span>© 2026 К Студия. Все права защищены.</span>
+      <div style="display:flex; gap:1.5rem;">
+        <a href="/pages/privacy.html" class="footer__bottom-link">Политика конфиденциальности</a>
+        <a href="/pages/contacts.html" class="footer__bottom-link">Карта проезда</a>
+      </div>
+    </div>
+
+  </div>
+</footer>
+
+<!-- ══════════════════════════════════════
+     FLOATING ELEMENTS
+══════════════════════════════════════ -->
+
+<!-- WhatsApp -->
+<a href="https://wa.me/77051170000" target="_blank" rel="noopener"
+   class="whatsapp-btn" aria-label="Написать в WhatsApp">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:26px;height:26px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+</a>
+
+<!-- Mobile sticky booking -->
+<div class="mobile-booking-cta" role="complementary">
+  <div class="mobile-booking-cta__text">
+    <strong>К Студия</strong>
+    Ежедневно 10:00–21:00
+  </div>
+  <a href="/pages/booking.html" class="btn btn--primary btn--sm">
+    Записаться
+  </a>
+</div>
+
+<!-- Lightbox -->
+<div class="lightbox" role="dialog" aria-modal="true" aria-label="Просмотр фото">
+  <div class="lightbox__inner">
+    <button class="lightbox__close" aria-label="Закрыть">✕</button>
+    <img class="lightbox__image" src="" alt="" />
+    <p class="lightbox__caption"></p>
+  </div>
+</div>
+
+<!-- ─── Scripts ─── -->
+<script>
+  // Show booking btn in header after scroll
+  window.addEventListener('scroll', function() {
+    var btn = document.getElementById('headerBookingBtn');
+    if (btn) btn.style.display = window.scrollY > 300 ? 'inline-flex' : 'none';
+  }, { passive: true });
+
+  // ─── Intro animation ───
+  (function() {
+    var overlay = document.getElementById('intro-overlay');
+    if (!overlay) return;
+
+    // Only show once per session
+    if (sessionStorage.getItem('introSeen')) {
+      overlay.remove();
+      return;
+    }
+
+    // Block page scroll while intro is showing
+    document.body.style.overflow = 'hidden';
+
+    // Dismiss after animation completes (~2.4s)
+    setTimeout(function() {
+      overlay.classList.add('intro-gone');
+      document.body.style.overflow = '';
+      sessionStorage.setItem('introSeen', '1');
+      // Remove from DOM after fade
+      setTimeout(function() { overlay.remove(); }, 850);
+    }, 2400);
+
+    // Allow clicking to skip intro
+    overlay.addEventListener('click', function() {
+      overlay.classList.add('intro-gone');
+      document.body.style.overflow = '';
+      sessionStorage.setItem('introSeen', '1');
+      setTimeout(function() { overlay.remove(); }, 850);
+    });
+  })();
+</script>
+<script src="js/main.js" defer></script>
+
+</body>
+</html>

@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>О нас — К Студия | Салон красоты в Астане</title>
+  <meta name="description" content="К Студия — салон красоты нового поколения в Астане. Узнайте нашу историю, философию и команду. Кабанбай батыр пр., 58Б." />
+  <link rel="canonical" href="https://kstudio.kz/about" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../styles/base.css" />
+  <link rel="stylesheet" href="../styles/components.css" />
+  <link rel="stylesheet" href="../styles/layout.css" />
+  <style>
+    /* About Page */
+    .story-section {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-xl);
+      align-items: center;
+    }
+    @media (min-width: 768px) {
+      .story-section { grid-template-columns: 1fr 1fr; }
+    }
+
+    .story-photo-placeholder {
+      aspect-ratio: 4/5;
+      background: var(--color-beige);
+      border-radius: var(--border-radius-lg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 6rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .story-photo-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(201,169,110,0.2) 0%, transparent 60%);
+    }
+
+    .story-text__eyebrow {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--color-gold);
+      margin-bottom: var(--space-sm);
+      display: block;
+    }
+
+    .story-text__title {
+      font-family: var(--font-heading);
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-weight: 300;
+      color: var(--color-dark);
+      line-height: 1.2;
+      margin-bottom: var(--space-md);
+    }
+
+    .story-text__body {
+      color: var(--color-text-muted);
+      line-height: 1.9;
+      font-size: 0.95rem;
+    }
+
+    .story-text__body p + p { margin-top: var(--space-sm); }
+
+    .story-text__quote {
+      border-left: 3px solid var(--color-gold);
+      padding-left: var(--space-md);
+      margin: var(--space-lg) 0;
+      font-family: var(--font-heading);
+      font-size: 1.25rem;
+      font-style: italic;
+      color: var(--color-dark);
+      line-height: 1.6;
+    }
+
+    /* Values */
+    .values-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-md);
+      margin-top: var(--space-xl);
+    }
+    @media (min-width: 640px) {
+      .values-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (min-width: 1024px) {
+      .values-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .value-card {
+      padding: var(--space-lg);
+      background: white;
+      border-radius: var(--border-radius-lg);
+      border-top: 3px solid var(--color-gold);
+      box-shadow: var(--shadow-sm);
+      transition: transform 0.3s ease;
+    }
+    .value-card:hover { transform: translateY(-4px); }
+
+    .value-card__icon {
+      font-size: 2.5rem;
+      margin-bottom: var(--space-sm);
+      display: block;
+    }
+
+    .value-card__title {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      color: var(--color-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .value-card__text {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+    }
+
+    /* Studio interior */
+    .interior-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-sm);
+      margin-top: var(--space-xl);
+    }
+    @media (min-width: 640px) {
+      .interior-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    .interior-item {
+      border-radius: var(--border-radius);
+      overflow: hidden;
+      background: var(--color-beige);
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+      color: var(--color-text-muted);
+      position: relative;
+    }
+
+    .interior-item:first-child {
+      grid-column: span 2;
+      aspect-ratio: 16/9;
+      font-size: 5rem;
+    }
+
+    /* Numbers section */
+    .numbers-section {
+      background: var(--color-dark);
+      border-radius: var(--border-radius-lg);
+      padding: var(--space-xl);
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-xl) var(--space-md);
+      text-align: center;
+    }
+    @media (min-width: 640px) {
+      .numbers-section { grid-template-columns: repeat(4, 1fr); }
+    }
+
+    .number-item__value {
+      font-family: var(--font-heading);
+      font-size: clamp(2.5rem, 5vw, 4rem);
+      color: var(--color-gold);
+      line-height: 1;
+    }
+
+    .number-item__label {
+      font-size: 0.8rem;
+      color: rgba(248,245,241,0.5);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 0.4rem;
+    }
+
+    /* Timeline */
+    .timeline {
+      position: relative;
+      margin-top: var(--space-xl);
+      padding-left: var(--space-xl);
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0.6rem;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background: var(--color-border);
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: var(--space-lg);
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: calc(-1 * var(--space-xl) + 0.35rem);
+      top: 0.4rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--color-gold);
+      border: 2px solid white;
+      box-shadow: 0 0 0 2px var(--color-gold);
+    }
+
+    .timeline-item__year {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      color: var(--color-gold);
+      text-transform: uppercase;
+      margin-bottom: 0.3rem;
+    }
+
+    .timeline-item__title {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      color: var(--color-dark);
+      margin-bottom: 0.4rem;
+    }
+
+    .timeline-item__text {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+    }
+
+    /* Principles */
+    .principles-list {
+      list-style: none;
+      margin-top: var(--space-lg);
+    }
+
+    .principle-item {
+      display: flex;
+      gap: var(--space-md);
+      align-items: flex-start;
+      padding: var(--space-md) 0;
+      border-bottom: 1px solid var(--color-border);
+    }
+
+    .principle-item:last-child { border-bottom: none; }
+
+    .principle-item__num {
+      font-family: var(--font-heading);
+      font-size: 2rem;
+      color: var(--color-gold);
+      opacity: 0.4;
+      line-height: 1;
+      flex-shrink: 0;
+      min-width: 2.5rem;
+    }
+
+    .principle-item__title {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      color: var(--color-dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .principle-item__text {
+      font-size: 0.875rem;
+      color: var(--color-text-muted);
+      line-height: 1.7;
+    }
+  </style>
+</head>
+<body>
+
+<!-- Header -->
+<header class="header header--scrolled">
+  <div class="container">
+    <div class="header__inner">
+      <a href="/" class="header__logo">
+        <span class="header__logo-letter">К</span>
+        <span class="header__logo-sub">Studio of Beauty</span>
+      </a>
+      <nav class="header__nav">
+        <a href="/pages/services.html" class="header__nav-link">Услуги</a>
+        <a href="/pages/gallery.html"  class="header__nav-link">Галерея</a>
+        <a href="/pages/masters.html"  class="header__nav-link">Мастера</a>
+        <a href="/pages/about.html"    class="header__nav-link is-active">О нас</a>
+        <a href="/pages/contacts.html" class="header__nav-link">Контакты</a>
+      </nav>
+      <div class="header__actions">
+        <a href="/pages/booking.html" class="btn btn--primary" style="display:inline-flex;">Записаться</a>
+        <button class="burger" aria-label="Открыть меню" aria-expanded="false">
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+          <span class="burger__line"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-nav__overlay"></div>
+<nav class="mobile-nav">
+  <button class="mobile-nav__close">✕</button>
+  <ul class="mobile-nav__links">
+    <li><a href="/pages/services.html" class="mobile-nav__link">Услуги</a></li>
+    <li><a href="/pages/gallery.html"  class="mobile-nav__link">Галерея</a></li>
+    <li><a href="/pages/masters.html"  class="mobile-nav__link">Мастера</a></li>
+    <li><a href="/pages/about.html"    class="mobile-nav__link">О нас</a></li>
+    <li><a href="/pages/contacts.html" class="mobile-nav__link">Контакты</a></li>
+  </ul>
+  <div class="mobile-nav__footer">
+    <a href="/pages/booking.html" class="btn btn--primary btn--full">Записаться онлайн</a>
+  </div>
+</nav>
+
+<!-- Page Hero -->
+<section class="page-hero">
+  <div class="container">
+    <span class="page-hero__eyebrow">Наша история</span>
+    <h1 class="page-hero__title">О студии</h1>
+  </div>
+</section>
+
+<!-- Story Section -->
+<section class="section">
+  <div class="container">
+    <div class="story-section">
+      <div class="story-photo-placeholder reveal">
+        <div style="width:48px;height:2px;background:currentColor;opacity:.4;border-radius:1px"></div>
+      </div>
+      <div class="reveal reveal--delay-1">
+        <span class="story-text__eyebrow">Наша история</span>
+        <h2 class="story-text__title">Место, где красота становится искусством</h2>
+        <div class="story-text__body">
+          <p>К Студия родилась из мечты о пространстве, где каждый клиент чувствует себя особенным. Мы создали салон нового поколения в сердце Астаны — там, где профессионализм встречается с душевностью.</p>
+          <p>С первого дня работы мы придерживаемся одного принципа: каждый человек достоин внимания, заботы и результата, который превзойдёт ожидания. Именно поэтому мы не просто делаем причёски и маникюр — мы создаём трансформации.</p>
+        </div>
+        <blockquote class="story-text__quote">
+          «Красота — это не то, как ты выглядишь. Это то, как ты себя чувствуешь, когда выходишь из салона.»
+        </blockquote>
+        <div class="story-text__body">
+          <p>Сегодня К Студия — это команда из 12+ профессионалов, сотни постоянных клиентов и рейтинг 4.9 звезды на 2GIS. Но мы не останавливаемся на достигнутом.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Numbers -->
+<section class="section section--beige">
+  <div class="container">
+    <div class="numbers-section reveal">
+      <div class="number-item">
+        <div class="number-item__value">4.9★</div>
+        <div class="number-item__label">Рейтинг на 2GIS</div>
+      </div>
+      <div class="number-item">
+        <div class="number-item__value">68+</div>
+        <div class="number-item__label">Отзывов</div>
+      </div>
+      <div class="number-item">
+        <div class="number-item__value">12+</div>
+        <div class="number-item__label">Мастеров</div>
+      </div>
+      <div class="number-item">
+        <div class="number-item__value">500+</div>
+        <div class="number-item__label">Постоянных клиентов</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Values -->
+<section class="section">
+  <div class="container">
+    <header class="section-header reveal">
+      <span class="section-eyebrow">Что нами движет</span>
+      <h2 class="section-title">Наши ценности</h2>
+      <div class="divider"></div>
+    </header>
+
+    <div class="values-grid">
+      <div class="value-card reveal">
+        <span class="value-card__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.25em;height:1.25em;vertical-align:middle"><path d="M6 3h12l4 6-10 13L2 9z"/><path d="M11 3L8 9l4 13 4-13-3-6"/><path d="M2 9h20"/></svg></span>
+        <h3 class="value-card__title">Качество без компромиссов</h3>
+        <p class="value-card__text">Мы используем только профессиональную косметику топ-брендов: L'Oréal, Kerastase, Wella. Никаких заменителей — только лучшее для ваших волос и кожи.</p>
+      </div>
+      <div class="value-card reveal reveal--delay-1">
+        <span class="value-card__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.25em;height:1.25em;vertical-align:middle"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></span>
+        <h3 class="value-card__title">Забота о клиенте</h3>
+        <p class="value-card__text">Каждый визит начинается с консультации. Мы слушаем, понимаем и предлагаем решения именно для вас. Ваш комфорт — наш приоритет.</p>
+      </div>
+      <div class="value-card reveal reveal--delay-2">
+        <span class="value-card__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.25em;height:1.25em;vertical-align:middle"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></span>
+        <h3 class="value-card__title">Непрерывное развитие</h3>
+        <p class="value-card__text">Наши мастера ежегодно проходят обучение на международных курсах. Мы первыми внедряем новые техники и тренды в Астане.</p>
+      </div>
+      <div class="value-card reveal">
+        <span class="value-card__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.25em;height:1.25em;vertical-align:middle"><path d="M17 8C8 10 5.9 16.17 3.82 19.5A13.67 13.67 0 0 0 2 21c0 0 3-2 8.5-2 4.5 0 7.5-3.5 7.5-7.5"/><path d="M2 21c0 0 6-3 8-8"/></svg></span>
+        <h3 class="value-card__title">Безопасность</h3>
+        <p class="value-card__text">Строгая стерилизация инструментов, одноразовые материалы, безопасные составы — ваше здоровье важнее любого тренда.</p>
+      </div>
+      <div class="value-card reveal reveal--delay-1">
+        <span class="value-card__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.25em;height:1.25em;vertical-align:middle"><circle cx="12" cy="14" r="8"/><polyline points="12 10 12 14 14 16"/><path d="M9 2h6"/><path d="M12 2v2"/></svg></span>
+        <h3 class="value-card__title">Уважение к времени</h3>
+        <p class="value-card__text">Мы не заставляем ждать. Онлайн-запись позволяет планировать визит точно, а мастера принимают строго по расписанию.</p>
+      </div>
+      <div class="value-card reveal reveal--delay-2">
+        <span class="value-card__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.25em;height:1.25em;vertical-align:middle"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></span>
+        <h3 class="value-card__title">Результат, который радует</h3>
+        <p class="value-card__text">Мы не успокоимся, пока вы не будете счастливы. Гарантия качества на все процедуры — это не слова, это наша политика.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Principles -->
+<section class="section section--beige">
+  <div class="container">
+    <div style="display:grid; grid-template-columns:1fr; gap:var(--space-xl); align-items:start;" class="about-principles-wrapper">
+      <div>
+        <span class="section-eyebrow">Наш подход</span>
+        <h2 class="section-title reveal" style="font-size:clamp(1.75rem,3vw,2.5rem);">Как мы работаем</h2>
+        <div class="divider"></div>
+        <ol class="principles-list">
+          <li class="principle-item reveal">
+            <span class="principle-item__num">01</span>
+            <div>
+              <h4 class="principle-item__title">Консультация перед процедурой</h4>
+              <p class="principle-item__text">Каждая услуга начинается с разговора. Мы анализируем состояние волос, кожи или ногтей и обсуждаем ваши пожелания, прежде чем приступить к работе.</p>
+            </div>
+          </li>
+          <li class="principle-item reveal">
+            <span class="principle-item__num">02</span>
+            <div>
+              <h4 class="principle-item__title">Индивидуальный подбор средств</h4>
+              <p class="principle-item__text">Нет универсальных решений. Для каждого клиента мастер подбирает состав, технику и время выдержки с учётом типа и состояния волос или кожи.</p>
+            </div>
+          </li>
+          <li class="principle-item reveal">
+            <span class="principle-item__num">03</span>
+            <div>
+              <h4 class="principle-item__title">Работа без спешки</h4>
+              <p class="principle-item__text">Мы не гонимся за количеством. Каждый клиент получает полное время и внимание мастера. Именно поэтому наши клиенты возвращаются снова и снова.</p>
+            </div>
+          </li>
+          <li class="principle-item reveal">
+            <span class="principle-item__num">04</span>
+            <div>
+              <h4 class="principle-item__title">Рекомендации по уходу</h4>
+              <p class="principle-item__text">После процедуры мастер даёт персональные рекомендации по домашнему уходу, чтобы результат сохранялся как можно дольше.</p>
+            </div>
+          </li>
+        </ol>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Interior / Studio -->
+<section class="section">
+  <div class="container">
+    <header class="section-header reveal">
+      <span class="section-eyebrow">Наше пространство</span>
+      <h2 class="section-title">Интерьер студии</h2>
+      <div class="divider"></div>
+      <p class="section-subtitle">Приятная атмосфера, где хочется задержаться</p>
+    </header>
+
+    <div class="interior-grid">
+      <div class="interior-item reveal" style="background:linear-gradient(135deg,#f4f1ee,#e8e2db);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:1.2rem;color:#bbb;letter-spacing:.1em;text-transform:uppercase">Интерьер</div>
+      <div class="interior-item reveal" style="aspect-ratio:1;background:linear-gradient(135deg,#ede8e2,#ddd7cf);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:1rem;color:#bbb;letter-spacing:.08em;text-transform:uppercase">Стрижка</div>
+      <div class="interior-item reveal" style="aspect-ratio:1;background:linear-gradient(135deg,#f7f0e8,#ede4d6);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:1rem;color:#bbb;letter-spacing:.08em;text-transform:uppercase">Маникюр</div>
+      <div class="interior-item reveal" style="aspect-ratio:1;background:linear-gradient(135deg,#f9f3ed,#f0e9e0);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:1rem;color:#bbb;letter-spacing:.08em;text-transform:uppercase">Атмосфера</div>
+      <div class="interior-item reveal" style="aspect-ratio:1;background:linear-gradient(135deg,#ede5da,#e4d9cc);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:1rem;color:#bbb;letter-spacing:.08em;text-transform:uppercase">Уют</div>
+      <div class="interior-item reveal" style="aspect-ratio:1;background:linear-gradient(135deg,#eef0eb,#e4e7df);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:1rem;color:#bbb;letter-spacing:.08em;text-transform:uppercase">Уют</div>
+    </div>
+
+    <div style="text-align:center; margin-top:var(--space-lg);">
+      <p style="color:var(--color-text-muted); font-size:0.9rem; margin-bottom:var(--space-md);">
+        Приходите и убедитесь сами — Кабанбай батыр пр., 58Б
+      </p>
+      <a href="/pages/contacts.html" class="btn btn--secondary">Как нас найти</a>
+    </div>
+  </div>
+</section>
+
+<!-- Timeline -->
+<section class="section section--beige">
+  <div class="container">
+    <div style="max-width:600px; margin-inline:auto;">
+      <header class="section-header reveal">
+        <span class="section-eyebrow">Этапы развития</span>
+        <h2 class="section-title">Наш путь</h2>
+        <div class="divider" style="margin-inline:auto;"></div>
+      </header>
+
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-item__year">Основание</div>
+          <h3 class="timeline-item__title">Открытие К Студии</h3>
+          <p class="timeline-item__text">Студия открылась в Есильском районе Астаны. С первых дней — индивидуальный подход и только профессиональная косметика.</p>
+        </div>
+        <div class="timeline-item reveal">
+          <div class="timeline-item__year">Первый год</div>
+          <h3 class="timeline-item__title">100+ постоянных клиентов</h3>
+          <p class="timeline-item__text">Благодаря сарафанному радио и качеству работы студия быстро набрала базу постоянных клиентов и рейтинг 4.8 на 2GIS.</p>
+        </div>
+        <div class="timeline-item reveal">
+          <div class="timeline-item__year">Расширение</div>
+          <h3 class="timeline-item__title">Новые мастера и услуги</h3>
+          <p class="timeline-item__text">Команда выросла до 8 мастеров, добавились услуги по уходу за кожей, СПА-программы и услуги визажиста.</p>
+        </div>
+        <div class="timeline-item reveal">
+          <div class="timeline-item__year">Сегодня</div>
+          <h3 class="timeline-item__title">4.9★ и 68 отзывов на 2GIS</h3>
+          <p class="timeline-item__text">К Студия — одна из лучших студий красоты в Астане по отзывам клиентов. Команда 12+ мастеров, сотни довольных клиентов ежемесячно.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Booking CTA -->
+<section class="booking-cta">
+  <div class="booking-cta__bg-letter" aria-hidden="true">К</div>
+  <div class="container" style="position:relative; z-index:1;">
+    <div style="max-width:600px; margin-inline:auto; text-align:center;">
+      <span class="section-eyebrow" style="color:var(--color-gold); opacity:0.8;">Готовы к преображению?</span>
+      <h2 style="font-family:var(--font-heading); font-size:clamp(2rem,4vw,3rem); font-weight:300; color:white; margin:var(--space-sm) 0;">
+        Запишитесь к нам
+      </h2>
+      <div class="divider" style="background:var(--color-gold); margin-inline:auto;"></div>
+      <p style="color:rgba(248,245,241,0.7); margin-bottom:var(--space-lg);">
+        Ждём вас по адресу: Кабанбай батыр пр., 58Б, Астана
+      </p>
+      <div style="display:flex; gap:var(--space-sm); justify-content:center; flex-wrap:wrap;">
+        <a href="/pages/booking.html" class="btn btn--primary">Записаться онлайн</a>
+        <a href="https://wa.me/77051170000" target="_blank" rel="noopener"
+           class="btn btn--light"><span style="display:inline-flex;align-items:center;gap:.4rem;vertical-align:middle"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg> WhatsApp</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer__bottom" style="border-top:none; padding-top:var(--space-lg);">
+      <span>© 2026 К Студия. Астана, Кабанбай батыр пр., 58Б</span>
+      <a href="/pages/privacy.html" class="footer__bottom-link">Политика конфиденциальности</a>
+    </div>
+  </div>
+</footer>
+
+<a href="https://wa.me/77051170000" target="_blank" rel="noopener" class="whatsapp-btn" aria-label="WhatsApp"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:26px;height:26px"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg></a>
+<div class="mobile-booking-cta">
+  <div class="mobile-booking-cta__text"><strong>К Студия</strong> 10:00–21:00</div>
+  <a href="/pages/booking.html" class="btn btn--primary btn--sm">Записаться</a>
+</div>
+
+<script src="../js/main.js" defer></script>
+</body>
+</html>

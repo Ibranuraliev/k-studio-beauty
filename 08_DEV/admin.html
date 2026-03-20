@@ -1,0 +1,1124 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Админ — К Студия</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a1a1a;min-height:100vh}
+
+/* ── LOGIN ── */
+.login-wrap{display:flex;align-items:center;justify-content:center;min-height:100vh;padding:1rem}
+.login-card{background:#fff;border-radius:20px;padding:2.5rem;width:100%;max-width:380px;box-shadow:0 8px 40px rgba(0,0,0,.10)}
+.login-logo{font-size:1.8rem;font-weight:700;letter-spacing:.12em;margin-bottom:.3rem}
+.login-logo span{color:#c9a96e}
+.login-sub{color:#999;font-size:.875rem;margin-bottom:2rem}
+.login-card input{width:100%;padding:.8rem 1rem;border:1.5px solid #e0dbd3;border-radius:10px;font-size:1rem;margin-bottom:.9rem;outline:none;transition:border-color .2s;font-family:inherit}
+.login-card input:focus{border-color:#c9a96e}
+.login-card .btn-login{width:100%;padding:.9rem;background:#1a1a1a;color:#fff;border:none;border-radius:10px;font-size:1rem;font-weight:600;cursor:pointer;letter-spacing:.03em;transition:opacity .2s}
+.login-card .btn-login:hover{opacity:.85}
+.login-err{color:#e53e3e;font-size:.83rem;margin-top:.5rem;display:none}
+
+/* ── HEADER ── */
+.adm-header{background:#1a1a1a;color:#fff;padding:0 1.5rem;height:58px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
+.adm-logo{font-size:1rem;font-weight:700;letter-spacing:.06em}
+.adm-logo span{color:#c9a96e}
+.header-right{display:flex;align-items:center;gap:1rem}
+.header-date{font-size:.8rem;color:rgba(255,255,255,.45)}
+.btn-logout{background:transparent;border:1px solid rgba(255,255,255,.25);color:rgba(255,255,255,.8);padding:.38rem .9rem;border-radius:7px;cursor:pointer;font-size:.82rem;transition:all .2s}
+.btn-logout:hover{background:rgba(255,255,255,.08);color:#fff}
+
+/* ── TABS ── */
+.tabs-bar{background:#fff;border-bottom:1.5px solid #e8e2db;padding:0 1.5rem;display:flex;position:sticky;top:58px;z-index:99;overflow-x:auto}
+.tab-btn{padding:.85rem 1.3rem;background:transparent;border:none;border-bottom:3px solid transparent;cursor:pointer;font-size:.875rem;font-weight:500;color:#999;white-space:nowrap;transition:color .2s;font-family:inherit}
+.tab-btn.active{color:#1a1a1a;border-bottom-color:#c9a96e}
+.badge{background:#e53e3e;color:#fff;font-size:.65rem;font-weight:800;padding:.15rem .42rem;border-radius:999px;margin-left:.35rem;vertical-align:middle}
+
+/* ── PANES ── */
+.tab-pane{padding:1.5rem;max-width:960px;margin:0 auto}
+.pane-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.4rem;flex-wrap:wrap;gap:.75rem}
+.pane-title{font-size:1.25rem;font-weight:700}
+.empty-state{text-align:center;padding:3.5rem 1rem;color:#aaa}
+.empty-icon{margin-bottom:.85rem;display:flex;justify-content:center;align-items:center}
+.empty-state p:first-of-type{font-size:1rem;margin-bottom:.4rem;color:#888}
+.empty-state p{font-size:.875rem}
+
+/* ── BUTTONS ── */
+.btn{display:inline-flex;align-items:center;gap:.4rem;padding:.6rem 1.2rem;border-radius:9px;border:none;font-size:.875rem;font-weight:600;cursor:pointer;font-family:inherit;transition:opacity .15s}
+.btn:hover{opacity:.85}
+.btn-dark{background:#1a1a1a;color:#fff}
+.btn-gold{background:#c9a96e;color:#fff}
+.btn-outline{background:#fff;border:1.5px solid #e0dbd3;color:#1a1a1a}
+.btn-danger{background:#fee2e2;color:#c53030;border:none;padding:.38rem .8rem;border-radius:7px;cursor:pointer;font-size:.8rem;font-family:inherit;transition:background .15s}
+.btn-danger:hover{background:#fecaca}
+.btn-wa{background:#25D366;color:#fff;text-decoration:none;padding:.48rem 1rem;border-radius:8px;font-size:.83rem;font-weight:600;display:inline-flex;align-items:center;gap:.4rem;white-space:nowrap}
+.btn-wa:hover{opacity:.88}
+.btn-wa-sm{background:#25D366;color:#fff;text-decoration:none;padding:.3rem .65rem;border-radius:7px;font-size:.78rem;font-weight:600;display:inline-flex;align-items:center;gap:.3rem}
+.btn-wa-sm:hover{opacity:.88}
+.icon-btn{background:none;border:1.5px solid transparent;border-radius:7px;cursor:pointer;padding:.3rem .38rem;color:#c0b8b0;transition:all .18s;display:inline-flex;align-items:center;line-height:1;font-family:inherit}
+.icon-btn:hover{background:#f4f1ee;border-color:#e0dbd3;color:#555}
+.icon-btn.danger:hover{background:#fff0f0;border-color:#fecaca;color:#c53030}
+
+/* ── DASHBOARD ── */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:1rem;margin-bottom:1.75rem}
+.stat-card{background:#fff;border-radius:14px;padding:1.3rem 1.4rem;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.stat-label{font-size:.72rem;color:#aaa;font-weight:700;letter-spacing:.07em;text-transform:uppercase;margin-bottom:.6rem}
+.stat-value{font-size:2.2rem;font-weight:800;color:#1a1a1a;line-height:1}
+.stat-sub{font-size:.78rem;color:#bbb;margin-top:.45rem}
+.stat-card.accent .stat-value{color:#c9a96e}
+.panel-card{background:#fff;border-radius:14px;padding:1.3rem 1.4rem;box-shadow:0 1px 6px rgba(0,0,0,.07);margin-bottom:1rem}
+.panel-card-title{font-size:.72rem;font-weight:700;color:#aaa;letter-spacing:.07em;text-transform:uppercase;margin-bottom:1rem;display:flex;align-items:center;justify-content:space-between}
+.today-row{display:flex;align-items:center;gap:.9rem;padding:.65rem 0;border-bottom:1px solid #f5f0eb}
+.today-row:last-child{border-bottom:none}
+.today-time{font-size:.95rem;font-weight:800;color:#1a1a1a;min-width:40px}
+.today-master-tag{font-size:.72rem;color:#c9a96e;font-weight:700;background:#fdf6ea;padding:.15rem .5rem;border-radius:999px}
+.today-client{font-size:.875rem;font-weight:600}
+.today-phone{font-size:.75rem;color:#aaa;margin-top:.1rem}
+
+/* ── MASTERS ── */
+.masters-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:1rem}
+.master-card{background:#fff;border-radius:14px;padding:1.2rem;display:flex;align-items:center;gap:1rem;box-shadow:0 1px 6px rgba(0,0,0,.07);transition:box-shadow .2s}
+.master-card:hover{box-shadow:0 3px 14px rgba(0,0,0,.11)}
+.master-avatar{width:48px;height:48px;border-radius:50%;background:#f0ebe4;display:flex;align-items:center;justify-content:center;font-size:.95rem;font-weight:800;color:#c9a96e;letter-spacing:.04em;flex-shrink:0;font-family:inherit;border:2px solid #e8e0d5}
+.master-name{font-weight:700;font-size:.95rem;margin-bottom:.2rem}
+.master-spec{font-size:.78rem;color:#999;line-height:1.5}
+.master-card-actions{margin-left:auto;display:flex;gap:.3rem;flex-shrink:0}
+
+/* ── SCHEDULE ── */
+.schedule-controls{display:flex;gap:.75rem;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center}
+.schedule-controls select,.schedule-controls input[type=date]{padding:.65rem 1rem;border:1.5px solid #e0dbd3;border-radius:9px;font-size:.9rem;background:#fff;font-family:inherit;flex:1;min-width:150px;outline:none;transition:border-color .2s}
+.schedule-controls select:focus,.schedule-controls input:focus{border-color:#c9a96e}
+.day-nav{display:flex;gap:.4rem;align-items:center}
+.day-nav-btn{background:#fff;border:1.5px solid #e0dbd3;border-radius:8px;width:34px;height:34px;cursor:pointer;font-size:.95rem;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.day-nav-btn:hover{border-color:#c9a96e;color:#c9a96e}
+.slots-section{background:#fff;border-radius:14px;padding:1.4rem;box-shadow:0 1px 6px rgba(0,0,0,.07)}
+.slots-section-label{font-size:.72rem;font-weight:700;color:#aaa;letter-spacing:.07em;text-transform:uppercase;margin-bottom:1rem}
+.slots-chips{display:flex;flex-wrap:wrap;gap:.6rem;min-height:44px}
+.slot-chip{display:inline-flex;align-items:center;gap:.45rem;padding:.4rem .85rem;border-radius:999px;font-size:.875rem;font-weight:600}
+.slot-chip.free{background:#d1fae5;color:#065f46}
+.slot-chip.booked{background:#fee2e2;color:#c53030}
+.slot-chip-meta{font-size:.72rem;font-weight:400;opacity:.75;max-width:80px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.slot-del{background:none;border:none;cursor:pointer;font-size:.8rem;opacity:.55;padding:0 0 0 .15rem;line-height:1;transition:opacity .15s}
+.slot-del:hover{opacity:1}
+.slots-no-result{font-size:.85rem;color:#bbb;padding:.5rem 0}
+.add-slot-row{display:flex;gap:.75rem;align-items:center;margin-top:1.35rem;flex-wrap:wrap;padding-top:1.2rem;border-top:1px solid #f0ebe5}
+.add-slot-row input[type=time]{padding:.65rem 1rem;border:1.5px solid #e0dbd3;border-radius:9px;font-size:.9rem;background:#fff;font-family:inherit;outline:none;transition:border-color .2s}
+.add-slot-row input:focus{border-color:#c9a96e}
+.extra-card{background:#fff;border-radius:14px;padding:1.25rem 1.4rem;box-shadow:0 1px 6px rgba(0,0,0,.07);margin-top:.85rem}
+.extra-card-title{font-size:.72rem;font-weight:700;color:#aaa;letter-spacing:.07em;text-transform:uppercase;margin-bottom:.9rem}
+.field-row{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap}
+.field-row label{font-size:.82rem;color:#666;white-space:nowrap;font-weight:500}
+.field-row input[type=time],.field-row input[type=date],.field-row select{padding:.55rem .85rem;border:1.5px solid #e0dbd3;border-radius:8px;font-size:.875rem;font-family:inherit;outline:none;transition:border-color .2s;background:#fff}
+.field-row input:focus,.field-row select:focus{border-color:#c9a96e}
+
+/* ── BOOKINGS ── */
+.filter-row{display:flex;gap:.75rem;align-items:center;margin-bottom:1.1rem;flex-wrap:wrap}
+.filter-tabs{display:flex;gap:.4rem;flex-wrap:wrap}
+.filter-tab{padding:.42rem 1rem;border-radius:999px;border:1.5px solid #e0dbd3;background:#fff;cursor:pointer;font-size:.82rem;font-weight:600;color:#888;font-family:inherit;transition:all .2s}
+.filter-tab.active{background:#1a1a1a;border-color:#1a1a1a;color:#fff}
+.master-filter{padding:.55rem 1rem;border:1.5px solid #e0dbd3;border-radius:9px;font-size:.875rem;font-family:inherit;outline:none;background:#fff;transition:border-color .2s;min-width:160px}
+.master-filter:focus{border-color:#c9a96e}
+.bookings-list{display:flex;flex-direction:column;gap:.75rem}
+.booking-card{background:#fff;border-radius:14px;padding:1.1rem 1.3rem;box-shadow:0 1px 6px rgba(0,0,0,.07);display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;flex-wrap:wrap;transition:box-shadow .2s;border-left:3px solid transparent}
+.booking-card:hover{box-shadow:0 3px 14px rgba(0,0,0,.10)}
+.booking-card.is-new{border-left-color:#c9a96e}
+.booking-card.is-past{opacity:.6}
+.booking-status{display:inline-flex;align-items:center;gap:.28rem;font-size:.68rem;font-weight:800;padding:.2rem .58rem;border-radius:999px;margin-bottom:.4rem;letter-spacing:.05em;text-transform:uppercase}
+.st-new{background:#fef3c7;color:#92400e}
+.st-upcoming{background:#dbeafe;color:#1e40af}
+.st-today{background:#d1fae5;color:#065f46}
+.st-past{background:#f3f4f6;color:#6b7280}
+.booking-head{font-size:.82rem;color:#888;margin-bottom:.28rem}
+.booking-name{font-size:.975rem;font-weight:700;margin-bottom:.22rem}
+.booking-phone-link{color:#1a1a1a;font-weight:600;text-decoration:none;font-size:.875rem}
+.booking-phone-link:hover{text-decoration:underline}
+.booking-ts{font-size:.7rem;color:#bbb;margin-top:.3rem}
+.booking-actions{display:flex;gap:.5rem;align-items:center;flex-shrink:0;flex-wrap:wrap}
+
+/* ── MODAL ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem;backdrop-filter:blur(3px)}
+.modal-overlay.open{display:flex}
+.modal-box{background:#fff;border-radius:20px;padding:2rem;width:100%;max-width:430px;position:relative;animation:popIn .2s ease}
+@keyframes popIn{from{transform:scale(.96);opacity:0}to{transform:scale(1);opacity:1}}
+.modal-title{font-size:1.15rem;font-weight:700;margin-bottom:1.5rem}
+.form-group{margin-bottom:1.1rem}
+.form-group label{display:block;font-size:.82rem;font-weight:600;margin-bottom:.4rem;color:#555}
+.form-group input,.form-group select{width:100%;padding:.72rem 1rem;border:1.5px solid #e0dbd3;border-radius:9px;font-size:.9rem;font-family:inherit;transition:border-color .2s;outline:none}
+.form-group input:focus,.form-group select:focus{border-color:#c9a96e}
+.emoji-row{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.5rem}
+.emoji-opt{font-size:1.5rem;cursor:pointer;padding:.3rem .4rem;border-radius:8px;background:none;border:2px solid transparent;transition:all .15s;line-height:1}
+.emoji-opt:hover{background:#f4f1ee}
+.emoji-opt.selected{background:#f4f1ee;border-color:#c9a96e}
+.modal-actions{display:flex;gap:.75rem;justify-content:flex-end;margin-top:1.75rem}
+
+/* ── TOAST ── */
+.toast-wrap{position:fixed;bottom:1.5rem;right:1.5rem;z-index:9999;display:flex;flex-direction:column;gap:.5rem;pointer-events:none}
+.toast{background:#1a1a1a;color:#fff;padding:.8rem 1.2rem;border-radius:12px;font-size:.875rem;font-weight:500;box-shadow:0 4px 20px rgba(0,0,0,.25);animation:toastIn .25s ease;max-width:320px;pointer-events:all;display:flex;align-items:center;gap:.5rem}
+.toast.success{background:#064e3b;border-left:3px solid #10b981}
+.toast.error{background:#7f1d1d;border-left:3px solid #ef4444}
+.toast.info{background:#1e3a5f;border-left:3px solid #3b82f6}
+@keyframes toastIn{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
+
+@media(max-width:600px){
+  .booking-card{flex-direction:column}
+  .booking-actions{width:100%}
+  .stats-grid{grid-template-columns:1fr 1fr}
+  .modal-box{padding:1.5rem}
+  .tab-btn{padding:.75rem .9rem;font-size:.82rem}
+}
+</style>
+</head>
+<body>
+
+<!-- ════════════ LOGIN ════════════ -->
+<div id="loginWrap" class="login-wrap">
+  <div class="login-card">
+    <div class="login-logo">К<span> Студия</span></div>
+    <div class="login-sub">Панель администратора</div>
+    <form id="loginForm">
+      <input type="password" id="pwdInput" placeholder="Введите пароль" autocomplete="current-password">
+      <button type="submit" class="btn-login">Войти →</button>
+      <div class="login-err" id="loginErr">Неверный пароль</div>
+    </form>
+  </div>
+</div>
+
+<!-- ════════════ DASHBOARD ════════════ -->
+<div id="dashboard" style="display:none">
+
+  <header class="adm-header">
+    <span class="adm-logo">К<span> Студия</span> · Админ</span>
+    <div class="header-right">
+      <span class="header-date" id="headerDate"></span>
+      <button class="btn-logout" onclick="logout()">Выйти</button>
+    </div>
+  </header>
+
+  <div class="tabs-bar">
+    <button class="tab-btn active" onclick="switchTab('overview',this)">Обзор</button>
+    <button class="tab-btn" onclick="switchTab('masters',this)">Мастера</button>
+    <button class="tab-btn" onclick="switchTab('services',this)">Услуги</button>
+    <button class="tab-btn" onclick="switchTab('schedule',this)">Расписание</button>
+    <button class="tab-btn" id="bookingsTabBtn" onclick="switchTab('bookings',this)">
+      Записи<span class="badge" id="newBadge" style="display:none">0</span>
+    </button>
+  </div>
+
+  <!-- ── ОБЗОР ── -->
+  <div id="paneOverview" class="tab-pane">
+    <div class="pane-header">
+      <h2 class="pane-title">Обзор</h2>
+      <button class="btn btn-outline" onclick="refreshOverview()" style="font-size:.8rem">⟳ Обновить</button>
+    </div>
+
+    <div class="stats-grid">
+      <div class="stat-card accent">
+        <div class="stat-label">Сегодня записей</div>
+        <div class="stat-value" id="statToday">—</div>
+        <div class="stat-sub" id="statTodaySub">загрузка...</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">На этой неделе</div>
+        <div class="stat-value" id="statWeek">—</div>
+        <div class="stat-sub">предстоящих</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Мастеров</div>
+        <div class="stat-value" id="statMasters">—</div>
+        <div class="stat-sub">активных</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Свободно сегодня</div>
+        <div class="stat-value" id="statFree">—</div>
+        <div class="stat-sub">свободных слотов</div>
+      </div>
+    </div>
+
+    <div class="panel-card">
+      <div class="panel-card-title">
+        Записи на сегодня
+        <span id="todayLabel" style="font-weight:400;color:#ccc;text-transform:none;letter-spacing:0"></span>
+      </div>
+      <div id="todayList"></div>
+    </div>
+
+    <div class="panel-card">
+      <div class="panel-card-title">Ближайшие записи (7 дней)</div>
+      <div id="upcomingList"></div>
+    </div>
+  </div>
+
+  <!-- ── МАСТЕРА ── -->
+  <div id="paneMasters" class="tab-pane" style="display:none">
+    <div class="pane-header">
+      <h2 class="pane-title">Мастера</h2>
+      <button class="btn btn-dark" onclick="openMasterModal()">+ Добавить мастера</button>
+    </div>
+    <div id="mastersGrid" class="masters-grid"></div>
+  </div>
+
+  <!-- ── УСЛУГИ ── -->
+  <div id="paneServices" class="tab-pane" style="display:none">
+    <div class="pane-header">
+      <h2 class="pane-title">Услуги</h2>
+      <button class="btn btn-dark" onclick="openServiceModal()">+ Добавить услугу</button>
+    </div>
+    <div id="servicesGrid" class="masters-grid"></div>
+  </div>
+
+  <!-- ── РАСПИСАНИЕ ── -->
+  <div id="paneSchedule" class="tab-pane" style="display:none">
+    <div class="pane-header">
+      <h2 class="pane-title">Расписание</h2>
+    </div>
+
+    <div class="schedule-controls">
+      <select id="schedMaster" onchange="loadSlots()"></select>
+      <div class="day-nav">
+        <button class="day-nav-btn" onclick="changeDay(-1)" title="Назад">&#8592;</button>
+        <input type="date" id="schedDate" onchange="loadSlots()">
+        <button class="day-nav-btn" onclick="changeDay(1)" title="Вперёд">&#8594;</button>
+      </div>
+      <button class="btn btn-outline" onclick="goToday()" style="font-size:.82rem">Сегодня</button>
+    </div>
+
+    <div class="slots-section">
+      <div class="slots-section-label">Слоты на выбранный день</div>
+      <div id="slotsContainer" class="slots-chips">
+        <span class="slots-no-result">Выберите мастера и дату</span>
+      </div>
+      <div class="add-slot-row">
+        <input type="time" id="newSlotTime" step="1800">
+        <button class="btn btn-gold" onclick="addSlot()">+ Добавить слот</button>
+        <button class="btn-danger" style="margin-left:auto" onclick="deleteAllFreeSlots()">Удалить все свободные</button>
+      </div>
+    </div>
+
+    <div class="extra-card">
+      <div class="extra-card-title">Быстрое заполнение дня</div>
+      <div class="field-row">
+        <label>С</label>
+        <input type="time" id="bulkFrom" value="10:00">
+        <label>до</label>
+        <input type="time" id="bulkTo" value="20:00">
+        <label>каждые</label>
+        <select id="bulkStep">
+          <option value="30">30 мин</option>
+          <option value="45">45 мин</option>
+          <option value="60">1 час</option>
+          <option value="90">1.5 ч</option>
+          <option value="120">2 ч</option>
+        </select>
+        <button class="btn btn-dark" onclick="bulkAddSlots()">Заполнить</button>
+      </div>
+    </div>
+
+    <div class="extra-card">
+      <div class="extra-card-title">Скопировать расписание на другой день</div>
+      <div class="field-row">
+        <label>Скопировать на:</label>
+        <input type="date" id="copyTargetDate">
+        <button class="btn btn-outline" onclick="copySchedule()">Копировать</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── ЗАПИСИ ── -->
+  <div id="paneBookings" class="tab-pane" style="display:none">
+    <div class="pane-header">
+      <h2 class="pane-title">Записи клиентов</h2>
+      <select class="master-filter" id="bookingsMasterFilter" onchange="renderBookings()">
+        <option value="">Все мастера</option>
+      </select>
+    </div>
+    <div class="filter-row">
+      <div class="filter-tabs">
+        <button class="filter-tab active" onclick="setBookingFilter('upcoming',this)">Предстоящие</button>
+        <button class="filter-tab" onclick="setBookingFilter('today',this)">Сегодня</button>
+        <button class="filter-tab" onclick="setBookingFilter('all',this)">Все</button>
+        <button class="filter-tab" onclick="setBookingFilter('past',this)">Прошедшие</button>
+      </div>
+    </div>
+    <div id="bookingsContainer" class="bookings-list"></div>
+  </div>
+
+</div><!-- /dashboard -->
+
+<!-- ════════════ MODAL: МАСТЕР ════════════ -->
+<div id="masterModal" class="modal-overlay" onclick="if(event.target===this)closeMasterModal()">
+  <div class="modal-box">
+    <h3 class="modal-title" id="masterModalTitle">Добавить мастера</h3>
+    <form id="masterForm" onsubmit="saveMaster(event)">
+      <div class="form-group">
+        <label>Имя мастера *</label>
+        <input type="text" id="mName" required placeholder="Айгерим">
+      </div>
+      <div class="form-group">
+        <label>Специализация <span style="font-size:.72rem;color:#aaa;font-weight:400">(можно выбрать несколько)</span></label>
+        <div id="mSpecChecks" style="display:grid;grid-template-columns:1fr 1fr;gap:.38rem .6rem;margin-top:.45rem"></div>
+        <input type="hidden" id="mSpec">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeMasterModal()">Отмена</button>
+        <button type="submit" class="btn btn-dark" id="masterSaveBtn">Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- ════════════ MODAL: УСЛУГА ════════════ -->
+<div id="serviceModal" class="modal-overlay" onclick="if(event.target===this)closeServiceModal()">
+  <div class="modal-box">
+    <h3 class="modal-title" id="serviceModalTitle">Добавить услугу</h3>
+    <form id="serviceForm" onsubmit="saveService(event)">
+      <div class="form-group">
+        <label>Название услуги *</label>
+        <input type="text" id="svcName" required placeholder="Маникюр">
+      </div>
+      <div class="form-group">
+        <label>Длительность (минут) *</label>
+        <select id="svcDuration">
+          <option value="30">30 мин</option>
+          <option value="60" selected>60 мин (1 час)</option>
+          <option value="90">90 мин (1.5 ч)</option>
+          <option value="120">120 мин (2 ч)</option>
+          <option value="150">150 мин (2.5 ч)</option>
+          <option value="180">180 мин (3 ч)</option>
+          <option value="210">210 мин (3.5 ч)</option>
+          <option value="240">240 мин (4 ч)</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Цена (₸) *</label>
+        <input type="number" id="svcPrice" required placeholder="3000" min="0" step="100">
+      </div>
+      <div class="form-group">
+        <label>Специализация <span style="font-size:.72rem;color:#aaa;font-weight:400">(к какой категории относится)</span></label>
+        <select id="svcSpecTag" style="width:100%;padding:.7rem .9rem;border:1.5px solid #e0dbd3;border-radius:10px;font-size:.9rem;font-family:inherit;color:#1a1a1a">
+          <option value="">— Не указана —</option>
+          <option value="Маникюр / Педикюр">Маникюр / Педикюр</option>
+          <option value="Наращивание ногтей">Наращивание ногтей</option>
+          <option value="Ресницы">Ресницы</option>
+          <option value="Брови">Брови</option>
+          <option value="Волосы">Волосы</option>
+          <option value="Макияж">Макияж</option>
+          <option value="Косметология">Косметология</option>
+          <option value="Массаж">Массаж</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Описание</label>
+        <input type="text" id="svcDesc" placeholder="Короткое описание (необязательно)">
+      </div>
+      <div class="form-group">
+        <label>Иконка</label>
+        <div class="emoji-row" id="svcEmojiRow">
+          <button type="button" class="emoji-opt selected" onclick="pickSvcEmoji('💅',this)">💅</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('🦶',this)">🦶</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('✨',this)">✨</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('💎',this)">💎</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('👁',this)">👁</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('🌟',this)">🌟</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('🖊',this)">🖊</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('🎨',this)">🎨</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('🌸',this)">🌸</button>
+          <button type="button" class="emoji-opt" onclick="pickSvcEmoji('💄',this)">💄</button>
+        </div>
+        <input type="hidden" id="svcEmoji" value="💅">
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeServiceModal()">Отмена</button>
+        <button type="submit" class="btn btn-dark" id="serviceSaveBtn">Сохранить</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script>
+// ═══════════════════════════════════════════════════════
+//  CONFIG
+// ═══════════════════════════════════════════════════════
+const SUPABASE_URL = 'https://azqnxataowbovezrxapm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_QcB-6J0EWsEppsSscAKQMQ_KdmYcn3k';
+const ADMIN_PASS   = 'kstudio2025';
+// ═══════════════════════════════════════════════════════
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_KEY);
+
+// ── ICON CONSTANTS ──────────────────────────────────────
+var ICO_EDIT    = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+var ICO_TRASH   = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>';
+var ICO_EYE     = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>';
+var ICO_EYEOFF  = '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/></svg>';
+var ICO_CAL     = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>';
+var ICO_PIN     = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>';
+var ICO_CLOCKSM = '<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+var ICO_CLOCKMD = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>';
+var ICO_WA      = '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>';
+var ICO_EMPTYUSER = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d0ccc6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+var ICO_EMPTYSTAR = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d0ccc6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+var ICO_EMPTYCLIP = '<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#d0ccc6" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>';
+// ─────────────────────────────────────────────────────────
+
+let masters          = [];
+let services         = [];
+let allBookings      = [];
+let editingId        = null;
+let editingSvcId     = null;
+let newBookingsCount = 0;
+let bookingFilter    = 'upcoming';
+
+// ── AUTH ──────────────────────────────────────────────
+function init() {
+  if (sessionStorage.getItem('adminOk') === '1') showDashboard();
+}
+
+document.getElementById('loginForm').onsubmit = function(e) {
+  e.preventDefault();
+  if (document.getElementById('pwdInput').value === ADMIN_PASS) {
+    sessionStorage.setItem('adminOk', '1');
+    showDashboard();
+  } else {
+    var err = document.getElementById('loginErr');
+    err.style.display = 'block';
+    setTimeout(function(){ err.style.display = 'none'; }, 2500);
+  }
+};
+
+function showDashboard() {
+  document.getElementById('loginWrap').style.display = 'none';
+  document.getElementById('dashboard').style.display = 'block';
+  document.getElementById('schedDate').value = todayStr();
+  var d = new Date();
+  document.getElementById('headerDate').textContent =
+    d.toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
+  loadMasters().then(function() {
+    loadServices();
+    refreshOverview();
+    loadBookings();
+    subscribeRealtime();
+  });
+}
+
+function logout() {
+  sessionStorage.removeItem('adminOk');
+  location.reload();
+}
+
+// ── TABS ─────────────────────────────────────────────
+function switchTab(name, btn) {
+  document.querySelectorAll('.tab-pane').forEach(function(p){ p.style.display = 'none'; });
+  document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+  document.getElementById('pane' + cap(name)).style.display = 'block';
+  btn.classList.add('active');
+  if (name === 'overview')  refreshOverview();
+  if (name === 'services')  renderServices();
+  if (name === 'schedule')  { fillSchedMasters(); loadSlots(); }
+  if (name === 'bookings')  { loadBookings(); clearBadge(); }
+}
+
+// ── OVERVIEW ─────────────────────────────────────────
+async function refreshOverview() {
+  var today = todayStr();
+  document.getElementById('todayLabel').textContent =
+    new Date().toLocaleDateString('ru-RU', { day:'numeric', month:'long', year:'numeric' });
+
+  var weekEnd = new Date();
+  weekEnd.setDate(weekEnd.getDate() + 7);
+  var weekEndStr = weekEnd.toISOString().split('T')[0];
+
+  var [r1, r2, r3] = await Promise.all([
+    sb.from('bookings').select('*, masters(name,emoji), services(name,emoji,duration_minutes)').eq('date', today).neq('status','cancelled').order('start_time'),
+    sb.from('bookings').select('id').neq('status','cancelled').gte('date', today).lte('date', weekEndStr),
+    sb.from('time_slots').select('id').eq('slot_date', today).eq('is_booked', false)
+  ]);
+
+  var todayBooked = r1.data || [];
+  document.getElementById('statToday').textContent   = todayBooked.length;
+  document.getElementById('statTodaySub').textContent = todayBooked.length === 0 ? 'записей нет' : todayBooked.length === 1 ? 'запись' : todayBooked.length < 5 ? 'записи' : 'записей';
+  document.getElementById('statWeek').textContent    = (r2.data || []).length;
+  document.getElementById('statMasters').textContent = masters.length;
+  document.getElementById('statFree').textContent    = (r3.data || []).length;
+
+  // Today list
+  var tl = document.getElementById('todayList');
+  if (!todayBooked.length) {
+    tl.innerHTML = '<div style="text-align:center;padding:1.5rem;color:#ccc;font-size:.875rem">Записей на сегодня нет</div>';
+  } else {
+    tl.innerHTML = todayBooked.map(function(b) {
+      return '<div class="today-row">' +
+        '<div class="today-time">' + (b.start_time||'').slice(0,5) + '</div>' +
+        '<div style="flex:1;min-width:0">' +
+          '<div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.1rem">' +
+            '<span class="today-client">' + esc(b.client_name || '—') + '</span>' +
+            '<span class="today-master-tag">' + esc(b.masters ? b.masters.name : '') + '</span>' +
+          '</div>' +
+          (b.services ? '<div class="today-phone">' + (b.services.emoji||'✨') + ' ' + esc(b.services.name) + '</div>' : '') +
+          '<div class="today-phone">' + esc(b.client_phone || '') + '</div>' +
+        '</div>' +
+        '<a href="' + waLink(b) + '" target="_blank" class="btn-wa-sm">' + ICO_WA + '</a>' +
+      '</div>';
+    }).join('');
+  }
+
+  // Upcoming (next 7 days excl. today)
+  var ul = document.getElementById('upcomingList');
+  var tomorrow = new Date(); tomorrow.setDate(tomorrow.getDate() + 1);
+  var tomorrowStr = tomorrow.toISOString().split('T')[0];
+  var r4 = await sb.from('bookings')
+    .select('*, masters(name,emoji), services(name,emoji,duration_minutes)')
+    .neq('status','cancelled')
+    .gte('date', tomorrowStr)
+    .lte('date', weekEndStr)
+    .order('date').order('start_time')
+    .limit(20);
+  var upcoming = r4.data || [];
+  if (!upcoming.length) {
+    ul.innerHTML = '<div style="text-align:center;padding:1.5rem;color:#ccc;font-size:.875rem">Нет предстоящих записей</div>';
+  } else {
+    ul.innerHTML = upcoming.map(function(b) {
+      var dayStr = new Date(b.date + 'T00:00:00').toLocaleDateString('ru-RU', { weekday:'short', day:'numeric', month:'short' });
+      return '<div class="today-row">' +
+        '<div class="today-time" style="min-width:88px;font-size:.8rem;font-weight:700;color:#888">' + dayStr + '</div>' +
+        '<div class="today-time" style="min-width:40px">' + (b.start_time||'').slice(0,5) + '</div>' +
+        '<div style="flex:1;min-width:0">' +
+          '<div style="display:flex;align-items:center;gap:.4rem">' +
+            '<span class="today-client">' + esc(b.client_name || '—') + '</span>' +
+            '<span class="today-master-tag">' + esc(b.masters ? b.masters.name : '') + '</span>' +
+          '</div>' +
+          (b.services ? '<div class="today-phone">' + (b.services.emoji||'✨') + ' ' + esc(b.services.name) + '</div>' : '') +
+          '<div class="today-phone">' + esc(b.client_phone || '') + '</div>' +
+        '</div>' +
+        '<a href="' + waLink(b) + '" target="_blank" class="btn-wa-sm">' + ICO_WA + '</a>' +
+      '</div>';
+    }).join('');
+  }
+}
+
+// ── MASTERS ──────────────────────────────────────────
+async function loadMasters() {
+  var r = await sb.from('masters').select('*').order('name');
+  masters = r.data || [];
+  renderMasters();
+  fillBookingsMasterFilter();
+}
+
+function renderMasters() {
+  var g = document.getElementById('mastersGrid');
+  if (!masters.length) {
+    g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">' + ICO_EMPTYUSER + '</div><p>Мастера не добавлены</p><p>Нажмите «+ Добавить мастера» чтобы начать</p></div>';
+    return;
+  }
+  g.innerHTML = masters.map(function(m) {
+    return '<div class="master-card">' +
+      '<div class="master-avatar">' + initials(m.name) + '</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div class="master-name">' + esc(m.name) + '</div>' +
+        '<div class="master-spec">' + esc(m.specialization || 'Без специализации') + '</div>' +
+      '</div>' +
+      '<div class="master-card-actions">' +
+        '<button class="icon-btn" title="Редактировать" onclick="editMaster(\'' + m.id + '\')">' + ICO_EDIT + '</button>' +
+        '<button class="icon-btn danger" title="Удалить" onclick="deleteMaster(\'' + m.id + '\',\'' + esc(m.name) + '\')">' + ICO_TRASH + '</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+var SPEC_LIST = [
+  'Маникюр / Педикюр',
+  'Наращивание ногтей',
+  'Ресницы',
+  'Брови',
+  'Волосы',
+  'Макияж',
+  'Косметология',
+  'Массаж'
+];
+
+function renderSpecChecks(checkedSpecs) {
+  var box = document.getElementById('mSpecChecks');
+  var checked = checkedSpecs || [];
+  box.innerHTML = SPEC_LIST.map(function(spec) {
+    var isChk = checked.indexOf(spec) >= 0 ? ' checked' : '';
+    return '<label style="display:flex;align-items:center;gap:.35rem;font-size:.82rem;cursor:pointer;padding:.25rem .15rem;border-radius:6px;transition:background .15s" ' +
+      'onmouseover="this.style.background=\'#f4f1ee\'" onmouseout="this.style.background=\'\'">'+
+      '<input type="checkbox" name="specCheck" value="' + spec + '"' + isChk +
+      ' style="accent-color:#c9a96e;width:14px;height:14px;flex-shrink:0"> ' +
+      '<span>' + esc(spec) + '</span></label>';
+  }).join('');
+}
+
+function openMasterModal() {
+  editingId = null;
+  document.getElementById('masterModalTitle').textContent = 'Добавить мастера';
+  document.getElementById('mName').value = '';
+  document.getElementById('mSpec').value = '';
+  renderSpecChecks([]);
+  document.getElementById('masterModal').classList.add('open');
+  setTimeout(function(){ document.getElementById('mName').focus(); }, 80);
+}
+
+async function editMaster(id) {
+  var m = masters.find(function(x){ return x.id === id; });
+  if (!m) return;
+  editingId = id;
+  document.getElementById('masterModalTitle').textContent = 'Редактировать мастера';
+  document.getElementById('mName').value = m.name;
+  document.getElementById('mSpec').value = m.specialization || '';
+  // Parse comma-separated specialization into array
+  var currentSpecs = (m.specialization || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean);
+  renderSpecChecks(currentSpecs);
+  document.getElementById('masterModal').classList.add('open');
+}
+
+function closeMasterModal() {
+  document.getElementById('masterModal').classList.remove('open');
+  editingId = null;
+}
+
+
+async function saveMaster(ev) {
+  ev.preventDefault();
+  var btn = document.getElementById('masterSaveBtn');
+  btn.disabled = true; btn.textContent = 'Сохранение...';
+
+  // Collect checked specializations and join as comma-separated string
+  var checkedSpecs = Array.from(document.querySelectorAll('#mSpecChecks input[name=specCheck]:checked'))
+    .map(function(el){ return el.value; });
+  var specString = checkedSpecs.join(', ');
+  document.getElementById('mSpec').value = specString;
+
+  var payload = {
+    name: document.getElementById('mName').value.trim(),
+    specialization: specString
+  };
+
+  var r;
+  if (editingId) {
+    r = await sb.from('masters').update(payload).eq('id', editingId);
+  } else {
+    var ins = await sb.from('masters').insert(payload).select().single();
+    r = ins;
+  }
+
+  btn.disabled = false; btn.textContent = 'Сохранить';
+  if (r.error) { toast('Ошибка: ' + r.error.message, 'error'); return; }
+
+  toast(editingId ? 'Мастер обновлён ✓' : 'Мастер добавлен ✓', 'success');
+  closeMasterModal();
+  await loadMasters();
+}
+
+async function deleteMaster(id, name) {
+  if (!confirm('Удалить мастера «' + name + '»?\nВсе его слоты и записи тоже удалятся.')) return;
+  await sb.from('masters').delete().eq('id', id);
+  toast('Мастер удалён', 'success');
+  await loadMasters();
+}
+
+// ── SERVICES ─────────────────────────────────────────
+async function loadServices() {
+  var r = await sb.from('services').select('*').order('sort_order').order('name');
+  services = r.data || [];
+  renderServices();
+}
+
+function renderServices() {
+  var g = document.getElementById('servicesGrid');
+  if (!services.length) {
+    g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">' + ICO_EMPTYSTAR + '</div><p>Услуги не добавлены</p><p>Нажмите «+ Добавить услугу» чтобы начать</p></div>';
+    return;
+  }
+  g.innerHTML = services.map(function(s) {
+    var dur = fmtDur(s.duration_minutes);
+    return '<div class="master-card">' +
+      '<div class="master-avatar">' + (s.emoji || '✨') + '</div>' +
+      '<div style="flex:1;min-width:0">' +
+        '<div class="master-name">' + esc(s.name) + '</div>' +
+        '<div class="master-spec">' + ICO_CLOCKMD + ' ' + dur + ' · ' + s.price.toLocaleString('ru-RU') + ' ₸</div>' +
+        (s.specialization_tag ? '<div class="master-spec" style="color:#c9a96e;font-weight:600;margin-top:.1rem">' + esc(s.specialization_tag) + '</div>' : '') +
+        (s.description ? '<div class="master-spec" style="margin-top:.2rem">' + esc(s.description) + '</div>' : '') +
+        (!s.is_active ? '<span style="font-size:.7rem;color:#e53e3e;font-weight:700">СКРЫТА</span>' : '') +
+      '</div>' +
+      '<div class="master-card-actions">' +
+        '<button class="icon-btn" title="Редактировать" onclick="editService(\'' + s.id + '\')">' + ICO_EDIT + '</button>' +
+        '<button class="icon-btn" title="' + (s.is_active ? 'Скрыть' : 'Показать') + '" onclick="toggleService(\'' + s.id + '\',' + s.is_active + ')">' + (s.is_active ? ICO_EYE : ICO_EYEOFF) + '</button>' +
+        '<button class="icon-btn danger" title="Удалить" onclick="deleteService(\'' + s.id + '\',\'' + esc(s.name) + '\')">' + ICO_TRASH + '</button>' +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+function openServiceModal() {
+  editingSvcId = null;
+  document.getElementById('serviceModalTitle').textContent = 'Добавить услугу';
+  document.getElementById('svcName').value = '';
+  document.getElementById('svcDuration').value = '60';
+  document.getElementById('svcPrice').value = '';
+  document.getElementById('svcDesc').value = '';
+  document.getElementById('svcSpecTag').value = '';
+  setSvcEmoji('💅');
+  document.getElementById('serviceModal').classList.add('open');
+  setTimeout(function(){ document.getElementById('svcName').focus(); }, 80);
+}
+
+function editService(id) {
+  var s = services.find(function(x){ return x.id === id; });
+  if (!s) return;
+  editingSvcId = id;
+  document.getElementById('serviceModalTitle').textContent = 'Редактировать услугу';
+  document.getElementById('svcName').value = s.name;
+  document.getElementById('svcDuration').value = String(s.duration_minutes);
+  document.getElementById('svcPrice').value = s.price;
+  document.getElementById('svcDesc').value = s.description || '';
+  document.getElementById('svcSpecTag').value = s.specialization_tag || '';
+  setSvcEmoji(s.emoji || '💅');
+  document.getElementById('serviceModal').classList.add('open');
+}
+
+function closeServiceModal() {
+  document.getElementById('serviceModal').classList.remove('open');
+  editingSvcId = null;
+}
+
+function pickSvcEmoji(e, btn) { setSvcEmoji(e); }
+
+function setSvcEmoji(e) {
+  document.getElementById('svcEmoji').value = e;
+  document.querySelectorAll('#svcEmojiRow .emoji-opt').forEach(function(b){
+    b.classList.toggle('selected', b.textContent.trim() === e);
+  });
+}
+
+async function saveService(ev) {
+  ev.preventDefault();
+  var btn = document.getElementById('serviceSaveBtn');
+  btn.disabled = true; btn.textContent = 'Сохранение...';
+  var payload = {
+    name:               document.getElementById('svcName').value.trim(),
+    duration_minutes:   parseInt(document.getElementById('svcDuration').value),
+    price:              parseInt(document.getElementById('svcPrice').value),
+    description:        document.getElementById('svcDesc').value.trim() || null,
+    emoji:              document.getElementById('svcEmoji').value,
+    specialization_tag: document.getElementById('svcSpecTag').value || null
+  };
+  var r = editingSvcId
+    ? await sb.from('services').update(payload).eq('id', editingSvcId)
+    : await sb.from('services').insert(payload);
+  btn.disabled = false; btn.textContent = 'Сохранить';
+  if (r.error) { toast('Ошибка: ' + r.error.message, 'error'); return; }
+  toast(editingSvcId ? 'Услуга обновлена ✓' : 'Услуга добавлена ✓', 'success');
+  closeServiceModal();
+  await loadServices();
+}
+
+async function toggleService(id, isActive) {
+  await sb.from('services').update({ is_active: !isActive }).eq('id', id);
+  toast(isActive ? 'Услуга скрыта' : 'Услуга показана', 'success');
+  await loadServices();
+}
+
+async function deleteService(id, name) {
+  if (!confirm('Удалить услугу «' + name + '»?')) return;
+  await sb.from('services').delete().eq('id', id);
+  toast('Услуга удалена', 'success');
+  await loadServices();
+}
+
+function fmtDur(min) {
+  if (min < 60) return min + ' мин';
+  var h = Math.floor(min/60), m = min%60;
+  return m === 0 ? h + ' ч' : h + ' ч ' + m + ' мин';
+}
+
+// ── SCHEDULE ─────────────────────────────────────────
+function fillSchedMasters() {
+  var sel = document.getElementById('schedMaster');
+  if (!masters.length) { sel.innerHTML = '<option>Сначала добавьте мастеров</option>'; return; }
+  var cur = sel.value;
+  sel.innerHTML = masters.map(function(m){ return '<option value="' + m.id + '">' + esc(m.name) + '</option>'; }).join('');
+  if (cur) sel.value = cur;
+}
+
+async function loadSlots() {
+  var mid  = document.getElementById('schedMaster').value;
+  var date = document.getElementById('schedDate').value;
+  var c    = document.getElementById('slotsContainer');
+  if (!mid || !date) { c.innerHTML = '<span class="slots-no-result">Выберите мастера и дату</span>'; return; }
+  var r = await sb.from('time_slots').select('*').eq('master_id', mid).eq('slot_date', date).order('slot_time');
+  if (r.error) { c.innerHTML = '<span class="slots-no-result">Ошибка загрузки</span>'; return; }
+  if (!r.data || !r.data.length) { c.innerHTML = '<span class="slots-no-result">Нет слотов. Добавьте время или используйте быстрое заполнение.</span>'; return; }
+  c.innerHTML = r.data.map(function(s) {
+    return '<span class="slot-chip ' + (s.is_booked ? 'booked' : 'free') + '">' +
+      s.slot_time.slice(0,5) +
+      (s.is_booked ? ' <span class="slot-chip-meta">' + esc(s.client_name || '') + '</span>' : '') +
+      (!s.is_booked ? '<button class="slot-del" onclick="deleteSlot(\'' + s.id + '\')" title="Удалить">✕</button>' : '') +
+    '</span>';
+  }).join('');
+}
+
+function changeDay(delta) {
+  var inp = document.getElementById('schedDate');
+  if (!inp.value) { inp.value = todayStr(); return; }
+  var d = new Date(inp.value + 'T12:00:00');
+  d.setDate(d.getDate() + delta);
+  inp.value = d.toISOString().split('T')[0];
+  loadSlots();
+}
+
+function goToday() {
+  document.getElementById('schedDate').value = todayStr();
+  loadSlots();
+}
+
+async function addSlot() {
+  var mid  = document.getElementById('schedMaster').value;
+  var date = document.getElementById('schedDate').value;
+  var time = document.getElementById('newSlotTime').value;
+  if (!mid)  { toast('Выберите мастера', 'error'); return; }
+  if (!date) { toast('Выберите дату', 'error'); return; }
+  if (!time) { toast('Укажите время', 'error'); return; }
+  var r = await sb.from('time_slots').insert({ master_id: mid, slot_date: date, slot_time: time + ':00' });
+  if (r.error) { toast(r.error.code === '23505' ? 'Этот слот уже есть' : 'Ошибка: ' + r.error.message, 'error'); return; }
+  document.getElementById('newSlotTime').value = '';
+  await loadSlots();
+  toast('Слот добавлен', 'success');
+}
+
+async function deleteSlot(id) {
+  await sb.from('time_slots').delete().eq('id', id);
+  await loadSlots();
+}
+
+async function deleteAllFreeSlots() {
+  var mid  = document.getElementById('schedMaster').value;
+  var date = document.getElementById('schedDate').value;
+  if (!mid || !date) return;
+  if (!confirm('Удалить все свободные слоты на этот день?')) return;
+  await sb.from('time_slots').delete().eq('master_id', mid).eq('slot_date', date).eq('is_booked', false);
+  toast('Свободные слоты удалены', 'success');
+  await loadSlots();
+}
+
+async function bulkAddSlots() {
+  var mid  = document.getElementById('schedMaster').value;
+  var date = document.getElementById('schedDate').value;
+  var from = document.getElementById('bulkFrom').value;
+  var to   = document.getElementById('bulkTo').value;
+  var step = parseInt(document.getElementById('bulkStep').value);
+  if (!mid)  { toast('Выберите мастера', 'error'); return; }
+  if (!date) { toast('Выберите дату', 'error'); return; }
+  if (!from || !to) { toast('Укажите время начала и конца', 'error'); return; }
+  var startMin = toMin(from);
+  var endMin   = toMin(to);
+  if (startMin >= endMin) { toast('Начало должно быть раньше конца', 'error'); return; }
+  var slots = [];
+  for (var m = startMin; m < endMin; m += step) {
+    var h   = String(Math.floor(m / 60)).padStart(2, '0');
+    var min = String(m % 60).padStart(2, '0');
+    slots.push({ master_id: mid, slot_date: date, slot_time: h + ':' + min + ':00' });
+  }
+  var r = await sb.from('time_slots').upsert(slots, { onConflict: 'master_id,slot_date,slot_time', ignoreDuplicates: true });
+  if (r.error) { toast('Ошибка: ' + r.error.message, 'error'); return; }
+  toast('Добавлено ' + slots.length + ' слотов ✓', 'success');
+  await loadSlots();
+}
+
+async function copySchedule() {
+  var mid    = document.getElementById('schedMaster').value;
+  var srcDate = document.getElementById('schedDate').value;
+  var dstDate = document.getElementById('copyTargetDate').value;
+  if (!mid)    { toast('Выберите мастера', 'error'); return; }
+  if (!srcDate){ toast('Выберите исходную дату', 'error'); return; }
+  if (!dstDate){ toast('Укажите дату назначения', 'error'); return; }
+  if (srcDate === dstDate) { toast('Даты должны быть разными', 'error'); return; }
+  var r = await sb.from('time_slots').select('slot_time').eq('master_id', mid).eq('slot_date', srcDate).eq('is_booked', false);
+  if (!r.data || !r.data.length) { toast('Нет свободных слотов для копирования', 'error'); return; }
+  var slots = r.data.map(function(s){ return { master_id: mid, slot_date: dstDate, slot_time: s.slot_time }; });
+  var r2 = await sb.from('time_slots').upsert(slots, { onConflict: 'master_id,slot_date,slot_time', ignoreDuplicates: true });
+  if (r2.error) { toast('Ошибка: ' + r2.error.message, 'error'); return; }
+  toast('Скопировано ' + slots.length + ' слотов на ' + fmtDate(dstDate) + ' ✓', 'success');
+}
+
+// ── BOOKINGS ─────────────────────────────────────────
+async function loadBookings() {
+  var r = await sb.from('bookings')
+    .select('*, masters(id,name,emoji), services(id,name,duration_minutes,price,emoji)')
+    .order('date').order('start_time');
+  allBookings = r.data || [];
+  renderBookings();
+  showBadgeIfNeeded();
+}
+
+function setBookingFilter(f, btn) {
+  bookingFilter = f;
+  document.querySelectorAll('.filter-tab').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderBookings();
+}
+
+function fillBookingsMasterFilter() {
+  var sel = document.getElementById('bookingsMasterFilter');
+  sel.innerHTML = '<option value="">Все мастера</option>' +
+    masters.map(function(m){ return '<option value="' + m.id + '">' + esc(m.name) + '</option>'; }).join('');
+}
+
+function renderBookings() {
+  var today = todayStr();
+  var mf    = document.getElementById('bookingsMasterFilter').value;
+  var list  = allBookings.slice();
+
+  if (mf) list = list.filter(function(b){ return b.masters && b.masters.id === mf; });
+  if (bookingFilter === 'today')    list = list.filter(function(b){ return b.date === today; });
+  if (bookingFilter === 'upcoming') list = list.filter(function(b){ return b.date >= today; });
+  if (bookingFilter === 'past')     list = list.filter(function(b){ return b.date < today; });
+  if (bookingFilter === 'past' || bookingFilter === 'all') list.reverse();
+
+  var c = document.getElementById('bookingsContainer');
+  if (!list.length) {
+    c.innerHTML = '<div class="empty-state"><div class="empty-icon">' + ICO_EMPTYCLIP + '</div><p>Записей нет</p><p>Они появятся когда клиенты запишутся на сайте</p></div>';
+    return;
+  }
+
+  var oneDayAgo = Date.now() - 86400000;
+  c.innerHTML = list.map(function(b) {
+    var isNew    = new Date(b.created_at).getTime() > oneDayAgo;
+    var isPast   = b.date < today;
+    var isToday  = b.date === today;
+    var shortDay = new Date(b.date + 'T00:00:00').toLocaleDateString('ru-RU', { weekday:'short', day:'numeric', month:'short' });
+    var time     = b.start_time ? b.start_time.slice(0,5) : '—';
+    var svc      = b.services;
+    var endMin   = svc ? (toMin(time) + svc.duration_minutes) : null;
+    var endTime  = endMin ? (String(Math.floor(endMin/60)).padStart(2,'0') + ':' + String(endMin%60).padStart(2,'0')) : '';
+
+    var statusHtml;
+    if (b.status === 'cancelled') statusHtml = '<span class="booking-status st-past">✕ Отменена</span>';
+    else if (isNew && !isPast)    statusHtml = '<span class="booking-status st-new">NEW</span>';
+    else if (isToday)             statusHtml = '<span class="booking-status st-today">' + ICO_PIN + ' Сегодня</span>';
+    else if (!isPast)             statusHtml = '<span class="booking-status st-upcoming">' + ICO_CLOCKSM + ' Предстоящая</span>';
+    else                          statusHtml = '<span class="booking-status st-past">✓ Состоялась</span>';
+
+    return '<div class="booking-card' + (isNew && !isPast && b.status !== 'cancelled' ? ' is-new' : '') + (isPast || b.status === 'cancelled' ? ' is-past' : '') + '">' +
+      '<div style="flex:1;min-width:0">' +
+        statusHtml +
+        '<div class="booking-head">' +
+          (b.masters ? '<span style="font-weight:700">' + esc(b.masters.name) + '</span> · ' : '') +
+          ICO_CAL + ' ' + shortDay + ' в ' + time + (endTime ? '–' + endTime : '') +
+        '</div>' +
+        (svc ? '<div style="display:inline-flex;align-items:center;gap:.35rem;background:#fdf6ea;border-radius:99px;padding:.2rem .65rem;font-size:.78rem;font-weight:700;color:#c9a96e;margin:.3rem 0 .2rem">' +
+          (svc.emoji||'✨') + ' ' + esc(svc.name) + ' · ' + fmtDur(svc.duration_minutes) + ' · ' + svc.price.toLocaleString('ru-RU') + ' ₸</div>' : '') +
+        '<div class="booking-name">' + esc(b.client_name || '—') + '</div>' +
+        '<div><a class="booking-phone-link" href="tel:' + esc(b.client_phone || '') + '">' + esc(b.client_phone || '') + '</a></div>' +
+        '<div class="booking-ts">Записался: ' + new Date(b.created_at).toLocaleString('ru-RU') + '</div>' +
+      '</div>' +
+      '<div class="booking-actions">' +
+        '<a href="' + waLink(b) + '" target="_blank" rel="noopener" class="btn-wa">' + ICO_WA + ' WhatsApp</a>' +
+        (b.status !== 'cancelled' && !isPast ? '<button class="btn-danger" onclick="cancelBooking(\'' + b.id + '\')">Отменить</button>' : '') +
+      '</div>' +
+    '</div>';
+  }).join('');
+}
+
+async function cancelBooking(id) {
+  if (!confirm('Отменить запись и освободить слоты?')) return;
+  // Mark booking as cancelled
+  await sb.from('bookings').update({ status: 'cancelled' }).eq('id', id);
+  // Free time_slots that belong to this booking
+  await sb.from('time_slots').update({ is_booked: false, client_name: null, client_phone: null, booking_id: null }).eq('booking_id', id);
+  toast('Запись отменена', 'success');
+  await loadBookings();
+}
+
+// ── REALTIME ─────────────────────────────────────────
+function subscribeRealtime() {
+  sb.channel('admin-rt')
+    .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'bookings' }, function(payload) {
+      var active = document.getElementById('paneBookings').style.display !== 'none';
+      if (!active) {
+        newBookingsCount++;
+        updateBadge(newBookingsCount);
+      } else {
+        loadBookings();
+      }
+      var name = (payload.new && payload.new.client_name) || 'Новый клиент';
+      toast(name + ' записался!', 'info');
+      var orig = document.title;
+      document.title = '● Новая запись!';
+      setTimeout(function(){ document.title = orig; }, 6000);
+      if (window.Notification && Notification.permission === 'granted') {
+        new Notification('Новая запись — К Студия', { body: name + ' · ' + (payload.new ? payload.new.date : '') });
+      }
+      refreshOverview();
+    })
+    .subscribe();
+  if (window.Notification && Notification.permission === 'default') {
+    Notification.requestPermission();
+  }
+}
+
+function showBadgeIfNeeded() {
+  var today = todayStr();
+  var oneDayAgo = Date.now() - 86400000;
+  var n = allBookings.filter(function(b){
+    return new Date(b.created_at).getTime() > oneDayAgo && b.date >= today && b.status !== 'cancelled';
+  }).length;
+  if (n > 0 && document.getElementById('paneBookings').style.display === 'none') updateBadge(n);
+}
+
+function updateBadge(n) {
+  var b = document.getElementById('newBadge');
+  b.textContent = n; b.style.display = 'inline';
+}
+
+function clearBadge() {
+  newBookingsCount = 0;
+  document.getElementById('newBadge').style.display = 'none';
+}
+
+// ── TOAST ────────────────────────────────────────────
+function toast(msg, type) {
+  var wrap = document.getElementById('toastWrap');
+  var el   = document.createElement('div');
+  el.className   = 'toast ' + (type || 'success');
+  el.textContent = msg;
+  wrap.appendChild(el);
+  setTimeout(function(){ el.remove(); }, 3800);
+}
+
+// ── HELPERS ──────────────────────────────────────────
+function waLink(b) {
+  var dateField = b.date || b.slot_date || '';
+  var timeField = b.start_time || b.slot_time || '';
+  var dayStr = new Date(dateField + 'T00:00:00').toLocaleDateString('ru-RU', { weekday:'long', day:'numeric', month:'long' });
+  var phone  = (b.client_phone || '').replace(/\D/g, '');
+  var svcLine = b.services ? '\nУслуга: ' + b.services.name + ' (' + fmtDur(b.services.duration_minutes) + ')' : '';
+  var text   = 'Здравствуйте, ' + (b.client_name || '') + '! Подтверждаем запись в К Студию:\n' +
+               dayStr + ' в ' + timeField.slice(0,5) +
+               svcLine + '\n' +
+               'Мастер: ' + (b.masters ? b.masters.name : '') + '\nЖдём вас!';
+  return 'https://wa.me/' + phone + '?text=' + encodeURIComponent(text);
+}
+
+function fmtDate(str) {
+  return new Date(str + 'T00:00:00').toLocaleDateString('ru-RU', { day:'numeric', month:'long' });
+}
+function toMin(t) { var p = t.split(':').map(Number); return p[0] * 60 + p[1]; }
+function cap(s)   { return s.charAt(0).toUpperCase() + s.slice(1); }
+function todayStr(){ return new Date().toISOString().split('T')[0]; }
+function esc(s)   { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+function initials(n){
+  var p = (n||'').trim().split(/\s+/);
+  return p.length >= 2 ? (p[0][0]+p[1][0]).toUpperCase() : (p[0]||'').slice(0,2).toUpperCase();
+}
+
+init();
+</script>
+</body>
+</html>
