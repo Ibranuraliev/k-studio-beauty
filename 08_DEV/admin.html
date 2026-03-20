@@ -161,6 +161,19 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
 .toast.info{background:#1e3a5f;border-left:3px solid #3b82f6}
 @keyframes toastIn{from{transform:translateY(8px);opacity:0}to{transform:translateY(0);opacity:1}}
 
+/* ── BRANCH BADGES ── */
+.branch-badge-ast{display:inline-flex;align-items:center;gap:.3rem;background:#dbeafe;color:#1e40af;font-size:.63rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.18rem .55rem;border-radius:99px}
+.branch-badge-kok{display:inline-flex;align-items:center;gap:.3rem;background:#d1fae5;color:#065f46;font-size:.63rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.18rem .55rem;border-radius:99px}
+.branch-badge-both{display:inline-flex;align-items:center;gap:.3rem;background:#fef3c7;color:#92400e;font-size:.63rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.18rem .55rem;border-radius:99px}
+/* ── BRANCH FILTER CHIPS ── */
+.branch-filter-row{display:flex;gap:.45rem;margin-bottom:1.1rem;flex-wrap:wrap}
+.branch-chip{padding:.38rem .9rem;border-radius:99px;border:1.5px solid #e0dbd3;background:#fff;cursor:pointer;font-size:.8rem;font-weight:600;color:#888;font-family:inherit;transition:all .2s}
+.branch-chip.active{background:#1a1a1a;border-color:#1a1a1a;color:#fff}
+/* ── SUPABASE SETUP NOTE ── */
+.setup-note{background:#fef9ec;border:1px solid #f5d58a;border-radius:10px;padding:.9rem 1.1rem;font-size:.8rem;color:#7a5a00;margin-bottom:1.2rem;display:flex;align-items:flex-start;gap:.6rem;line-height:1.5}
+.setup-note strong{color:#5a4000}
+.setup-note code{background:#f0e8c8;padding:.1rem .3rem;border-radius:4px;font-size:.75rem}
+
 @media(max-width:600px){
   .booking-card{flex-direction:column}
   .booking-actions{width:100%}
@@ -256,6 +269,11 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
       <h2 class="pane-title">Мастера</h2>
       <button class="btn btn-dark" onclick="openMasterModal()">+ Добавить мастера</button>
     </div>
+    <div class="branch-filter-row">
+      <button class="branch-chip active" onclick="filterMasters('all',this)">Все филиалы</button>
+      <button class="branch-chip" onclick="filterMasters('Астана',this)">🏙 Астана</button>
+      <button class="branch-chip" onclick="filterMasters('Кокшетау',this)">🏙 Кокшетау</button>
+    </div>
     <div id="mastersGrid" class="masters-grid"></div>
   </div>
 
@@ -329,9 +347,16 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
   <div id="paneBookings" class="tab-pane" style="display:none">
     <div class="pane-header">
       <h2 class="pane-title">Записи клиентов</h2>
-      <select class="master-filter" id="bookingsMasterFilter" onchange="renderBookings()">
-        <option value="">Все мастера</option>
-      </select>
+      <div style="display:flex;gap:.6rem;flex-wrap:wrap;align-items:center">
+        <select class="master-filter" id="bookingsBranchFilter" onchange="renderBookings()" style="min-width:130px">
+          <option value="">Все филиалы</option>
+          <option value="Астана">Астана</option>
+          <option value="Кокшетау">Кокшетау</option>
+        </select>
+        <select class="master-filter" id="bookingsMasterFilter" onchange="renderBookings()">
+          <option value="">Все мастера</option>
+        </select>
+      </div>
     </div>
     <div class="filter-row">
       <div class="filter-tabs">
@@ -350,10 +375,23 @@ body{font-family:system-ui,-apple-system,sans-serif;background:#f4f1ee;color:#1a
 <div id="masterModal" class="modal-overlay" onclick="if(event.target===this)closeMasterModal()">
   <div class="modal-box">
     <h3 class="modal-title" id="masterModalTitle">Добавить мастера</h3>
+    <div class="setup-note">
+      <span>💡</span>
+      <span>Для поля «Филиал» добавьте столбец в Supabase:<br/>
+      <code>ALTER TABLE masters ADD COLUMN IF NOT EXISTS branch text DEFAULT 'Астана';</code></span>
+    </div>
     <form id="masterForm" onsubmit="saveMaster(event)">
       <div class="form-group">
         <label>Имя мастера *</label>
         <input type="text" id="mName" required placeholder="Айгерим">
+      </div>
+      <div class="form-group">
+        <label>Филиал *</label>
+        <select id="mBranch" style="width:100%;padding:.72rem 1rem;border:1.5px solid #e0dbd3;border-radius:9px;font-size:.9rem;font-family:inherit;transition:border-color .2s;outline:none" onfocus="this.style.borderColor='#c9a96e'" onblur="this.style.borderColor='#e0dbd3'">
+          <option value="Астана">🏙 Астана</option>
+          <option value="Кокшетау">🏙 Кокшетау</option>
+          <option value="Оба">🏙 Оба филиала</option>
+        </select>
       </div>
       <div class="form-group">
         <label>Специализация <span style="font-size:.72rem;color:#aaa;font-weight:400">(можно выбрать несколько)</span></label>
@@ -473,6 +511,7 @@ let editingId        = null;
 let editingSvcId     = null;
 let newBookingsCount = 0;
 let bookingFilter    = 'upcoming';
+let masterBranchFilter = 'all';
 
 // ── AUTH ──────────────────────────────────────────────
 function init() {
@@ -609,17 +648,35 @@ async function loadMasters() {
   fillBookingsMasterFilter();
 }
 
+function filterMasters(branch, btn) {
+  masterBranchFilter = branch;
+  document.querySelectorAll('.branch-chip').forEach(function(b){ b.classList.remove('active'); });
+  btn.classList.add('active');
+  renderMasters();
+}
+
+function branchBadge(branch) {
+  if (!branch || branch === 'Астана') return '<span class="branch-badge-ast">🏙 Астана</span>';
+  if (branch === 'Кокшетау') return '<span class="branch-badge-kok">🏙 Кокшетау</span>';
+  if (branch === 'Оба') return '<span class="branch-badge-both">🏙 Оба</span>';
+  return '<span class="branch-badge-ast">🏙 ' + esc(branch) + '</span>';
+}
+
 function renderMasters() {
   var g = document.getElementById('mastersGrid');
-  if (!masters.length) {
-    g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">' + ICO_EMPTYUSER + '</div><p>Мастера не добавлены</p><p>Нажмите «+ Добавить мастера» чтобы начать</p></div>';
+  var filtered = masterBranchFilter === 'all' ? masters : masters.filter(function(m){
+    return (m.branch || 'Астана') === masterBranchFilter || (m.branch === 'Оба');
+  });
+  if (!filtered.length) {
+    g.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">' + ICO_EMPTYUSER + '</div><p>' + (masterBranchFilter === 'all' ? 'Мастера не добавлены' : 'В этом филиале нет мастеров') + '</p><p>Нажмите «+ Добавить мастера» чтобы начать</p></div>';
     return;
   }
-  g.innerHTML = masters.map(function(m) {
+  g.innerHTML = filtered.map(function(m) {
     return '<div class="master-card">' +
       '<div class="master-avatar">' + initials(m.name) + '</div>' +
       '<div style="flex:1;min-width:0">' +
         '<div class="master-name">' + esc(m.name) + '</div>' +
+        '<div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.2rem">' + branchBadge(m.branch) + '</div>' +
         '<div class="master-spec">' + esc(m.specialization || 'Без специализации') + '</div>' +
       '</div>' +
       '<div class="master-card-actions">' +
@@ -658,6 +715,7 @@ function openMasterModal() {
   editingId = null;
   document.getElementById('masterModalTitle').textContent = 'Добавить мастера';
   document.getElementById('mName').value = '';
+  document.getElementById('mBranch').value = 'Астана';
   document.getElementById('mSpec').value = '';
   renderSpecChecks([]);
   document.getElementById('masterModal').classList.add('open');
@@ -670,8 +728,8 @@ async function editMaster(id) {
   editingId = id;
   document.getElementById('masterModalTitle').textContent = 'Редактировать мастера';
   document.getElementById('mName').value = m.name;
+  document.getElementById('mBranch').value = m.branch || 'Астана';
   document.getElementById('mSpec').value = m.specialization || '';
-  // Parse comma-separated specialization into array
   var currentSpecs = (m.specialization || '').split(',').map(function(s){ return s.trim(); }).filter(Boolean);
   renderSpecChecks(currentSpecs);
   document.getElementById('masterModal').classList.add('open');
@@ -696,6 +754,7 @@ async function saveMaster(ev) {
 
   var payload = {
     name: document.getElementById('mName').value.trim(),
+    branch: document.getElementById('mBranch').value,
     specialization: specString
   };
 
@@ -949,7 +1008,7 @@ async function copySchedule() {
 // ── BOOKINGS ─────────────────────────────────────────
 async function loadBookings() {
   var r = await sb.from('bookings')
-    .select('*, masters(id,name,emoji), services(id,name,duration_minutes,price,emoji)')
+    .select('*, masters(id,name,emoji,branch), services(id,name,duration_minutes,price,emoji)')
     .order('date').order('start_time');
   allBookings = r.data || [];
   renderBookings();
@@ -972,8 +1031,10 @@ function fillBookingsMasterFilter() {
 function renderBookings() {
   var today = todayStr();
   var mf    = document.getElementById('bookingsMasterFilter').value;
+  var bf    = document.getElementById('bookingsBranchFilter').value;
   var list  = allBookings.slice();
 
+  if (bf) list = list.filter(function(b){ return b.masters && (b.masters.branch || 'Астана') === bf; });
   if (mf) list = list.filter(function(b){ return b.masters && b.masters.id === mf; });
   if (bookingFilter === 'today')    list = list.filter(function(b){ return b.date === today; });
   if (bookingFilter === 'upcoming') list = list.filter(function(b){ return b.date >= today; });
@@ -1007,7 +1068,8 @@ function renderBookings() {
     return '<div class="booking-card' + (isNew && !isPast && b.status !== 'cancelled' ? ' is-new' : '') + (isPast || b.status === 'cancelled' ? ' is-past' : '') + '">' +
       '<div style="flex:1;min-width:0">' +
         statusHtml +
-        '<div class="booking-head">' +
+        (b.masters && b.masters.branch ? ' ' + branchBadge(b.masters.branch) : '') +
+        '<div class="booking-head" style="margin-top:.25rem">' +
           (b.masters ? '<span style="font-weight:700">' + esc(b.masters.name) + '</span> · ' : '') +
           ICO_CAL + ' ' + shortDay + ' в ' + time + (endTime ? '–' + endTime : '') +
         '</div>' +
