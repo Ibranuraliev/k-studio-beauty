@@ -15,6 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   initFAQ();
   initSmoothScroll();
   initActiveNav();
+  initMobileCtaVisibility();
 });
 
 /* ─── 1. HEADER — transparent → solid on scroll ─── */
@@ -249,4 +250,30 @@ function initActiveNav() {
       link.classList.add('is-active');
     }
   });
+}
+
+/* ─── 9. MOBILE CTA — hide when last section / footer is visible ─── */
+function initMobileCtaVisibility() {
+  const cta = document.querySelector('.mobile-booking-cta');
+  if (!cta) return;
+
+  // Watch the footer; fall back to the last <section> on the page
+  const sentinel = document.querySelector('footer') ||
+                   [...document.querySelectorAll('section')].at(-1);
+  if (!sentinel) return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          cta.classList.add('is-hidden');
+        } else {
+          cta.classList.remove('is-hidden');
+        }
+      });
+    },
+    { threshold: 0.05 }
+  );
+
+  observer.observe(sentinel);
 }

@@ -239,19 +239,22 @@
     .certs-section {
       background: var(--color-cream);
       border-radius: var(--border-radius-lg);
-      padding: var(--space-xl);
+      padding: var(--space-md);
       text-align: center;
       margin-top: var(--space-xl);
+    }
+    @media (min-width: 640px) {
+      .certs-section { padding: var(--space-xl); }
     }
 
     .certs-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: var(--space-md);
+      gap: var(--space-sm);
       margin-top: var(--space-lg);
     }
     @media (min-width: 640px) {
-      .certs-grid { grid-template-columns: repeat(4, 1fr); }
+      .certs-grid { grid-template-columns: repeat(4, 1fr); gap: var(--space-md); }
     }
 
     .cert-item {
@@ -259,13 +262,17 @@
       flex-direction: column;
       align-items: center;
       gap: 0.5rem;
-      padding: var(--space-md);
+      padding: var(--space-sm);
       background: white;
       border-radius: var(--border-radius);
       box-shadow: var(--shadow-sm);
     }
+    @media (min-width: 640px) {
+      .cert-item { padding: var(--space-md); }
+    }
 
-    .cert-item__icon { font-size: 2rem; }
+    .cert-item__icon { font-size: 1.5rem; }
+    @media (min-width: 640px) { .cert-item__icon { font-size: 2rem; } }
     .cert-item__name {
       font-size: 0.75rem;
       font-weight: 600;
