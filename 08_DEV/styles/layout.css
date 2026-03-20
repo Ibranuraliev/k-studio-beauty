@@ -780,11 +780,12 @@
 /* ─── Masters Grid ─── */
 .masters-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr;
   gap: var(--space-md);
 }
 
-@media (min-width: 640px)  { .masters-grid { grid-template-columns: repeat(3, 1fr); } }
+@media (min-width: 480px)  { .masters-grid { grid-template-columns: repeat(2, 1fr); } }
+@media (min-width: 768px)  { .masters-grid { grid-template-columns: repeat(3, 1fr); } }
 @media (min-width: 1024px) { .masters-grid { grid-template-columns: repeat(4, 1fr); } }
 
 /* ─── Reviews Carousel ─── */

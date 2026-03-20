@@ -631,40 +631,61 @@
   align-items: center;
 }
 
+/* Wrapper so caption overlays the image */
+.lightbox__img-wrap {
+  position: relative;
+  display: inline-flex;
+  max-width: 100%;
+  border-radius: var(--border-radius);
+  overflow: hidden;
+}
+
 .lightbox__image {
-  max-height: 75vh;
+  max-height: 85vh;
   width: auto;
   max-width: 100%;
   border-radius: var(--border-radius);
   object-fit: contain;
+  display: block;
 }
 
 .lightbox__close {
-  position: absolute;
-  top: -3rem;
-  right: 0;
-  color: rgba(255,255,255,0.7);
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  color: rgba(255,255,255,0.85);
   font-size: 2rem;
   line-height: 1;
   cursor: pointer;
   transition: color var(--transition-fast);
-  background: none;
+  background: rgba(0,0,0,0.4);
   border: none;
+  border-radius: 50%;
   padding: 0.5rem;
   min-height: 44px;
   min-width: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
+  z-index: 1;
 }
 
 .lightbox__close:hover { color: var(--color-gold); }
 
+/* Caption as gradient overlay at the bottom of the image */
 .lightbox__caption {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to top, rgba(10,6,4,0.75) 0%, transparent 100%);
+  padding: 1.5rem 1.25rem 1rem;
   text-align: center;
-  margin-top: var(--space-sm);
-  color: rgba(255,255,255,0.7);
-  font-size: 0.9rem;
+  color: rgba(255,255,255,0.9);
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  pointer-events: none;
 }
 
 /* ─── Badge ─── */

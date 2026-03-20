@@ -13,6 +13,13 @@
   <link rel="stylesheet" href="../styles/components.css" />
   <link rel="stylesheet" href="../styles/layout.css" />
   <style>
+    /* Express section mobile fix */
+    #express { padding: var(--space-md) !important; }
+    @media (min-width: 640px) { #express { padding: var(--space-xl) !important; } }
+    .express-btn-wrap { display: flex; }
+    .express-btn-wrap .btn { width: 100%; text-align: center; justify-content: center; }
+    @media (min-width: 480px) { .express-btn-wrap .btn { width: auto; } }
+
     .price-table { width: 100%; border-collapse: collapse; }
     .price-table tr { border-bottom: 1px solid var(--color-border); }
     .price-table tr:last-child { border-bottom: none; }
@@ -312,7 +319,9 @@
           <div style="font-size:0.8rem; color:rgba(248,245,241,0.6);">4 мастера</div>
         </div>
       </div>
-      <a href="/pages/booking.html" class="btn btn--primary">Уточнить стоимость и записаться</a>
+      <div class="express-btn-wrap">
+        <a href="/pages/booking.html" class="btn btn--primary">Уточнить стоимость и записаться</a>
+      </div>
     </div>
 
   </div>
