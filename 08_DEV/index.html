@@ -22,7 +22,7 @@
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Montserrat:wght@400;500;600;700&family=Great+Vibes&display=swap" rel="stylesheet" />
 
   <!-- Styles -->
   <link rel="stylesheet" href="styles/base.css" />
@@ -76,23 +76,15 @@
 ══════════════════════════════════════ -->
 <div id="intro-overlay" aria-hidden="true">
   <div class="intro-inner">
-    <svg class="intro-k" viewBox="0 0 160 210" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <!-- Vertical stem of К -->
-      <path class="k-stroke k-stroke-1"
-            d="M 52 20 C 50 70, 50 130, 52 185"
-            stroke="#c9a96e" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-      <!-- Upper arm — diagonal to upper right -->
-      <path class="k-stroke k-stroke-2"
-            d="M 52 100 C 72 86, 98 62, 132 22"
-            stroke="#c9a96e" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-      <!-- Lower arm — diagonal to lower right -->
-      <path class="k-stroke k-stroke-3"
-            d="M 74 116 C 94 134, 114 157, 135 183"
-            stroke="#c9a96e" stroke-width="3.5" stroke-linecap="round" fill="none"/>
-    </svg>
-    <div class="intro-divider"></div>
-    <p class="intro-subtitle">Studio of Beauty</p>
-    <p class="intro-city">Астана</p>
+    <!-- Signature line: "К Studio" in one cursive line -->
+    <div class="intro-sig-wrap">
+      <span class="intro-sig">К Studio</span>
+      <span class="intro-pen" aria-hidden="true"></span>
+    </div>
+    <!-- Thin gold line expands below -->
+    <div class="intro-line"></div>
+    <!-- Subtitle -->
+    <p class="intro-tagline">Studio of Beauty · Астана</p>
   </div>
 </div>
 
@@ -102,11 +94,13 @@
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: #1a1208;
+  background: #18100a;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: opacity 0.8s ease, visibility 0.8s ease;
+  cursor: pointer;
+  transition: opacity 0.9s cubic-bezier(0.4,0,0.2,1),
+              visibility 0.9s cubic-bezier(0.4,0,0.2,1);
 }
 #intro-overlay.intro-gone {
   opacity: 0;
@@ -118,63 +112,81 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0;
 }
-.intro-k {
-  width: 110px;
-  height: 137px;
+
+/* ── Signature wrap ── */
+.intro-sig-wrap {
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+}
+
+/* The cursive text — hidden behind a right-to-left curtain */
+.intro-sig {
   display: block;
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(4rem, 12vw, 8rem);
+  color: #c9a96e;
+  line-height: 1.15;
+  white-space: nowrap;
+  /* Clip reveals left-to-right like a pen drawing */
+  clip-path: inset(0 100% 0 0);
+  animation: sigReveal 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
+  /* Subtle text glow */
+  filter: drop-shadow(0 0 18px rgba(201,169,110,0.25));
 }
-/* Stroke draw animation */
-.k-stroke {
-  stroke-dasharray: 350;
-  stroke-dashoffset: 350;
-  animation: drawK 0.55s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+@keyframes sigReveal {
+  0%   { clip-path: inset(0 100% 0 0); }
+  100% { clip-path: inset(0 0% 0 0); }
 }
-.k-stroke-1 { animation-delay: 0.15s; }
-.k-stroke-2 { animation-delay: 0.62s; }
-.k-stroke-3 { animation-delay: 0.95s; }
-@keyframes drawK {
-  to { stroke-dashoffset: 0; }
+
+/* Pen cursor dot that travels right */
+.intro-pen {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #c9a96e;
+  transform: translateY(-50%);
+  box-shadow: 0 0 10px 3px rgba(201,169,110,0.6);
+  opacity: 0;
+  animation: penTravel 1.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.3s forwards;
 }
-/* Gold line divider */
-.intro-divider {
-  width: 0;
+@keyframes penTravel {
+  0%   { left: 0%;   opacity: 1; }
+  95%  { left: 100%; opacity: 1; }
+  100% { left: 100%; opacity: 0; }
+}
+
+/* ── Gold divider line ── */
+.intro-line {
   height: 1px;
-  background: rgba(201,169,110,0.5);
-  margin-top: 1.2rem;
-  animation: expandLine 0.45s ease 1.35s forwards;
+  width: 0;
+  background: linear-gradient(to right, transparent, rgba(201,169,110,0.6), transparent);
+  margin-top: 0.6rem;
+  animation: lineGrow 0.5s ease 2.1s forwards;
 }
-@keyframes expandLine {
-  to { width: 80px; }
+@keyframes lineGrow {
+  to { width: 260px; }
 }
-/* Studio text */
-.intro-subtitle {
-  font-family: 'Cormorant Garamond', Georgia, serif;
-  font-size: 1rem;
-  font-weight: 400;
-  letter-spacing: 0.42em;
-  text-transform: uppercase;
-  color: rgba(201,169,110,0.9);
-  margin-top: 0.85rem;
-  margin-bottom: 0;
-  opacity: 0;
-  transform: translateY(6px);
-  animation: fadeUpText 0.55s ease 1.5s forwards;
-}
-.intro-city {
+
+/* ── Tagline ── */
+.intro-tagline {
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.62rem;
+  font-size: 0.65rem;
   font-weight: 500;
-  letter-spacing: 0.5em;
+  letter-spacing: 0.45em;
   text-transform: uppercase;
-  color: rgba(201,169,110,0.4);
-  margin-top: 0.45rem;
+  color: rgba(201,169,110,0.45);
+  margin-top: 0.7rem;
   opacity: 0;
-  animation: fadeUpText 0.55s ease 1.75s forwards;
+  animation: tagFade 0.6s ease 2.3s forwards;
 }
-@keyframes fadeUpText {
-  to { opacity: 1; transform: translateY(0); }
+@keyframes tagFade {
+  to { opacity: 1; }
 }
 </style>
 
@@ -313,23 +325,23 @@
     <div class="trust-bar__grid">
 
       <div class="trust-item reveal">
-        <span class="trust-item__number">4.9★</span>
-        <span class="trust-item__label">Рейтинг 2GIS</span>
+        <span class="trust-item__number">4.9<span style="font-size:.6em;opacity:.7">★</span></span>
+        <span class="trust-item__label">Рейтинг в 2GIS</span>
       </div>
 
       <div class="trust-item reveal reveal--delay-1">
-        <span class="trust-item__number">68+</span>
-        <span class="trust-item__label">Отзывов</span>
+        <span class="trust-item__number">12<span style="font-size:.55em;opacity:.6">+</span></span>
+        <span class="trust-item__label">Мастеров</span>
       </div>
 
       <div class="trust-item reveal reveal--delay-2">
-        <span class="trust-item__number">10–21</span>
-        <span class="trust-item__label">Ежедневно</span>
+        <span class="trust-item__number">68<span style="font-size:.55em;opacity:.6">+</span></span>
+        <span class="trust-item__label">Отзывов</span>
       </div>
 
       <div class="trust-item reveal reveal--delay-3">
-        <span class="trust-item__number">Express</span>
-        <span class="trust-item__label">4, 6 и 8 рук</span>
+        <span class="trust-item__number">10–21</span>
+        <span class="trust-item__label">Часы работы</span>
       </div>
 
     </div>
@@ -356,7 +368,7 @@
 
       <!-- Волосы -->
       <article class="service-card reveal">
-        <div class="service-card__image-placeholder" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></svg></div>
+        <div style="overflow:hidden;aspect-ratio:4/3;"><img src="images/hair-hero.jpg" alt="Волосы — услуги К Студия" loading="lazy" class="service-card__photo" /></div>
         <div class="service-card__body">
           <h3 class="service-card__name">Волосы</h3>
           <p class="service-card__desc">
@@ -375,7 +387,7 @@
 
       <!-- Маникюр -->
       <article class="service-card reveal reveal--delay-1">
-        <div class="service-card__image-placeholder" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><path d="M12 2C9.79 2 8 3.79 8 6v8c0 2.21 1.79 4 4 4s4-1.79 4-4V6c0-2.21-1.79-4-4-4z"/><path d="M8 10h8"/></svg></div>
+        <div style="overflow:hidden;aspect-ratio:4/3;"><img src="images/nails-hero.jpg" alt="Маникюр — К Студия" loading="lazy" class="service-card__photo" /></div>
         <div class="service-card__body">
           <h3 class="service-card__name">Маникюр</h3>
           <p class="service-card__desc">
@@ -394,7 +406,7 @@
 
       <!-- Педикюр -->
       <article class="service-card reveal reveal--delay-2">
-        <div class="service-card__image-placeholder" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><path d="M8 18c0 2 1.3 4 4 4s4-2 4-4v-6"/><circle cx="10" cy="7" r="2"/><circle cx="14" cy="5" r="2"/><circle cx="18" cy="7" r="2"/><circle cx="7" cy="11" r="2"/></svg></div>
+        <div style="overflow:hidden;aspect-ratio:4/3;"><img src="images/iamge3.jpg" alt="Педикюр — К Студия" loading="lazy" class="service-card__photo" /></div>
         <div class="service-card__body">
           <h3 class="service-card__name">Педикюр</h3>
           <p class="service-card__desc">
@@ -413,7 +425,7 @@
 
       <!-- Брови и ресницы -->
       <article class="service-card reveal">
-        <div class="service-card__image-placeholder" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+        <div style="overflow:hidden;aspect-ratio:4/3;"><img src="images/lashes-hero.jpg" alt="Брови и ресницы — К Студия" loading="lazy" class="service-card__photo" /></div>
         <div class="service-card__body">
           <h3 class="service-card__name">Брови и ресницы</h3>
           <p class="service-card__desc">
@@ -432,7 +444,7 @@
 
       <!-- Макияж -->
       <article class="service-card reveal reveal--delay-1">
-        <div class="service-card__image-placeholder" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><path d="M12 16c-4 0-7-2-7-4 0-1.5 1.5-2.5 3-3 1.5-.5 2.5-1 4-1s2.5.5 4 1c1.5.5 3 1.5 3 3 0 2-3 4-7 4z"/><path d="M9 9c0-1.7 1.3-3 3-3s3 1.3 3 3"/></svg></div>
+        <div style="overflow:hidden;aspect-ratio:4/3;"><img src="images/image2.jpg" alt="Макияж — К Студия" loading="lazy" class="service-card__photo" /></div>
         <div class="service-card__body">
           <h3 class="service-card__name">Макияж</h3>
           <p class="service-card__desc">
@@ -451,7 +463,7 @@
 
       <!-- Express -->
       <article class="service-card reveal reveal--delay-2" style="background: var(--color-dark); color: var(--color-cream);">
-        <div class="service-card__image-placeholder" style="background:rgba(201,169,110,.08)" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" style="width:56px;height:56px;opacity:.7"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+        <div style="overflow:hidden;aspect-ratio:4/3;"><img src="images/massage-hero.jpg" alt="Express — К Студия" loading="lazy" class="service-card__photo" style="filter:brightness(0.7);" /></div>
         <div class="service-card__body">
           <h3 class="service-card__name" style="color: var(--color-cream);">Express-услуги</h3>
           <p class="service-card__desc" style="color: rgba(248,245,241,0.65);">
@@ -943,14 +955,13 @@
     // Block page scroll while intro is showing
     document.body.style.overflow = 'hidden';
 
-    // Dismiss after animation completes (~2.4s)
+    // Dismiss after animation completes (~3.2s: sig 1.9s + line 0.5s + tagline + hold)
     setTimeout(function() {
       overlay.classList.add('intro-gone');
       document.body.style.overflow = '';
       sessionStorage.setItem('introSeen', '1');
-      // Remove from DOM after fade
-      setTimeout(function() { overlay.remove(); }, 850);
-    }, 2400);
+      setTimeout(function() { overlay.remove(); }, 950);
+    }, 3200);
 
     // Allow clicking to skip intro
     overlay.addEventListener('click', function() {

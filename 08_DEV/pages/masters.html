@@ -330,23 +330,57 @@
 <section class="section">
   <div class="container">
 
-    <!-- Trust Bar for Masters -->
-    <div class="trust-bar reveal">
-      <div class="trust-bar__item">
-        <span class="trust-bar__value">12+</span>
-        <span class="trust-bar__label">мастеров в команде</span>
+    <!-- Stats Bar for Masters -->
+    <div class="masters-stats reveal" style="
+      display:grid;
+      grid-template-columns: repeat(2,1fr);
+      border:1px solid rgba(201,169,110,0.15);
+      border-radius:16px;
+      overflow:hidden;
+      margin-bottom:var(--space-2xl);
+      background:var(--color-cream);
+    ">
+      <style>
+        @media(min-width:640px){ .masters-stats{ grid-template-columns:repeat(4,1fr)!important; } }
+        .mstat{ padding:2rem 1.5rem; text-align:center; position:relative; display:flex; flex-direction:column; align-items:center; gap:.5rem; }
+        .mstat+.mstat::before{ content:''; position:absolute; left:0; top:15%; height:70%; width:1px; background:linear-gradient(to bottom,transparent,rgba(201,169,110,0.25),transparent); }
+        @media(max-width:639px){ .mstat:nth-child(3),.mstat:nth-child(4){ border-top:1px solid rgba(201,169,110,0.12); } .mstat:nth-child(2n+1)+.mstat::before{ display:none; } }
+        .mstat__icon{ width:36px; height:36px; border-radius:50%; background:rgba(201,169,110,0.1); display:flex; align-items:center; justify-content:center; margin-bottom:.25rem; }
+        .mstat__num{ font-family:'Cormorant Garamond',Georgia,serif; font-size:clamp(2rem,4vw,2.8rem); font-weight:300; color:#2C1F14; line-height:1; letter-spacing:-0.01em; }
+        .mstat__sup{ font-size:.55em; opacity:.55; vertical-align:super; }
+        .mstat__label{ font-size:.68rem; font-weight:600; letter-spacing:.16em; text-transform:uppercase; color:rgba(44,31,20,0.45); }
+      </style>
+
+      <div class="mstat">
+        <div class="mstat__icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        </div>
+        <span class="mstat__num">12<span class="mstat__sup">+</span></span>
+        <span class="mstat__label">Мастеров</span>
       </div>
-      <div class="trust-bar__item">
-        <span class="trust-bar__value">5–15</span>
-        <span class="trust-bar__label">лет опыта</span>
+
+      <div class="mstat">
+        <div class="mstat__icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        </div>
+        <span class="mstat__num">5–15</span>
+        <span class="mstat__label">Лет опыта</span>
       </div>
-      <div class="trust-bar__item">
-        <span class="trust-bar__value">4.9★</span>
-        <span class="trust-bar__label">средний рейтинг</span>
+
+      <div class="mstat">
+        <div class="mstat__icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="2" stroke-linecap="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </div>
+        <span class="mstat__num">4.9<span class="mstat__sup">★</span></span>
+        <span class="mstat__label">Рейтинг</span>
       </div>
-      <div class="trust-bar__item">
-        <span class="trust-bar__value">100%</span>
-        <span class="trust-bar__label">сертифицированы</span>
+
+      <div class="mstat">
+        <div class="mstat__icon">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#c9a96e" stroke-width="2" stroke-linecap="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        </div>
+        <span class="mstat__num">100<span class="mstat__sup">%</span></span>
+        <span class="mstat__label">Сертифицированы</span>
       </div>
     </div>
 
