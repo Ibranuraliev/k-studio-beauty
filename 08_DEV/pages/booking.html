@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Запись онлайн — К Студия | Астана</title>
-  <meta name="description" content="Запишитесь онлайн в К Студию. Выберите услугу, мастера и удобное время." />
+  <title>Запись онлайн — К Студия | Астана и Кокшетау</title>
+  <meta name="description" content="Запишитесь онлайн в К Студию. Выберите филиал, услугу, мастера и удобное время." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,400&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet" />
@@ -239,6 +239,34 @@
     }
     .again-btn:hover { border-color: var(--dark); }
 
+    /* ── BRANCH CARDS ── */
+    .branch-select-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; margin-bottom: 1.4rem; }
+    @media (max-width: 380px) { .branch-select-grid { grid-template-columns: 1fr; } }
+    .branch-opt {
+      background: #fff; border: 2px solid var(--border); border-radius: var(--radius);
+      padding: 1.2rem 1rem 1rem; cursor: pointer; text-align: center; position: relative;
+      transition: border-color .2s, box-shadow .2s, transform .15s;
+    }
+    .branch-opt:hover { border-color: var(--gold); box-shadow: 0 4px 18px rgba(201,169,110,.15); transform: translateY(-1px); }
+    .branch-opt.selected { border-color: var(--gold); background: var(--gold-lt); }
+    .branch-opt-check {
+      position: absolute; top: .55rem; right: .55rem;
+      width: 18px; height: 18px; border-radius: 50%; background: var(--gold);
+      display: none; align-items: center; justify-content: center;
+    }
+    .branch-opt.selected .branch-opt-check { display: flex; }
+    .branch-opt-check::after { content: ''; display: block; width: 9px; height: 5px; border-left: 2px solid #fff; border-bottom: 2px solid #fff; transform: rotate(-45deg) translateY(-1px); }
+    .branch-city {
+      font-family: var(--font-h); font-size: 1.55rem; font-weight: 400; color: var(--dark); margin-bottom: .35rem; line-height: 1.15;
+    }
+    .branch-addr { font-size: .73rem; color: var(--muted); line-height: 1.5; margin-bottom: .5rem; }
+    .branch-ig { font-size: .7rem; font-weight: 700; color: var(--gold); letter-spacing: .04em; }
+    .branch-badge {
+      display: inline-block; background: var(--dark); color: var(--gold);
+      font-size: .58rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase;
+      padding: .2rem .55rem; border-radius: 99px; margin-bottom: .6rem;
+    }
+
     /* ── EMPTY STATE ── */
     .empty-msg {
       text-align: center; padding: 2.5rem 1rem; color: var(--muted); font-size: .85rem;
@@ -274,22 +302,27 @@
     <div class="progress-bar">
       <div class="step-col">
         <div class="step-dot active" id="sdot1">1</div>
-        <div class="step-label active" id="slbl1">Услуга</div>
+        <div class="step-label active" id="slbl1">Филиал</div>
       </div>
       <div class="step-line" id="sline1"></div>
       <div class="step-col">
         <div class="step-dot" id="sdot2">2</div>
-        <div class="step-label" id="slbl2">Время</div>
+        <div class="step-label" id="slbl2">Услуга</div>
       </div>
       <div class="step-line" id="sline2"></div>
       <div class="step-col">
         <div class="step-dot" id="sdot3">3</div>
-        <div class="step-label" id="slbl3">Данные</div>
+        <div class="step-label" id="slbl3">Время</div>
       </div>
       <div class="step-line" id="sline3"></div>
       <div class="step-col">
         <div class="step-dot" id="sdot4">4</div>
-        <div class="step-label" id="slbl4">Готово</div>
+        <div class="step-label" id="slbl4">Данные</div>
+      </div>
+      <div class="step-line" id="sline4"></div>
+      <div class="step-col">
+        <div class="step-dot" id="sdot5">5</div>
+        <div class="step-label" id="slbl5">Готово</div>
       </div>
     </div>
   </div>
@@ -297,21 +330,47 @@
 
 <div class="bk-container">
 
-  <!-- ── STEP 1: SERVICES ── -->
+  <!-- ── STEP 1: BRANCH ── -->
   <div class="screen active" id="screen1">
+    <h1 class="section-title">Выберите филиал</h1>
+    <p class="section-sub">В каком городе вы хотите записаться?</p>
+    <div class="branch-select-grid">
+      <div class="branch-opt" id="bopt_astana" onclick="selectBranch('astana',this)">
+        <div class="branch-opt-check"></div>
+        <div class="branch-badge">Астана</div>
+        <div class="branch-city">Астана</div>
+        <div class="branch-addr">Кабанбай батыр пр., 58Б<br/>Есиль район</div>
+        <div class="branch-ig">@k_studio_01</div>
+      </div>
+      <div class="branch-opt" id="bopt_koksh" onclick="selectBranch('koksh',this)">
+        <div class="branch-opt-check"></div>
+        <div class="branch-badge">Кокшетау</div>
+        <div class="branch-city">Кокшетау</div>
+        <div class="branch-addr">ул. Габдуллина, 9</div>
+        <div class="branch-ig">@k_studio_of_beauty</div>
+      </div>
+    </div>
+    <button class="btn-primary" id="btnBranch" onclick="goStep2()" disabled>
+      Выбрать услугу →
+    </button>
+  </div>
+
+  <!-- ── STEP 2: SERVICES ── -->
+  <div class="screen" id="screen2">
     <h1 class="section-title">Выберите услугу</h1>
     <p class="section-sub">Укажите что вы хотите — и мы подберём мастера</p>
     <div id="servicesLoading" class="spinner-wrap">
       <div class="spinner"></div>
     </div>
     <div id="servicesGrid" class="services-grid" style="display:none"></div>
-    <button class="btn-primary" id="btnStep1" onclick="goStep2()" disabled style="margin-top:1.2rem">
+    <button class="btn-primary" id="btnStep2" onclick="goStep3()" disabled style="margin-top:1.2rem">
       Выбрать время →
     </button>
+    <button class="btn-outline" onclick="goStep1()">← Изменить филиал</button>
   </div>
 
-  <!-- ── STEP 2: DATE + MASTER + TIME ── -->
-  <div class="screen" id="screen2">
+  <!-- ── STEP 3: DATE + MASTER + TIME ── -->
+  <div class="screen" id="screen3">
     <!-- Service chip -->
     <div class="service-chip">
       <div class="chip-mono" id="chipMono">?</div>
@@ -332,11 +391,11 @@
     </div>
     <div id="mastersList" class="masters-list"></div>
 
-    <button class="btn-outline" onclick="goStep1()">← Изменить услугу</button>
+    <button class="btn-outline" onclick="goStep2()">← Изменить услугу</button>
   </div>
 
-  <!-- ── STEP 3: CLIENT INFO ── -->
-  <div class="screen" id="screen3">
+  <!-- ── STEP 4: CLIENT INFO ── -->
+  <div class="screen" id="screen4">
     <h1 class="section-title">Ваши данные</h1>
     <p class="section-sub">Для подтверждения записи</p>
 
@@ -355,11 +414,11 @@
     <button class="btn-primary gold" id="btnSubmit" onclick="submitBooking()" disabled>
       Записаться
     </button>
-    <button class="btn-outline" onclick="goStep2()">← Изменить время</button>
+    <button class="btn-outline" onclick="goStep3()">← Изменить время</button>
   </div>
 
-  <!-- ── STEP 4: SUCCESS ── -->
-  <div class="screen" id="screen4">
+  <!-- ── STEP 5: SUCCESS ── -->
+  <div class="screen" id="screen5">
     <div class="success-wrap">
       <div class="success-icon-wrap">
         <div class="success-check"></div>
@@ -388,6 +447,7 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // ── STATE ────────────────────────────────────────────
 let services = [];
+let selectedBranch  = null; // { id: 'astana'|'koksh', name: string, addr: string }
 let selectedService = null;
 let selectedDate    = null;
 let selectedMaster  = null; // { id, name }
@@ -399,7 +459,20 @@ document.addEventListener('DOMContentLoaded', async () => {
   await loadServices();
 });
 
-// ── STEP 1: SERVICES ─────────────────────────────────
+// ── STEP 1: BRANCH ───────────────────────────────────
+const BRANCHES = {
+  astana: { id: 'astana', name: 'Астана', addr: 'Кабанбай батыр пр., 58Б' },
+  koksh:  { id: 'koksh',  name: 'Кокшетау', addr: 'ул. Габдуллина, 9' }
+};
+
+function selectBranch(id, el) {
+  selectedBranch = BRANCHES[id];
+  document.querySelectorAll('.branch-opt').forEach(c => c.classList.remove('selected'));
+  el.classList.add('selected');
+  document.getElementById('btnBranch').disabled = false;
+}
+
+// ── STEP 2: SERVICES ─────────────────────────────────
 async function loadServices() {
   const { data, error } = await sb
     .from('services').select('*').eq('is_active', true)
@@ -432,7 +505,7 @@ function selectService(id) {
   selectedService = services.find(s => s.id === id);
   document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('sc_' + id).classList.add('selected');
-  document.getElementById('btnStep1').disabled = false;
+  document.getElementById('btnStep2').disabled = false;
 }
 
 // ── DATE TABS ────────────────────────────────────────
@@ -553,15 +626,20 @@ function selectSlot(masterId, masterName, time, btn) {
   btn.classList.add('selected');
   selectedMaster = { id: masterId, name: masterName };
   selectedTime   = time;
-  goStep3();
+  goStep4();
 }
 
 // ── NAVIGATION ───────────────────────────────────────
 function goStep1() { setStep(1); }
 
 function goStep2() {
-  if (!selectedService) return;
+  if (!selectedBranch) return;
   setStep(2);
+}
+
+function goStep3() {
+  if (!selectedService) return;
+  setStep(3);
   document.getElementById('chipMono').textContent = selectedService.name.charAt(0).toUpperCase();
   document.getElementById('chipName').textContent = selectedService.name;
   document.getElementById('chipMeta').textContent =
@@ -569,14 +647,14 @@ function goStep2() {
   loadSlots();
 }
 
-function goStep3() {
+function goStep4() {
   if (!selectedService || !selectedMaster || !selectedTime) return;
-  setStep(3);
+  setStep(4);
   renderBookingSummary();
 }
 
 function setStep(n) {
-  for (let i = 1; i <= 4; i++) {
+  for (let i = 1; i <= 5; i++) {
     document.getElementById('screen' + i).classList.toggle('active', i === n);
     const dot = document.getElementById('sdot' + i);
     const lbl = document.getElementById('slbl' + i);
@@ -593,7 +671,7 @@ function setStep(n) {
     } else {
       dot.textContent = i;
     }
-    if (i < 4) document.getElementById('sline' + i).classList.toggle('done', i < n);
+    if (i < 5) document.getElementById('sline' + i).classList.toggle('done', i < n);
   }
   window.scrollTo({ top: 0, behavior: 'smooth' });
 }
@@ -602,13 +680,20 @@ function checkSvg() {
   return '<svg width="10" height="7" viewBox="0 0 10 7" fill="none"><path d="M1 3l3 3 5-5" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>';
 }
 
-// ── STEP 3: SUMMARY + FORM ───────────────────────────
+// ── STEP 4: SUMMARY + FORM ───────────────────────────
 function renderBookingSummary() {
   const endMin = timeToMin(selectedTime) + selectedService.duration_minutes;
   const endTime = minToTime(endMin);
   const dateRu  = formatDateRu(selectedDate);
   document.getElementById('bookingSummary').innerHTML = `
     <div class="bs-title">Детали записи</div>
+    <div class="bs-row">
+      <div class="bs-label">Филиал</div>
+      <div class="bs-val">
+        <div class="bs-text">${esc(selectedBranch.name)}</div>
+        <div class="bs-sub">${esc(selectedBranch.addr)}</div>
+      </div>
+    </div>
     <div class="bs-row">
       <div class="bs-label">Услуга</div>
       <div class="bs-val">
@@ -672,7 +757,7 @@ async function submitBooking() {
     if (!chk || chk.length < slotsNeeded || chk.some(s => s.is_booked)) {
       toast('Это время уже заняли. Выберите другое.', 'error');
       btn.disabled = false; btn.textContent = 'Записаться';
-      setStep(2); loadSlots(); return;
+      setStep(3); loadSlots(); return;
     }
 
     // 2. Insert booking
@@ -699,30 +784,34 @@ async function submitBooking() {
 
 // ── SUCCESS ──────────────────────────────────────────
 function showSuccess(name, phone, bookingId) {
-  setStep(4);
+  setStep(5);
   const endMin  = timeToMin(selectedTime) + selectedService.duration_minutes;
   const endTime = minToTime(endMin);
   const dateRu  = formatDateRu(selectedDate);
 
   document.getElementById('successCard').innerHTML = `
     <div class="sc-title">Ваша запись</div>
+    <div class="sc-row"><div class="sc-lbl">Филиал</div><div class="sc-val">${esc(selectedBranch.name)} — ${esc(selectedBranch.addr)}</div></div>
     <div class="sc-row"><div class="sc-lbl">Услуга</div><div class="sc-val">${esc(selectedService.name)}</div></div>
     <div class="sc-row"><div class="sc-lbl">Дата</div><div class="sc-val">${dateRu}, ${selectedTime} — ${endTime}</div></div>
     <div class="sc-row"><div class="sc-lbl">Мастер</div><div class="sc-val">${esc(selectedMaster.name)}</div></div>
     <div class="sc-row"><div class="sc-lbl">Клиент</div><div class="sc-val">${esc(name)}</div></div>`;
 
   const msg = encodeURIComponent(
-    `Здравствуйте! Я записался(ась) на *${selectedService.name}* — ${dateRu} в ${selectedTime}. Мастер: ${selectedMaster.name}. Имя: ${name}, тел: ${phone}`
+    `Здравствуйте! Я записался(ась) на *${selectedService.name}* — ${dateRu} в ${selectedTime}. Филиал: ${selectedBranch.name} (${selectedBranch.addr}). Мастер: ${selectedMaster.name}. Имя: ${name}, тел: ${phone}`
   );
   document.getElementById('waLink').href = `https://wa.me/${WHATSAPP_ADMIN}?text=${msg}`;
 }
 
 function resetBooking() {
+  selectedBranch  = null;
   selectedService = null; selectedMaster = null; selectedTime = null;
+  document.querySelectorAll('.branch-opt').forEach(c => c.classList.remove('selected'));
   document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('btnStep1').disabled = true;
-  document.getElementById('clientName').value  = '';
-  document.getElementById('clientPhone').value = '';
+  document.getElementById('btnBranch').disabled = true;
+  document.getElementById('btnStep2').disabled  = true;
+  document.getElementById('clientName').value   = '';
+  document.getElementById('clientPhone').value  = '';
   setStep(1);
 }
 

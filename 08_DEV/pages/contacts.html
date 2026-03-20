@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Контакты — К Студия | Кабанбай батыр пр., 58Б, Астана</title>
-  <meta name="description" content="Адрес К Студии: Кабанбай батыр пр., 58Б, Астана. Часы работы: ежедневно 10:00–21:00. Запись по WhatsApp или онлайн." />
+  <title>Контакты — К Студия | Астана и Кокшетау</title>
+  <meta name="description" content="К Студия — два филиала: Астана (Кабанбай батыр пр., 58Б) и Кокшетау (ул. Габдуллина, 9). Часы работы: ежедневно 10:00–21:00." />
   <link rel="canonical" href="https://kstudio.kz/contacts" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -12,6 +12,154 @@
   <link rel="stylesheet" href="../styles/base.css" />
   <link rel="stylesheet" href="../styles/components.css" />
   <link rel="stylesheet" href="../styles/layout.css" />
+  <style>
+    .branches-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: var(--space-lg);
+    }
+    @media (min-width: 760px) {
+      .branches-grid { grid-template-columns: 1fr 1fr; }
+    }
+    .branch-card {
+      background: #fff;
+      border: 1px solid var(--color-border);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 4px 32px rgba(44,31,20,.06);
+      display: flex;
+      flex-direction: column;
+    }
+    .branch-card__head {
+      padding: 1.75rem 1.75rem 1.25rem;
+      border-bottom: 1px solid var(--color-border);
+      display: flex;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    .branch-card__city-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      background: var(--color-dark);
+      color: var(--color-gold);
+      font-family: var(--font-body);
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      padding: .35rem .85rem;
+      border-radius: 99px;
+      flex-shrink: 0;
+    }
+    .branch-card__title {
+      font-family: var(--font-heading);
+      font-size: 1.55rem;
+      font-weight: 400;
+      color: var(--color-dark);
+      line-height: 1.15;
+    }
+    .branch-card__subtitle {
+      font-size: .78rem;
+      color: var(--color-text-muted);
+      margin-top: .2rem;
+    }
+    .branch-card__body {
+      padding: 1.5rem 1.75rem;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 1.1rem;
+    }
+    .branch-info-row {
+      display: flex;
+      align-items: flex-start;
+      gap: .9rem;
+    }
+    .branch-info-icon {
+      flex-shrink: 0;
+      width: 2rem;
+      height: 2rem;
+      color: var(--color-gold);
+      margin-top: .1rem;
+    }
+    .branch-info-label {
+      font-size: .65rem;
+      font-weight: 700;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--color-text-muted);
+      margin-bottom: .25rem;
+    }
+    .branch-info-value {
+      font-size: .9rem;
+      color: var(--color-dark);
+      line-height: 1.6;
+    }
+    .branch-info-value a {
+      color: var(--color-gold);
+      font-weight: 600;
+      font-size: .8rem;
+      text-decoration: none;
+    }
+    .branch-card__actions {
+      padding: 0 1.75rem 1.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: .6rem;
+    }
+    .branch-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: .5rem;
+      padding: .72rem 1.1rem;
+      border-radius: 10px;
+      font-family: var(--font-body);
+      font-size: .8rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all .2s;
+      border: 1.5px solid transparent;
+    }
+    .branch-btn--dark {
+      background: var(--color-dark);
+      color: #fff;
+      border-color: var(--color-dark);
+    }
+    .branch-btn--dark:hover { opacity: .82; }
+    .branch-btn--wa {
+      background: #25D366;
+      color: #fff;
+      border-color: #25D366;
+    }
+    .branch-btn--wa:hover { opacity: .88; }
+    .branch-btn--outline {
+      background: transparent;
+      color: var(--color-dark);
+      border-color: var(--color-border);
+    }
+    .branch-btn--outline:hover { border-color: var(--color-gold); color: var(--color-gold); }
+    .branch-btn--insta {
+      background: linear-gradient(135deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+      color: #fff;
+      border: none;
+    }
+    .branch-btn--insta:hover { opacity: .88; }
+    .branch-divider {
+      height: 1px;
+      background: var(--color-border);
+      margin: 0 1.75rem;
+    }
+    /* Hours table shared */
+    .hours-table { width: 100%; border-collapse: collapse; font-size: .85rem; }
+    .hours-table tr { border-bottom: 1px solid rgba(201,169,110,.15); }
+    .hours-table tr:last-child { border-bottom: none; }
+    .hours-table td { padding: .32rem 0; }
+    .hours-table td:last-child { text-align: right; font-weight: 600; color: var(--color-dark); }
+    .hours-table td:first-child { color: var(--color-text-muted); }
+  </style>
 </head>
 <body>
 
@@ -60,104 +208,168 @@
 <!-- Page Hero -->
 <section class="page-hero">
   <div class="container">
-    <span class="page-hero__eyebrow">Найдите нас</span>
+    <span class="page-hero__eyebrow">Два города — один стандарт</span>
     <h1 class="page-hero__title">Контакты</h1>
   </div>
 </section>
 
-<!-- Contacts Section -->
+<!-- Branches -->
 <section class="section">
   <div class="container">
-    <div style="display:grid; gap:var(--space-xl); grid-template-columns:1fr;">
-      <div style="display:grid; gap:var(--space-xl); grid-template-columns:1fr;" id="contacts-grid">
+    <div class="branches-grid">
 
-        <!-- Info Cards -->
-        <div style="display:grid; gap:var(--space-md); grid-template-columns:1fr; max-width:680px; margin-inline:auto; width:100%;">
+      <!-- ── АСТАНА ── -->
+      <div class="branch-card reveal">
+        <div class="branch-card__head">
+          <div>
+            <div class="branch-card__city-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Астана
+            </div>
+            <h2 class="branch-card__title" style="margin-top:.6rem;">К Studio Астана</h2>
+            <p class="branch-card__subtitle">Главный филиал · @k_studio_01</p>
+          </div>
+        </div>
 
+        <div class="branch-card__body">
           <!-- Address -->
-          <div class="review-card reveal" style="flex-direction:row; align-items:flex-start; gap:var(--space-md);">
-            <div style="flex-shrink:0; margin-top:0.25rem; color:var(--color-gold)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:2rem;height:2rem;vertical-align:middle;flex-shrink:0"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+          <div class="branch-info-row">
+            <svg class="branch-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
             <div>
-              <h3 style="font-family:var(--font-heading); font-size:1.2rem; margin-bottom:0.4rem;">Адрес</h3>
-              <p style="color:var(--color-text-muted); margin:0; line-height:1.7;">
-                Кабанбай батыр проспект, 58Б<br/>
+              <div class="branch-info-label">Адрес</div>
+              <div class="branch-info-value">
+                Кабанбай батыр пр., 58Б<br/>
                 Есиль район, Астана<br/>
-                <a href="https://2gis.kz/astana/firm/70000001104862663" target="_blank" rel="noopener"
-                   style="color:var(--color-gold); font-weight:600; font-size:0.875rem;">
-                  Открыть в 2GIS ↗
-                </a>
-              </p>
+                <a href="https://2gis.kz/astana/firm/70000001104862663" target="_blank" rel="noopener">Открыть в 2GIS ↗</a>
+              </div>
             </div>
           </div>
 
           <!-- Hours -->
-          <div class="review-card reveal reveal--delay-1" style="flex-direction:row; align-items:flex-start; gap:var(--space-md);">
-            <div style="flex-shrink:0; margin-top:0.25rem; color:var(--color-gold)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:2rem;height:2rem;vertical-align:middle;flex-shrink:0"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-            <div style="width:100%;">
-              <h3 style="font-family:var(--font-heading); font-size:1.2rem; margin-bottom:0.75rem;">Часы работы</h3>
-              <table style="width:100%; border-collapse:collapse; font-size:0.875rem;">
-                <tr style="border-bottom:1px solid var(--color-border);">
-                  <td style="padding:0.4rem 0; color:var(--color-text-muted);">Понедельник–Пятница</td>
-                  <td style="padding:0.4rem 0; text-align:right; font-weight:600; color:var(--color-dark);">10:00 – 21:00</td>
-                </tr>
-                <tr style="border-bottom:1px solid var(--color-border);">
-                  <td style="padding:0.4rem 0; color:var(--color-text-muted);">Суббота</td>
-                  <td style="padding:0.4rem 0; text-align:right; font-weight:600; color:var(--color-dark);">10:00 – 21:00</td>
-                </tr>
-                <tr>
-                  <td style="padding:0.4rem 0; color:var(--color-text-muted);">Воскресенье</td>
-                  <td style="padding:0.4rem 0; text-align:right; font-weight:600; color:var(--color-dark);">10:00 – 21:00</td>
-                </tr>
+          <div class="branch-info-row">
+            <svg class="branch-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div style="width:100%">
+              <div class="branch-info-label">Часы работы</div>
+              <table class="hours-table">
+                <tr><td>Пн — Пт</td><td>10:00 – 21:00</td></tr>
+                <tr><td>Суббота</td><td>10:00 – 21:00</td></tr>
+                <tr><td>Воскресенье</td><td>10:00 – 21:00</td></tr>
               </table>
-              <div style="margin-top:0.75rem;">
-                <span class="badge badge--gold">Открыто сейчас</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Phone -->
-          <div class="review-card reveal reveal--delay-2" style="flex-direction:row; align-items:flex-start; gap:var(--space-md);">
-            <div style="flex-shrink:0; margin-top:0.25rem; color:var(--color-gold)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:2rem;height:2rem;vertical-align:middle;flex-shrink:0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.08 6.08l.81-.81a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg></div>
-            <div>
-              <h3 style="font-family:var(--font-heading); font-size:1.2rem; margin-bottom:0.75rem;">Связаться</h3>
-              <div style="display:flex; flex-direction:column; gap:0.75rem;">
-                <a href="tel:+77051170000" class="btn btn--secondary btn--sm" style="width:fit-content;">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.08 6.08l.81-.81a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg> Позвонить
-                </a>
-                <a href="https://wa.me/77051170000" target="_blank" rel="noopener"
-                   class="btn btn--sm" style="background:#25D366; color:white; border:none; width:fit-content;">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg> WhatsApp
-                </a>
-                <a href="https://www.instagram.com/k_studio_01/" target="_blank" rel="noopener"
-                   class="btn btn--secondary btn--sm" style="width:fit-content;">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em;vertical-align:middle;flex-shrink:0"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg> Instagram @k_studio_01
-                </a>
-              </div>
+              <span class="badge badge--gold" style="margin-top:.6rem;display:inline-block;">Открыто ежедневно</span>
             </div>
           </div>
 
           <!-- Rating -->
-          <div class="review-card reveal reveal--delay-3" style="flex-direction:row; align-items:center; gap:var(--space-md); background:var(--color-dark);">
-            <div style="font-size:2rem; flex-shrink:0;">⭐</div>
+          <div class="branch-info-row">
+            <svg class="branch-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
             <div>
-              <p style="color:rgba(248,245,241,0.6); font-size:0.8rem; margin-bottom:0.25rem; font-weight:600; letter-spacing:0.1em; text-transform:uppercase;">Рейтинг на 2GIS</p>
-              <p style="color:var(--color-gold); font-family:var(--font-heading); font-size:2rem; font-weight:400; margin:0; line-height:1;">4.9★</p>
-              <p style="color:rgba(248,245,241,0.5); font-size:0.8rem; margin-top:0.25rem;">68 отзывов</p>
+              <div class="branch-info-label">Рейтинг</div>
+              <div class="branch-info-value">
+                <span style="font-family:var(--font-heading);font-size:1.4rem;font-weight:300;color:var(--color-gold);">4.9★</span>
+                <span style="font-size:.8rem;color:var(--color-text-muted);margin-left:.4rem;">68 отзывов на 2GIS</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="branch-divider"></div>
+        <div class="branch-card__actions">
+          <a href="tel:+77051170000" class="branch-btn branch-btn--dark">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.27h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.91a16 16 0 0 0 6.08 6.08l.81-.81a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 21.73 16.92z"/></svg>
+            Позвонить
+          </a>
+          <a href="https://wa.me/77051170000" target="_blank" rel="noopener" class="branch-btn branch-btn--wa">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1.1em;height:1.1em"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="https://www.instagram.com/k_studio_01/" target="_blank" rel="noopener" class="branch-btn branch-btn--insta">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @k_studio_01
+          </a>
+        </div>
+      </div>
+
+      <!-- ── КОКШЕТАУ ── -->
+      <div class="branch-card reveal reveal--delay-1">
+        <div class="branch-card__head">
+          <div>
+            <div class="branch-card__city-badge">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:10px;height:10px"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+              Кокшетау
+            </div>
+            <h2 class="branch-card__title" style="margin-top:.6rem;">К Studio Кокшетау</h2>
+            <p class="branch-card__subtitle">Филиал · @k_studio_of_beauty</p>
+          </div>
+        </div>
+
+        <div class="branch-card__body">
+          <!-- Address -->
+          <div class="branch-info-row">
+            <svg class="branch-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <div>
+              <div class="branch-info-label">Адрес</div>
+              <div class="branch-info-value">
+                ул. Габдуллина, 9<br/>
+                Кокшетау<br/>
+                <a href="https://2gis.kz/kokshetau" target="_blank" rel="noopener">Открыть в 2GIS ↗</a>
+              </div>
             </div>
           </div>
 
+          <!-- Hours -->
+          <div class="branch-info-row">
+            <svg class="branch-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <div style="width:100%">
+              <div class="branch-info-label">Часы работы</div>
+              <table class="hours-table">
+                <tr><td>Пн — Пт</td><td>10:00 – 21:00</td></tr>
+                <tr><td>Суббота</td><td>10:00 – 21:00</td></tr>
+                <tr><td>Воскресенье</td><td>10:00 – 21:00</td></tr>
+              </table>
+              <span class="badge badge--gold" style="margin-top:.6rem;display:inline-block;">Открыто ежедневно</span>
+            </div>
+          </div>
+
+          <!-- Followers -->
+          <div class="branch-info-row">
+            <svg class="branch-info-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            <div>
+              <div class="branch-info-label">Аудитория</div>
+              <div class="branch-info-value">
+                <span style="font-family:var(--font-heading);font-size:1.4rem;font-weight:300;color:var(--color-gold);">13.2к</span>
+                <span style="font-size:.8rem;color:var(--color-text-muted);margin-left:.4rem;">подписчиков в Instagram</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="branch-divider"></div>
+        <div class="branch-card__actions">
+          <a href="https://kstudio.taplink.kz" target="_blank" rel="noopener" class="branch-btn branch-btn--dark">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1em;height:1em"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            Записаться онлайн
+          </a>
+          <a href="https://wa.me/77051170000" target="_blank" rel="noopener" class="branch-btn branch-btn--wa">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" style="width:1.1em;height:1.1em"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="https://www.instagram.com/k_studio_of_beauty/" target="_blank" rel="noopener" class="branch-btn branch-btn--insta">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:1.1em;height:1.1em"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+            @k_studio_of_beauty
+          </a>
         </div>
       </div>
+
     </div>
   </div>
 </section>
 
-<!-- Map -->
-<div class="map-section" aria-label="Карта проезда">
+<!-- Map Астана -->
+<div class="map-section" aria-label="Карта проезда — Астана">
   <a href="https://2gis.kz/astana/firm/70000001104862663" target="_blank" rel="noopener"
      class="map-placeholder">
     <div class="map-placeholder__icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="width:3rem;height:3rem;vertical-align:middle;flex-shrink:0"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg></div>
-    <div class="map-placeholder__text">К Студия на карте</div>
+    <div class="map-placeholder__text">К Studio Астана на карте</div>
     <div class="map-placeholder__sub">Кабанбай батыр пр., 58Б — Открыть в 2GIS ↗</div>
   </a>
 </div>
@@ -196,11 +408,11 @@
   </div>
 </section>
 
-<!-- Footer minimal -->
+<!-- Footer -->
 <footer class="footer">
   <div class="container">
     <div class="footer__bottom" style="border-top:none; padding-top:var(--space-lg);">
-      <span>© 2026 К Студия. Астана, Кабанбай батыр пр., 58Б</span>
+      <span>© 2026 К Студия · Астана · Кокшетау</span>
       <a href="/pages/privacy.html" class="footer__bottom-link">Политика конфиденциальности</a>
     </div>
   </div>
